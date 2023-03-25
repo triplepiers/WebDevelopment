@@ -1,0 +1,1132 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="React 令人头大">
+      
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../Components/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
+    
+    
+      
+        <title>1 慢速上手 - SeaBee's Note Pieces</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c4a75a56.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-hello-world" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SeaBee&#39;s Note Pieces" class="md-header__button md-logo" aria-label="SeaBee's Note Pieces" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SeaBee's Note Pieces
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1 慢速上手
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SeaBee&#39;s Note Pieces" class="md-nav__button md-logo" aria-label="SeaBee's Note Pieces" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SeaBee's Note Pieces
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          1 慢速上手
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        1 慢速上手
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    1 Hello World
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Hello World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    1.1 使用脚手架创建项目
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 使用脚手架创建项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    项目结构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    Hello World 组件
+  </a>
+  
+    <nav class="md-nav" aria-label="Hello World 组件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    样式模块化
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-cdn" class="md-nav__link">
+    1.2 单页面应用（CDN引入）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dom" class="md-nav__link">
+    2 虚拟 DOM
+  </a>
+  
+    <nav class="md-nav" aria-label="2 虚拟 DOM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    2.1 两种创建方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-vs-dom" class="md-nav__link">
+    2.2 vs 真实DOM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-jsx" class="md-nav__link">
+    3 JSX
+  </a>
+  
+    <nav class="md-nav" aria-label="3 JSX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    基础语法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    列表渲染
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dom-diff" class="md-nav__link">
+    4 虚拟 DOM 与 Diff
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5 项目部署
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    6 其他
+  </a>
+  
+    <nav class="md-nav" aria-label="6 其他">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-setstate" class="md-nav__link">
+    6.1 setState 的两种写法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-lazyload" class="md-nav__link">
+    6.2 lazyLoad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-hook" class="md-nav__link">
+    6.3 Hook
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Hook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usestate" class="md-nav__link">
+    useState
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useeffect" class="md-nav__link">
+    useEffect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useref" class="md-nav__link">
+    useRef
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-fragment" class="md-nav__link">
+    6.4 Fragment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Components/" class="md-nav__link">
+        2 面向组件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Message/" class="md-nav__link">
+        3 组件通信
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/" class="md-nav__link">
+        4 网络请求
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Router/" class="md-nav__link">
+        5 路由
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UI/" class="md-nav__link">
+        6 UI组件库
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-hello-world" class="md-nav__link">
+    1 Hello World
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Hello World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    1.1 使用脚手架创建项目
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 使用脚手架创建项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    项目结构
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hello-world" class="md-nav__link">
+    Hello World 组件
+  </a>
+  
+    <nav class="md-nav" aria-label="Hello World 组件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    样式模块化
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-cdn" class="md-nav__link">
+    1.2 单页面应用（CDN引入）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-dom" class="md-nav__link">
+    2 虚拟 DOM
+  </a>
+  
+    <nav class="md-nav" aria-label="2 虚拟 DOM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    2.1 两种创建方式
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-vs-dom" class="md-nav__link">
+    2.2 vs 真实DOM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-jsx" class="md-nav__link">
+    3 JSX
+  </a>
+  
+    <nav class="md-nav" aria-label="3 JSX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    基础语法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    列表渲染
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dom-diff" class="md-nav__link">
+    4 虚拟 DOM 与 Diff
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5 项目部署
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    6 其他
+  </a>
+  
+    <nav class="md-nav" aria-label="6 其他">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-setstate" class="md-nav__link">
+    6.1 setState 的两种写法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-lazyload" class="md-nav__link">
+    6.2 lazyLoad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-hook" class="md-nav__link">
+    6.3 Hook
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 Hook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usestate" class="md-nav__link">
+    useState
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useeffect" class="md-nav__link">
+    useEffect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useref" class="md-nav__link">
+    useRef
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-fragment" class="md-nav__link">
+    6.4 Fragment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>1 慢速上手</h1>
+
+<blockquote>
+<p>使用 JS 直接操作 DOM 会导致大量的重绘重排</p>
+</blockquote>
+<p>特点：
+- 组件化模式、声明式编码
+- 可以在 React Native 中可以使用 React 语法进行移动端开发
+- 使用 <strong>虚拟DOM + 优秀的 diff 算法</strong>，尽量减少和真实DOM的交互</p>
+<h2 id="1-hello-world">1 Hello World</h2>
+<blockquote>
+<p><a href="https://react.docschina.org/">React中文官网</a></p>
+</blockquote>
+<h3 id="11">1.1 使用脚手架创建项目</h3>
+<ul>
+<li>需要的环境<ul>
+<li>NodeJS &amp; npm</li>
+<li>create-react-app，使用 <code>npm install -g create-react-app</code> 可以全局安装</li>
+</ul>
+</li>
+<li>创建项目 <code>create-react-app prj_name</code></li>
+<li>项目启动 <code>npm start</code>，默认端口号为 3000</li>
+</ul>
+<h4 id="_1">项目结构</h4>
+<pre><code class="language-text">%PUBLIC_URL% - 表示 public 根目录
+- public 静态资源文件
+    - favicon.icon
+    - index.html
+    - manifest.json 应用加壳的配置文件（Web套皮原生）
+    - robots.txt 爬虫协议
+- src
+    - App.css APP组件样式（在 App.js 中自行引入）
+    - App.js  APP组件本体
+    - APP.test.js APP组件测试
+    - index.css 样式
+    - index.js 入口文件
+      这里面会引入 idx.css，如果要在 html 中加载要删去重复部分
+    - logo.svg  logo图
+    - reportWebVitals.js 性能分析文件（需要 web-vitals 库）
+</code></pre>
+<h4 id="hello-world">Hello World 组件</h4>
+<ol>
+<li>编写入口文件</li>
+</ol>
+<pre><code class="language-jsx">// 引入核心库 和 ReactDOM
+import React from 'react'
+import ReactDOM from 'react-dom'
+// 引入根组件
+import App from './App.js'
+// 渲染到页面
+ReactDOM.render(&lt;App/&gt;, document.getElementById('root'))
+// 在 React18 中，render 被更改为以下形式
+import {createRoot} from 'react-dom/client'
+const root = createRoot(document.getElementById('root'))
+root.render(&lt;App/&gt;)
+</code></pre>
+<ol>
+<li>创建根组件 APP</li>
+</ol>
+<pre><code class="language-jsx">import React from 'react'
+export default class APP extends React.Component {
+    render {
+        return(
+        &lt;div&gt;
+            hello world!
+        &lt;/div&gt;)
+    }
+}
+</code></pre>
+<h5 id="_2">样式模块化</h5>
+<blockquote>
+<p>用 less 写没有这个问题捏</p>
+</blockquote>
+<ol>
+<li>样式表更名为 <code>comp.module.css</code> </li>
+<li>使用 <code>import comp_name from './comp.module.css'</code></li>
+<li>渲染时返回 tag <code>className={comp_name.name}</code></li>
+</ol>
+<h3 id="12-cdn">1.2 单页面应用（CDN引入）</h3>
+<pre><code class="language-html">&lt;body&gt;
+    &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+
+    &lt;script crossorigin
+     src=&quot;https://unpkg.com/react@16/umd/react.development.js&quot;&gt;
+    &lt;/script&gt;
+    &lt;script crossorigin 
+     src=&quot;https://unpkg.com/react-dom@16/umd/react-dom.development.js&quot;&gt;
+     &lt;/script&gt;
+    &lt;script
+     src=&quot;https://unpkg.com/babel-standalone@6/babel.min.js&quot;&gt;
+     &lt;/script&gt;
+
+    &lt;script type=&quot;text/babel&quot;&gt;
+        // 必须指明内容为 babel
+        // 1. 创建虚拟DOM
+        const VDOM = &lt;h1&gt;Hello, world!&lt;/h1&gt;
+        // 2. 将虚拟DOM渲染到指定容器中
+        ReactDOM.render(
+            VDOM,
+            document.getElementById('app')
+        );
+    &lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+<h2 id="2-dom">2 虚拟 DOM</h2>
+<h3 id="21">2.1 两种创建方式</h3>
+<ol>
+<li>使用 JSX 创建（就和上面一样）</li>
+</ol>
+<pre><code class="language-jsx">    // 记得一定不要加引号捏
+    VDOM = (
+        &lt;h1 id=&quot;title&quot;&gt;
+            &lt;span&gt;Hello, world!&lt;/span&gt;
+        &lt;h1&gt;
+    )
+</code></pre>
+<ol>
+<li>使用 原生JS 创建</li>
+</ol>
+<pre><code class="language-js">// 不用引入 babel 了捏
+// React.createElement(标签名，属性，标签体内容)
+const VDOM = React.createElement('h1',{id:'title'}, 'hello world') 
+ReactDOM.render(
+    VDOM,
+    document.getElementById('app')
+);
+// JSX 下可以轻松实现的套娃 &lt;h1&gt;&lt;span&gt;&lt;/&gt;&lt;/&gt;, JS 下要套函数
+const VDOM = 
+    React.createElement('h1',{id:'title'}, 
+        React.createElement('span',{},'Hello World')
+    ) 
+</code></pre>
+<h3 id="22-vs-dom">2.2 vs 真实DOM</h3>
+<ul>
+<li>其实生成的 VDOM 只是一个普通的 Object 对象，比较轻量</li>
+<li>最终会被转变为真实DOM，并渲染到页面上</li>
+</ul>
+<h2 id="3-jsx">3 JSX</h2>
+<blockquote>
+<p>是 JS 的扩展语法，类似于 XML</p>
+</blockquote>
+<h3 id="_3">基础语法</h3>
+<ol>
+<li>定义虚拟DOM时，不要写引号</li>
+<li>可以使用<code>{}</code>包裹潜入的 JS 表达式，如 <code>&lt;h2 id={myId.toLowerCase()}&gt;</code></li>
+<li>指定样式得用 <code>className="sth"</code> -&gt; 用 <code>class</code> 会爆炸（和ES6冲突）</li>
+<li>内联样式需要使用以下格式
+    <code>jsx
+    const VDOM = (
+        // 多单词属性要用小驼峰
+        &lt;span style={{color: "white", fontSize:'20px'}}&gt;
+            hello, world!
+        &lt;/span&gt;
+    )</code></li>
+<li>只能有一个根标签（拿个 <code>div</code> 包一层）</li>
+<li>标签必须闭合（自闭合也可以）</li>
+<li>小写开头的标签被认为是 html 元素，无同名元素则报错；
+     大写开头被认为是 React Component，组件没定义整个寄掉</li>
+</ol>
+<h3 id="_4">列表渲染</h3>
+<pre><code class="language-jsx">const data = ['item1', 'item2', 'item2']
+const VDOM = (
+    &lt;div&gt;
+        &lt;ul&gt;
+        {
+            data.map( (item, idx) =&gt; {
+                return &lt;li key={idx}&gt;{item}&lt;/li&gt; // 单层括号，不是插值语法捏
+            })
+        }
+        &lt;/ul&gt;
+    &lt;/div&gt;
+)
+</code></pre>
+<h2 id="4-dom-diff">4 虚拟 DOM 与 Diff</h2>
+<ol>
+<li>React / Vue 中的 key 有什么作用？（key 的内部原理是什么）<ul>
+<li>Key 用于标识 虚拟DOM 对象，在 Update 时具有重要作用</li>
+<li>当 state 中的数据变化时，React 会根据新的数据生成「新的虚拟DOM」，随后与「旧虚拟DOM」进行 diff<ul>
+<li>在「旧虚拟DOM」中找到具有相同 key 值的结构<ul>
+<li>内容不变：复用真实DOM</li>
+<li>内容改变：生成新的真实DOM，并进行替换</li>
+</ul>
+</li>
+<li>未找到有相同 key 的结构
+    根据数据生成新的真实DOM，并渲染到页面</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为什么遍历列表时，key 最好不用 index？<ul>
+<li>若对数据进行：逆序添加、删除等破坏顺序的操作（一连串前后移位）
+    可能产生没有必要的真实DOM更新（$O(n)$)，导致低效率</li>
+<li>若结构中含有 input：可能产生错误的 DOM 更新</li>
+<li>如果渲染的列表仅用于展示，使用key时没有问题的
+    最好选择记录的主键作为 key（保证 UNIQUE）</li>
+</ul>
+</li>
+</ol>
+<h2 id="5">5 项目部署</h2>
+<ol>
+<li>打包捏
+     <code>npm run build</code> 生成 <code>build</code></li>
+<li>使用 Serve <code>npm i serve -g</code>（全局安装）<ol>
+<li>在主目录下执行 <code>serve</code> 命令（默认 port = 5000）
+     或者用 <code>serve 相对路径</code></li>
+<li>如果我们把生成的文件丢到 cur_path 下就是 <code>serve build</code> 啦</li>
+</ol>
+</li>
+</ol>
+<h2 id="6">6 其他</h2>
+<h3 id="61-setstate">6.1 setState 的两种写法</h3>
+<ol>
+<li>对象式 <code>setState(neoState, [callback])</code>
+     回调函数 <code>callback</code> 将在 <code>render()</code> 执行完毕后调用（类似于 <code>nextTick</code>）</li>
+<li>
+<p>函数式 <code>setState(updater, [callback])</code>
+    <code>updater</code> 可以接收 state &amp; props
+    <code>js
+    this.setState(
+        (state, props) =&gt; { // 其实差不多，对象式需要 this.state.name
+            return {count: state.count+1}
+        },
+        ()=&gt;{} // callback
+    )</code></p>
+</li>
+<li>
+<p>对象式的 setState 实际上是函数式的简写方式</p>
+</li>
+<li>newState 依赖原状态时 —— 函数式</li>
+<li>newState 不依赖原状态时 —— 对象式</li>
+</ol>
+<h3 id="62-lazyload">6.2 lazyLoad</h3>
+<blockquote>
+<p>针对路由组件</p>
+</blockquote>
+<pre><code class="language-jsx">// 动态加载路由组件（路由组件代码会被分开打包）
+const Login = lazy(() =&gt; import('@/pages/Login'));
+// 使用 &lt;Suspense&gt; 指定在加载完成前的 Loading 界面
+import {Suspense} from 'react'; // 包裹所有注册路由&lt;Route&gt;
+&lt;Suspense fallback={&lt;h1&gt;Loading&lt;/h1&gt;}&gt;
+    &lt;Switch&gt;
+        &lt;Router path=&quot;...&quot; component={Login}/&gt;
+        &lt;Redirect to=&quot;/home&quot;/&gt;
+    &lt;/Switch&gt;
+&lt;/Suspense&gt;
+</code></pre>
+<p>其实 suspense 显示的内容也可以是组件（但是不能再 lazy 了）</p>
+<pre><code class="language-jsx">import Loading from './loading';
+&lt;Suspense fallback={&lt;Loading/&gt;}/&gt;
+</code></pre>
+<h3 id="63-hook">6.3 Hook</h3>
+<blockquote>
+<p>使得函数式组件可以使用 state 及 其他React特性</p>
+</blockquote>
+<h4 id="usestate">useState</h4>
+<pre><code class="language-jsx">// 由于 rfc 没有 this，绑定 onClick={funcName} 即可
+// 定义回调使用 function funcName(params){} 即可
+export default function Demo {
+    // 分别是 [cur_val, set_val_method]
+    const [count, setCount] = React.useState(initVal)
+    // 可以使用 {count} 读取，使用 setCount(newVal/count+1) 重置
+    // setCount( val =&gt; new_val) new_val 可以基于旧值迭代
+}
+</code></pre>
+<h4 id="useeffect">useEffect</h4>
+<blockquote>
+<p>支持使用 LifeCycle</p>
+</blockquote>
+<pre><code class="language-jsx">export default function Demo {
+    // 不使用第二个参数时 = DidMount + DidUpdate（检测所有数据）
+    // 第二个参数为[] = DidMount （不检测任何数据）
+    // 第二个参数为[count] = DidMount + UpdateCount
+    // 也可以用,分隔多个检测对象
+    React.useEffect(()=&gt;{
+        let timer = setInterval(()=&gt;{
+            setCount(count =&gt; count+1)
+        }, 1000)
+        return () =&gt; { // 返回的函数相当于 WillUnmount
+            clearInterval(timer)
+        }
+    },[]) // 此时 = DidMount
+}
+</code></pre>
+<h4 id="useref">useRef</h4>
+<pre><code class="language-jsx">export default function Demo() {
+    const myRef = React.useRef()
+    render() {
+        return (
+            &lt;input ref={myRef}/&gt;
+        )
+    }
+    // 可以用 myRef.current.value 拿到当前的输入值
+}
+</code></pre>
+<h3 id="64-fragment">6.4 Fragment</h3>
+<blockquote>
+<p>充当 render 的「虚拟」根标签，类似于 Vue 中的 <code>&lt;template&gt;</code></p>
+</blockquote>
+<ul>
+<li>可以指定 key <code>&lt;Fragement key={1}&gt;</code></li>
+<li>其实也可以使用空标签<code>&lt;&gt;</code>，但不能指定 key</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2023 SeaBee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.efa0ade1.min.js"></script>
+      
+    
+  </body>
+</html>
