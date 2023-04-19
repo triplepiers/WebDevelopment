@@ -1,0 +1,40 @@
+img {
+    height: 100px;
+    object-fit: cover;
+    margin-left: 10px;
+}
+
+.app {
+    width: 100%;
+    height: fit-content;
+    color: #2e353b;
+    text-align: center;
+    font-weight: bold;
+}
+.app > h1 {
+    font-style: italic;
+    font-size: 80px;
+    background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right,#5EFCE8, #736EFE);
+}
+.app > p {
+    font-size: 26px;
+}
+.app > h2 {
+    color: #757e8f;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.marquee {
+    /* 从外部控制轮播图组件宽度 */
+    max-width: 70vw;
+    min-width: 700px;
+    margin: 0 auto;
+}
+
+.list {
+    max-width: 100%;
+    display: flex;
+}

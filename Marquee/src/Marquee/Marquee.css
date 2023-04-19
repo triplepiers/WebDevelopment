@@ -1,0 +1,49 @@
+.marquee {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+
+.marquee > .content {
+    white-space: nowrap; /* 禁用长文本换行 */
+    animation: marquee 5s linear infinite;
+}
+
+.pauseOnHover:hover > .content {
+    animation-play-state: paused;
+}
+
+.marquee.stop > .content {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    height: 100%;
+}
+
+.leftOverlay {
+    left: 0;
+}
+
+.rightOverlay {
+    right: 0;
+}
+
+/* 文本格式 */
+.textItem {
+    width: fit-content;
+    font-size: 40px;
+    font-weight: normal;
+    margin-left: 20px;
+}
