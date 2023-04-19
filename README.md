@@ -8,7 +8,7 @@
   
   - 鸣谢 [haixiangyan](https://github.com/haixiangyan)
   
-  - 因为水平有限，从原来的 TypeScript + SCSS 改成了 JSX + CSS
+  - 因为水平有限，从原来的 TypeScript + SASS 改成了 JSX + CSS
   
   - 基本原理：将原始内容复制一份，添加 `translateX(0) -> translateX(-100%)` 的效果。在播放结束时，瞬间重置布局。
   
