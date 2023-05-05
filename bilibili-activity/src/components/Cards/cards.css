@@ -1,0 +1,7 @@
+.cards img {
+    width: 100%;
+}
+.cards img.Card {
+    padding: 16px;
+    border-radius: 20px;
+}

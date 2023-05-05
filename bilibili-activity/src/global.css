@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    position: relative;
+    background-color: #e36c3f;
+    display: flex;
+    justify-content: center;
+}
+
+.app {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    padding-bottom: 56px;
+    box-shadow: 0 0 25px #ae5230b4;
+}
+
+a {
+    text-decoration: none;
+}
+
+.button-wrapper {
+    opacity: 0;
+    transition: .5s;
+    width: 100%;
+    max-width: 500px;
+    padding: 16px;
+    height: fit-content;
+    position: fixed;
+    bottom: 0;
+    background-image: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-wrapper.show {
+    opacity: 1;
+}
+
+.button-wrapper img {
+    width: 100px;
+}
+
+.button-wrapper .btn {
+    color: #fff;
+    background-color: #fb7299;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+/* 不可见时禁用按钮 */
+.button-wrapper a {
+    pointer-events: none;
+}
+
+.button-wrapper.show a {
+    pointer-events: initial;
+}
