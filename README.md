@@ -33,4 +33,22 @@
     |delay| 延迟开始时间 | ns |
     | pauseOnHover | 悬停时静止 | 输入任意内容开启|
 
+- bilibili-activity 是复刻叔叔家的活动页（显然原版应该是 Vue）
+
+  - 依然鸣谢 [haixiangyan](https://github.com/haixiangyan/bilibili-activity-page-demo)
+  
+  - 改动：
+  
+    1. 依然水平有限改成了 JS + CSS
+    2. 将原版的下移隐藏按钮改成了直接禁用超链接，防止误触
+    3. 稍微适配了一下 PC 端（限制了最大宽度）
+  
+  - 基本功能如下：
+  
+    1. 点击 Tab 垂直滚动跳转
+    2. 滚动时，高亮对应 Tab
+    3. Tab 吸顶、按钮吸底c
+    
+  - 收获：学到了新的 scroll 偏移技巧（硬算 offsetTop / 使用 `scroll-margin` 样式）
+
 - 其他是笔记站点的相关资源，可以[点这里进行查看](https://triplepiers.github.io/Learn-React/)
