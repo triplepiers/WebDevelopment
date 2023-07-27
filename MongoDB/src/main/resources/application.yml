@@ -1,0 +1,7 @@
+spring:
+  data: # 数据源配置
+    mongodb:
+      host: 127.0.0.1
+      database: articledb
+      port: 27017
+      # 也可以通过 uri 配置 mongodb://127.0.0.1:27017/articledb
