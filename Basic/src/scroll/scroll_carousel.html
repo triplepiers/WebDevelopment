@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>多图替换的滚动视差</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            min-height: 100vh;
+        }
+        .image {
+            width: 100%;
+            height: 680px;
+            background-position: center;
+            /* 重点在此 */
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            padding-bottom: 5%;
+            color: #bfa;
+            font-size: 50px;
+        }
+        .break {
+            width: 100%;
+            height: 70px;
+            background-color: aquamarine;
+            color: #000;
+            font-size: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+    <body>
+        <div class="image" style="background-image: url(../../img/turn1.jpg);">
+            <div class="word">随便的一些什么话</div>
+        </div>
+        <div class="break">
+            只是分割线
+        </div>
+        <div class="image" style="background-image: url(../../img/turn2.jpg);">
+            <div class="word">不太随便的什么话</div>
+        </div>
+        <div class="break">
+            真的没骗你
+        </div>
+        <div class="image" style="background-image: url(../../img/turn3.jpg);">
+            <div class="word">我真的没什么话好说</div>
+        </div>
+        <div class="break">
+            你看这就结束了
+        </div>
+        <div class="image" style="background-image: url(../../img/turn4.jpg);">
+            <div class="word">所以还是闭上嘴吧</div>
+        </div>
+    </body>
+</html>

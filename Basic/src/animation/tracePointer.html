@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尝试复刻一些鼠标跟踪</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        /* flex-direction: column; */
+        justify-content: center;
+        align-items: center;
+        /* gap: 20px; */
+        background-color: #222;
+    }
+    .content-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        background-color: #fff;
+        border: 1px solid red;
+    }
+    .circle {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        clip-path: border-box;
+        background-color: red;
+        /* background-color: #fff; */
+        /* background-color: transparent; */
+        overflow: hidden;
+    }
+    .circle .block {
+        top: -142px;
+        left: -142px;
+        position: absolute;
+        display: block;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-color: indianred;
+    }
+    .row {
+        display: flex;
+        gap: 20px;
+    }
+    /* 从左上方进入 */
+    @keyframes enterLT {
+        0% {
+            /* sqrt(R) */
+            left: -142px;
+            top: -142px;
+        }
+        100% {
+            left: 0px;
+            top: 0px;
+        }
+    }
+    @keyframes enterLB {
+        0% {
+            left: -142px;
+            top: 142px;
+        }
+        100% {
+            left: 0px;
+            top: 0px;
+        }
+    }
+    @keyframes enterRT {
+        0% {
+            left: 142px;
+            top: -142px;
+        }
+        100% {
+            left: 0px;
+            top: 0px;
+        }
+    }
+    @keyframes enterRB {
+        0% {
+            left: 142px;
+            top: 142px;
+        }
+        100% {
+            left: 0px;
+            top: 0px;
+        }
+    }
+    @keyframes outRB {
+        0% {
+            left: 0;
+            top: 0;
+        }
+        100% {
+            left: 142px;
+            top: 142px;
+        }
+    }
+    @keyframes outRT {
+        0% {
+            left: 0;
+            top: 0;
+        }
+        100% {
+            left: 142px;
+            top: -142px;
+        }
+    }
+    @keyframes outLB {
+        0% {
+            left: 0;
+            top: 0;
+        }
+        100% {
+            left: -142px;
+            top: 142px;
+        }
+    }
+    @keyframes outLT {
+        0% {
+            left: 0;
+            top: 0;
+        }
+        100% {
+            left: -142px;
+            top: -142px;
+        }
+    }
+</style>
+<body>
+    <div class="content-wrap">
+        <div class="row">
+            <div class="circle" id="0"><div class="block"></div></div>
+            <div class="circle" id="1"><div class="block"></div></div>
+            <div class="circle" id="2"><div class="block"></div></div>
+        </div>
+        <div class="row">
+            <div class="circle" id="3"><div class="block"></div></div>
+            <div class="circle" id="4"><div class="block"></div></div>
+            <div class="circle" id="5"><div class="block"></div></div>
+        </div>
+        <div class="row">
+            <div class="circle" id="6"><div class="block"></div></div>
+            <div class="circle" id="7"><div class="block"></div></div>
+            <div class="circle" id="8"><div class="block"></div></div>
+        </div>
+    </div>
+    <script>
+        // const circles = document.querySelectorAll('.circle');
+        // const blocks = document.querySelectorAll('.circle .block');
+        // const animation = ' .5s ease-out forwards';
+
+        // // 计算圆的中心点坐标
+        // const centers = [];
+        // const calcCtr = function calcCenters() {
+        //     circles.forEach(c => {
+        //         centers.push({
+        //             x: c.offsetLeft + 100,
+        //             y: c.offsetTop + 100
+        //         })
+        //     })
+        //     // console.log(centers)
+        // }
+        // calcCtr();
+        // window.onresize = calcCtr;
+
+        // // 计算鼠标方向
+        // // type：0 移入，1 移出
+        // function judgeDirect(e, type) {
+        //     const idx = e.target.id;
+        //     const pos = centers[idx];
+        //     const diffX = pos.x - e.clientX;
+        //     const diffY = pos.y - e.clientY;
+
+        //     // console.log(diffX + ', ' + diffY);
+        //     switch (type) {
+        //         case 0 : 
+        //             if(diffX > 0) { // 左侧进入
+        //                 if(diffY > 0) { // 上侧进入
+        //                     // console.log('left top')
+        //                     blocks[idx].style.animation = 'enterLT' + animation;
+        //                 } else {
+        //                     // console.log('left bottom')
+        //                     blocks[idx].style.animation = 'enterLB' + animation;
+        //                 }
+        //             } else {
+        //                 if(diffY > 0) { // 上侧进入
+        //                     // console.log('right top')
+        //                     blocks[idx].style.animation = 'enterRT' + animation;
+        //                 } else {
+        //                     // console.log('right bottom')
+        //                     blocks[idx].style.animation = 'enterRB' + animation;
+        //                 }
+        //             }
+        //             break;
+        //         case 1: {
+        //             if(diffX > 0) { // 左侧进入
+        //                 if(diffY > 0) { // 上侧进入
+        //                     // console.log('left top')
+        //                     blocks[idx].style.animation = 'outLT' + animation;
+        //                 } else {
+        //                     // console.log('left bottom')
+        //                     blocks[idx].style.animation = 'outLB' + animation;
+        //                 }
+        //             } else {
+        //                 if(diffY > 0) { // 上侧进入
+        //                     // console.log('right top')
+        //                     blocks[idx].style.animation = 'outRT' + animation;
+        //                 } else {
+        //                     // console.log('right bottom')
+        //                     blocks[idx].style.animation = 'outRB' + animation;
+        //                 }
+        //             }
+        //             break;
+        //         }
+        //     }
+        //     // console.log(pos.x + ', ' + pos.y);
+        //     // console.log(e.clientX);
+        //     // console.log(e.clientY);
+        // }
+
+        // // 监听移入事件
+        // circles.forEach(c => {
+        //     c.onmouseenter = function(e) {
+        //         const idx = e.target.id;
+        //         judgeDirect(e, 0);
+        //     }
+        //     c.onmouseleave = function(e) {
+        //         const idx = e.target.id;
+        //         judgeDirect(e, 1);
+        //         // blocks[idx].style.animation = 'outRB .5s ease-out forwards';
+        //     }
+        // })
+    </script>
+</body>
+</html>

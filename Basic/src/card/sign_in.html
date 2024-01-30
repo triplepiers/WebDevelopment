@@ -1,0 +1,194 @@
+<!-- 大概思路就是拿一个块在转转转，然后再拿一个实心的块改掉多余的部分 -->
+<!DOCTYPE html>
+<html>
+<haed>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900'); 
+
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display:  flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #23242a;
+        }
+        
+        .box {
+            position: relative;
+            width: 380px;
+            height: 420px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .box::before { /*创建出一个和整个卡片等大的元素？*/
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 380px;
+            height: 420px;
+            background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
+        }
+
+        .box::after { /*创建出一个和整个卡片等大的元素？*/
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 380px;
+            height: 420px;
+            background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+            transform-origin: bottom right;
+            animation: animate 6s linear infinite;
+            animation-delay: -3s; /*很妙，我以为他把另一个中心对称了，没想到是直接delay*/
+        }
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .form {
+            position: absolute;
+            inset: 2px; /*似乎是margin的简写*/
+            border-radius: 8px;
+            background-color: #28292d;
+            z-index: 10;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column; /*规定弹性盒为纵向布局*/
+        }
+        /* 下面是表单项的样式 */
+        .form h2{
+            color: #45f3ff;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+        /* 艹，这里把clas拼错了 */
+        .inputBox {
+            position: relative;
+            width: 300px;
+            margin-top: 35px;
+        }
+
+        .inputBox input {
+            position: relative;
+            width: 100%;
+            padding: 20px 10px 10px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #23242a;
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            z-index: 10;  /*防止被i盖掉*/
+        }
+
+        .inputBox span {
+            position: absolute;
+            left: 0;
+            padding:20px 0px 10px;
+            font-size: 1em;
+            color: #8f8f8f;
+            pointer-events: none;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+        }
+        /* 这里把当前选中的 & 已经填写的都点亮 - 顺便做了一个缩到左上角的动画 */
+        .inputBox input:valid ~ span,
+        .inputBox input:focus ~ span {
+            color: #45f3ff;
+            transform: translateX(0px) translateY(-34px); /*甚至考虑了输入后的box和提示对齐*/
+            font-size: 0.75em;
+        }
+        /* 是下划线！ - 原来不是直接在input上设置的么 */
+        .inputBox i {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #45f3ff;
+            border-radius: 4px;
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .inputBox input:valid ~ i,
+        .inputBox input:focus ~ i {
+            height: 44px;
+        } 
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .links a {
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 0.75em;
+            color: #8f8f8f;
+        }
+
+        .links a:nth-child(2),
+        .links a:hover {
+            color: #45f3ff;
+        }
+        /* 下面是button的样式 */
+        input[type="submit"] {
+            border: none;
+            outline: none;
+            background-color: #45f3ff;
+            padding: 11px 25px;
+            width: 160px;
+            margin-left: 70px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-weight:  600;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:active {
+            opacity: 0.8; /*变暗*/
+        }
+    </style>    
+</haed>
+<body>
+    <!-- box 就是快乐荧光转转块 -->
+    <div class="box">
+        <div class="form">
+            <h2>Sign In</h2>
+            <div class="inputBox">
+                <input type="text" required="required">
+                <span>Username</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="password" required="required">
+                <span>Password</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a href="#">Forget Password</a>
+                <a href="#">Sign Up</a>
+            </div>
+            <input type="submit" value="login">
+        </div>
+    </div>
+</body>
+</html>

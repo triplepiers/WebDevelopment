@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>纯CSS顶部进度条</title>
+        <!-- 顺手实现了一个歌词展示页 -->
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            min-height: 100vh;
+            width: 100%;
+        }
+        .main {
+            width: 100%;
+            height: 200vh;
+        }
+        /* 用一个斜切三角表示 */
+        .main .nav {
+            width: 100vw;
+            /* 用一半的高度充当滚动条 - 刚好100% */
+            height: calc(50% + 4px);
+            background-color: aqua;
+            background-image: linear-gradient(to right top, rgb(5, 79, 191) 50%, rgb(113, 163, 238) 50%);
+        }
+        /* 用 after 进行遮挡 */
+        .main .nav::after {
+            z-index: 2;
+            content: '';
+            width: 100%;
+            height: calc(100% - 4px);
+            position: fixed;
+            bottom: 0;
+            background-color: rgb(113, 163, 238);
+        }
+        /* 内容 */
+        .main .content {
+            width: 100%;
+            padding: 25px 10vw;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            position: absolute;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            color: rgb(5, 79, 191);
+        }
+        .main .content .sentence {
+           width: 100%;
+
+           display: flex;
+           gap: 5px;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+        }
+        /* 语言选择 */
+        .main .lan {
+            z-index: 999;
+            width: 45px;
+            height: 20px;
+            border-radius: 10px;
+            border: 2px solid rgb(5, 79, 191);
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px;
+            top: 8px;
+            right: 8px;
+        }
+        .main .lan div {
+            color: rgb(5, 79, 191);
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* 滑块 */
+        .main .lan::after {
+            position: absolute;
+            z-index: -1;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            content: '';
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background-color: #fff;
+            transition: .5s;
+        }
+        .main .lan.active::after {
+            left: 2.5px;
+        }
+        .main .lan.active ~ .content .sentence p:nth-child(2) {
+            display: none;
+        }
+    </style>
+    <body>
+        <div class="main">
+            <div class="nav"></div>
+            <div class="lan">
+                <div class="ch">C</div>
+                <div class="bi">B</div>
+            </div>
+            <div class="content">
+                <h1>this is title</h1>
+                <div class="sentence">
+                    <p>カラスが増えたから殺します</p>
+                    <p>乌鸦越来越多就要捕杀</p>
+                </div>
+                <div class="sentence">
+                    <p>さらに猿が増えたから減らします</p>
+                    <p>猴子越来越多就要控制一下</p>
+                </div>
+                <div class="sentence">
+                    <p>でもパンダは減ったから増やします</p>
+                    <p>熊猫越来越少却要让数量增加</p>
+                </div>
+                <div class="sentence">
+                    <p>けど人類は増えても増やします</p>
+                    <p>人类越来越多却还要继续增加</p>
+                </div>
+                <div class="sentence">
+                    <p>僕らはいつでも神様に</p>
+                    <p>不管我们再怎么</p>
+                </div>
+                <div class="sentence">
+                    <p>願って拝んでてもいつしか</p>
+                    <p>求神拜佛 有什么时候</p>
+                </div>
+                <div class="sentence">
+                    <p>そうさ僕ら人類が神様</p>
+                    <p>我们人类真有谁见过神佛</p>
+                </div>
+                <div class="sentence">
+                    <p>に気付いたらなってたの何様なのさ</p>
+                    <p>或者有谁真成了神佛 又是长成啥样的神佛</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const lan = document.querySelector('.lan');
+        lan.onclick = function() {
+            if(lan.classList.contains('active')) {
+                lan.classList.remove('active');
+            } else {
+                lan.classList.add('active');
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>页面颜色一键反转</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <!-- 字体图标库 -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            /* 搜索框 & 搜索按钮 */
+            .ipt-box {
+                width: 650px;
+                display: flex;
+                margin-bottom: 200px;
+            }
+            .ipt-box input {
+                flex: 1; /* 自动撑满父元素剩下的空间 */
+                border: 2px solid #c4c7ce;
+                border-radius: 10px 0 0 10px;
+                border-right: none;
+            }
+            .ipt-box button {
+                width: 108px;
+                height: 44px;
+                background-color: #4e6ef2;
+                color: #fff;
+                border: none;
+                border-radius: 0 10px 10px 0;
+                font-size: 17px;
+            }
+            /* 切换按钮 */
+            .switch {
+                border: 1px solid #c4c7ce;
+                width: 40px;
+                height: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 4px;
+                border-radius: 10px;
+                cursor: pointer;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+            }
+            /* 亮色模式遮罩 */
+            .switch::before {
+                content: '';
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background-color: #4e6ef2;
+                position: absolute;
+                left: 2px;
+                transition: .2s ease-out;
+            }
+            /* 暗色模式遮罩 */
+            .switch.dark::before {
+                left: 20px;
+            }
+            .switch .fa {
+                font-size: 10px;
+                color: #aaa;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ipt-box">
+            <input type="text">
+            <button>Search</button>
+        </div>
+        <div class="switch">
+            <i class="fa fa-sun-o"></i>
+            <i class="fa fa-moon-o"></i>
+        </div>
+    </body>
+    <script>
+        const btn = document.querySelector('.switch');
+        btn.addEventListener('click', () => {
+            // 妙蛙，直接通过queryselector结果来确定当前模式
+            let is_dark = document.querySelector('.switch.dark');
+            if (!is_dark) {
+                btn.classList.add('dark');
+                let alter = document.createElement('style');
+                alter.id = "reverse";
+                // 主要通过revert这个滤镜来实现（不太妙）
+                alter.innerHTML = 'html{background-color:#fff; filter:invert(1);}';
+                // 对于保留原色的元素，可以在后面再加一个 xx{filter:invert(1);}
+                document.head.appendChild(alter);
+            } else {
+                btn.classList.remove('dark');
+                document.head.querySelector("#reverse").remove();
+            }
+        })
+    </script>
+</html>

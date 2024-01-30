@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover 水波纹特效按钮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        a, a:active {
+            text-decoration: none;
+            color: blue;
+        }
+        a.button {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            padding: .7em 1.5em;
+            border: .15em solid blue;
+            border-radius: 2em;
+
+            font-size: 2em;
+            font-weight: 600;
+
+            transition: 4s;
+        }
+        /* 用 before / after 实现波纹 */
+        .button::before, .button::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -1.5em;
+            z-index: -1;
+            width: 200%;
+            /* 测试 viewport 的宽高比 - 好像没必要？ */
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 40%;
+            background-color: rgba(0,0,255,.25);
+            transition: 4s;
+        }
+        .button::before {
+            left: -80%;
+            transform: translate3d(0, 5em, 0) rotate(-340deg);
+        }
+        .button::after {
+            right: -80%;
+            transform: translate3d(0, 5em, 0) rotate(390deg);
+        }
+        /* 动效 */
+        .button:hover, .button:focus {
+            color: white;
+        }
+        .button:hover::before, .button:focus::before,
+        .button:hover::after, .button:focus::after {
+            transform: none;
+            background-color: rgba(0,0,255,.75);
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="button">Click Here!</a>
+</body>
+</html>

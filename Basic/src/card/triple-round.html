@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>具有倒置边框的三级信息卡</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins';
+    }
+    :root {
+        --clr: #083d41;
+    }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: var(--clr);
+    }
+    .card {
+        position: relative;
+        width: 320px;
+        height: 430px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card > .box {
+        position: relative;
+        width: 110%;
+        height: 200px;
+        border-radius: 15px;
+    }
+    .card > .box:nth-child(2){
+        background-color: #fff;
+        height: 220px;
+        width: 100%;
+    }
+    /* 圆形卡片布局 */
+    .card .circle {
+        position: absolute;
+        /* 垂直居中 */
+        top: 50%;
+        transform: translateY(-50%);
+        left: -70px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        /* 使用 border 遮盖 - 假镂空 */
+        border: 10px solid var(--clr);
+    }
+    /* 使用 before-after 的 shadow 遮盖产生圆角 */
+    .box:nth-child(1)::before,
+    .box:nth-child(1)::after {
+        position: absolute;
+        z-index: 10;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-bottom-left-radius: 20px;
+        box-shadow: -6px 6px var(--clr);
+    }
+    .box:nth-child(1)::before {
+        top: 106px;
+        left: -1px;
+    }
+    .box:nth-child(1)::after {
+        bottom: -1px;
+        left: 105px;
+    }
+    .box:nth-child(2)::before,
+    .box:nth-child(2)::after {
+        position: absolute;
+        z-index: 10;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-top-left-radius: 20px;
+        box-shadow: -6px -6px var(--clr);
+    }
+    .box:nth-child(2)::before {
+        bottom: 106px;
+        left: -1px;
+    }
+    .box:nth-child(2)::after {
+        top: -1px;
+        left: 109px;
+    }
+    /* 媒体适应处理 */
+    .imgBox {
+        width: 100%;
+        height: 100%;
+    }
+    .box video {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        object-fit: cover;
+    }
+    .card .imgBox img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    /* 个人信息布局 */
+    .content {
+        position: absolute;
+        inset: 0;
+        padding: 30px 10px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .content h2 {
+        width: 100%;
+        padding-left: 120px;
+        text-transform: uppercase;
+        font-size: 1.15em;
+        letter-spacing: .1em;
+        font-weight: 600;
+        line-height: 1.1em;
+        color: #333;
+    }
+    .content h2 span {
+        font-size: .75em;
+        letter-spacing: 0.05em;
+        font-weight: 400;
+        color: #e91e63;
+        text-transform: initial;
+    }
+    .content ul {
+        position: relative;
+        top: 15px;
+        width: 100%;
+        padding: 0 10px;
+        /* 网格布局阿巴阿巴 */
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: space-evenly;
+    }
+    .content ul li {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 0 10px;
+        font-size: .85em;
+        font-weight: 500;
+        color: #999;
+    }
+    .content ul li span {
+        font-size: 1.65em;
+        color: #333;
+    }
+    /* 添加下分割线 */
+    .content ul li:not(:last-child) {
+        border-right: 1px solid #ccc;
+    }
+    /* 按钮 */
+    .content .btn {
+        position: relative;
+        top: 25px;
+        padding: 8px 30px;
+        background-color: #03a9f4;
+        border-radius: 30px;
+        color: #fff;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 1em;
+        letter-spacing: .2em;
+        font-weight: 500;
+        /* 假镂空 */
+        border: 5px solid var(--clr);
+        /* 外包边 */
+        box-shadow: 0 0 0 10px #fff;
+        transition: .5s;
+    }
+    .content .btn:hover {
+        letter-spacing: .5em;
+        background-color: #ff3d7f;
+    }
+    /* 遮盖形成圆润的下边角 */
+    .content .btn::before,
+    .content .btn::after {
+        position: absolute;
+        top: 22px;
+        content: '';
+        width: 20px;
+        height: 20px;
+    }
+    .content .btn::before {
+        left: -29px;
+        border-top-right-radius: 20px;
+        box-shadow: 5px -7px #fff;
+    }
+    .content .btn::after {
+        right: -29px;
+        border-top-left-radius: 20px;
+        box-shadow: -5px -7px #fff;
+    }   
+</style>
+<body>
+    <div class="card">
+        <div class="box">
+            <div class="imgBox">
+                <video autoplay loop src="https://media-cdn-zspms.kurogame.com/pnswebsite/website2.0/video/1686067200000/kfivgzz9ozeov398xj-1686125229572.mp4"></video>
+            </div>
+        </div>
+        <div class="box">
+            <div class="content">
+                <h2>
+                    Sea Bee<br>
+                    <span>Software Engineering</span>
+                </h2>
+                <ul>
+                    <li>Posts<span>62</span></li>
+                    <li>Followers<span>128</span></li>
+                    <li>Following<span>35</span></li>
+                </ul>
+                <div class="btn">Follow</div>
+            </div>
+        </div>
+        <div class="circle">
+            <div class="imgBox">
+                <img src="../../img/me.jpg" alt="">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

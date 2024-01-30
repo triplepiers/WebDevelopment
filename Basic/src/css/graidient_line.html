@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- 是渐变光条哇 -->
+<html>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+        .loader {
+            position: relative;
+            width: 500px;
+            height: 10px;
+            background-color: white;
+            /* 倒影？好像不太支持 */
+            --webkit-box-reflect: below 1px liner-gradient(transparent, rgba(0,0,0,.5));
+        }
+        .loader::before {
+            /* 刚好和原来的元素一样大 */
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(90deg,
+            #fb0099,
+            #0000ff,
+            #0f0,
+            #ff0,
+            #fb0099,
+            #0000ff,
+            #0f0,
+            #ff0,
+            #fb0099);
+            /* 还是熟悉的操作：把背景放大五倍，然后横向挪动（收尾颜色相同避免穿帮） */
+            background-size: 500%;
+            animation: mov 20s linear infinite;
+        }
+        /* 用来添加滤镜 */
+        .loader::after {
+            /* 刚好和原来的元素一样大 */
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(90deg,
+            #fb0099,
+            #0000ff,
+            #0f0,
+            #ff0,
+            #fb0099,
+            #0000ff,
+            #0f0,
+            #ff0,
+            #fb0099);
+            filter: blur(20px);
+            /* 还是熟悉的操作：把背景放大五倍，然后横向挪动（收尾颜色相同避免穿帮） */
+            background-size: 500%;
+            animation: mov 20s linear infinite;
+        }
+        @keyframes mov {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 500% 0;
+            }
+        }
+    </style>
+    <body>
+        <div class="loader"></div>
+    </body>
+</html>

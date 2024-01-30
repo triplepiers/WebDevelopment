@@ -1,0 +1,223 @@
+<!-- 滚动时改变 header 的 CSS 样式 -->
+<!-- 顺便糅了一个光标跟踪 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    header {
+        position: relative;
+        cursor: none;
+        overflow: hidden;
+        --bg: #000;
+        --logo: #fff;
+        --nav: wheat;
+        padding: 0 5%;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: var(--bg);
+        color: var(--logo);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 1s;
+    }
+    header.sticking {
+        --bg: #fff;
+        --logo: wheat;
+        --nav: #000;
+    }
+    header .item-wrap {
+        display: flex;
+        gap: 20px;
+    }
+    header .item-wrap a {
+        display: inline-block;
+        color: var(--nav);
+    }
+
+    p {
+        padding: 50px 5%;
+        background-color: black;
+        color: white;
+        width: 100%;
+        min-height: 120vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #cursor {
+        flex-shrink: -1;
+        flex: -1;
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #fff;
+        mix-blend-mode: difference;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<body>
+    <header class="main-header">
+        <div class="logo">LOGO</div>
+        <div class="item-wrap">
+            <a href="#">Home</a>
+            <a href="#">Blog</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <div id="cursor"></div>
+        </div>
+    </header>
+    <p>
+        Signalis (stylized as SIGNALIS) is a survival horror video game developed by rose-engine and published by Humble
+        Games and Playism. The game was released for Windows PC, Nintendo Switch, PlayStation 4 and Xbox One on October
+        27, 2022. It received generally positive reviews upon release.
+
+        Gameplay
+        The core gameplay consists of third-person shooter elements from a top-down 2.5D perspective, with occasional
+        puzzle elements. Puzzles vary from manipulating switches and dials, to searching for certain frequencies to
+        broadcast in Elster's radio implant.[1]
+
+        Difficulty and thematic elements are enhanced through the use of resource management as a gameplay and narrative
+        mechanic. Elster is limited to six items on her person, including weapons, ammunition and key items for use in
+        puzzle-solving and unlocking doors. In the fashion of Resident Evil, another survival horror series, there are
+        safe rooms that allow the player to save progress and store their items for future use.[2][3]
+
+        Synopsis
+        Setting
+        Signalis takes place during an era with space travel and advanced technology, in an unidentified planetary
+        system that is governed by the totalitarian Nation of Eusan, which remains at war with a larger Empire from
+        which it broke away. The political and economic center of the Nation of Eusan is the Heimat colony, but it
+        maintains outposts on other nearby worlds. Eusan employs Replikas, androids made with copied human neural
+        imprints, as the bulk of its military and labor force. A consequence of using neural imprints is that Replikas
+        inherit various idiosyncrasies from them, such as a compulsive desire to listen to music or bathe, and failure
+        to indulge these idiosyncrasies can cause a Replika to destabilize and cease functioning. Natural-born human
+        commanders called Gestalts manage and give direction to Replikas.
+
+        Plot
+        A scout shuttle known as the Penrose-512 crashes on an unknown planet. A Replika unit known as Elster (LSTR)
+        awakens and searches for her missing Gestalt partner, Ariane. She eventually leaves the ship and crosses a
+        rectangular arch, finding herself in front of a hole with a staircase leading down to its bottom. After she
+        descends and crawls into a tight tunnel leading into a room, the hole closes behind her. As she picks up The
+        King in Yellow, the radio turns on and a message from the "Three note oddity" numbers station is read out, while
+        "Great holes secretly are digged where Earth’s pores ought to suffice, and things have learnt to walk that ought
+        to crawl." from H.P. Lovecraft's The Festival flashes on the screen. The broadcast ends with visions of Ariane
+        asking Elster to "Remember our promise" and "wake up".
+
+        Elster then finds herself in the Sierpinski-23 mining facility, located on the planet Leng with a photograph of
+        a woman resembling Ariane named Alina Seo. She quickly discovers that most of the Gestalt staff are dead and the
+        Replika workforce has gone rogue, having turned into mindless beings that attack her on sight. Elster explores
+        the facility, gathering supplies and looking for clues about what happened and Alina's location. She opens a box
+        belonging to Alina and encounters a "red plate that is warm to the touch", before being transported to Ariane's
+        mother's radio station and receiving a transmitter module. She then encounters the facility's Replika
+        administrator, Adler. After a brief interaction, he pushes her down an elevator shaft after telling her "You
+        shouldn't have returned.". Elster lands on dozens of bodies from other LSTR units, surviving the fall.
+
+        Continuing her search, she finds Adler's diary, discovering he recollects memories he never lived - which he
+        believes originated from other realities. Elster delves deeper into the mines below the facility, finding the
+        lowest levels to consist of a gigantic mass of flesh before entering through a rectangular arch identical to the
+        one at the start of the game. Adler despairs about the fate of Falke, the commander of the facility, who changed
+        when she returned from beyond the arch, never explaining what she saw. Elster crosses the threshold and finds
+        the Penrose, but tears her own arm off attempting to open the airlock and subsequently passes out, with other
+        LSTR bodies being seen.
+
+        While unconscious, Elster dreams of Ariane, portraying a happy memory between the two in which they end up
+        dancing after embracing each other. Afterwards, Ariane is portrayed standing above Elster, asking her if she
+        remembers their promise. Elster regains consciousness and manages to reenter the Penrose, scavenging parts from
+        another dead LSTR unit to repair herself. She then jumps down a hole that has appeared in the ship, finding
+        herself back in Sierpinski-23, though the environment has become inundated with masses of flesh. Making her way
+        through the facility again, Elster drops down another hole and finds herself on the colonized moon of Rotfront.
+        There, she learns that Ariane was relentlessly bullied by her classmates, signing up for the Penrose program to
+        escape her torment. Elster continues on as the environment becomes more surreal, finally encountering Falke.
+        Various collected notes reveal that Falke inherited Elster's memories and now has a crisis of identity, leading
+        her to attack.
+
+        Elster defeats Falke, as flashbacks of both Elster's and Falke's memories are shown. Elster then returns to the
+        threshold where Adler waits for her, warning Elster that no matter what she does, once she crosses the
+        threshold, time will loop again and reality will fall apart with it shattering at any time. Elster continues
+        regardless and a scuffle ensues, with both Replikas being mortally wounded — Adler being shot and Elster stabbed
+        in the eye. Elster continues on, returning to the wreckage of the Penrose, where it is revealed that if the
+        scout pilots failed to find a habitable planet, they were not expected to return home. Eventually, the radiation
+        shielding of the ship starts to malfunction and Ariane starts to show symptoms of radiation poisoning. Despite
+        promising to mercy kill Ariane to end her suffering, Elster instead sealed her in the ship's cryogenic pod to
+        keep her alive as long as possible.
+
+        Depending on the player's actions throughout the game, four endings are possible:
+
+        To acquire the "Leave" ending, the player must be conservative with ammunition, heal frequently, and spend a
+        long time exploring. In this ending, Elster cannot work up the courage to see Ariane again and carry out their
+        promise, instead leaving the ship to succumb to her wounds in the wasteland outside.
+        To get the "Memory" ending, the player must utilize a balanced playstyle. Elster awakens Ariane, but she doesn't
+        remember who Elster is nor their promise. Elster cannot follow through and stays by Ariane's side until she
+        succumbs to her wounds.
+        The "Promise" ending requires the player to play aggressively, killing numerous enemies, dealing a significant
+        amount of damage, and spending a long time in-game. Elster awakens Ariane, who remembers her and asks her to
+        keep their promise. Elster reluctantly follows through, killing Ariane before succumbing to her own wounds.
+        In the secret "Artifact" ending, after acquiring three hidden keys throughout the game (only on a second
+        playthrough) that unlocks Ariane's safe which yields a vase of white lilies, Elster performs an esoteric ritual
+        that results in her apparent death. A memory of her and Ariane dancing can then be seen inside the wreckage of
+        the Penrose-512.
+        It is to be noted that a significant part of the plot is left up to the player's interpretation; while some
+        theories are more accepted than others, there is no single consensus about the story.
+
+        Development
+        The game was developed by the two person German studio rose-engine, with development beginning in 2014.[3][4]
+        Additional help was brought on through external composers.[1] The game was released across multiple platforms on
+        October 27, 2022.[5] Publishing was handled by Humble Games and Playism.[4]
+
+        Aesthetically, the game pulls inspiration from the graphics of the fifth generation of video game consoles,
+        particularly from the original PlayStation game console. The game includes a CRT mode to further mimic the
+        effect.[5][6] Additional aesthetic influence comes from more traditional artwork, incorporating The Shore of
+        Oblivion by Eugen Bracht as well as Arnold Böcklin's Isle of the Dead into the game.[7] Literary influences
+        include The Festival by H. P. Lovecraft and The King in Yellow by Robert W. Chambers.[1][5] Filmic works by
+        Stanley Kubrick, Hideaki Anno and David Lynch helped shape the narrative's themes of identity and memory in the
+        game.[8]
+
+        During the title screen of the game, the Number station "Three Note Oddity" can be heard.
+    </p>
+    <script>
+        // 主要还是监听滚动
+        const header = document.querySelector(".main-header")
+
+        // 这个元素将被插入至 header 之前
+        const scrollWatcher = document.createElement('div')
+        scrollWatcher.setAttribute('data-scroll-watcher', '')
+        header.before(scrollWatcher)
+
+        // 目的：偏移时添加 sticking
+        const navObserver = new IntersectionObserver(
+            (entries) => { // toggle 的作用是：不存在就添加，存在就删除
+                header.classList.toggle('sticking', !entries[0].isIntersecting)
+            }, {
+                // 不指定参数则判断与视口顶部相交，此时判断与下移 50px
+                rootMargin: "50px 0px 0px 0px"
+            }
+        )
+        navObserver.observe(scrollWatcher) // 当 scrollWatcher 碰到视口顶部时，将触发构造函数中制定的 callback
+    </script>
+    <script>
+        const cursor = document.getElementById("cursor")
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px'
+            cursor.style.top  = e.clientY + 'px'
+        })
+    </script>
+</body>
+
+</html>

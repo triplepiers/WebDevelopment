@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>妙妙滴九宫格菜单</title>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #161a23;
+        }
+        .main {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 170px;
+            height: 170px;
+        }
+        .main .nav {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .5s;
+        }
+        /* 这个就是icons·缩略态 */
+        .nav span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background-color: #fff;
+            transform: translate(calc(14px * var(--x)), calc(14px * var(--y)));
+            transition: transform .5s, width .5s, height .5s, background .5s;
+            transition-delay:  calc(0.1s * var(--i));
+        }
+        /* 中间块，用于关闭 */
+        .close {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background-color: #fff;
+            transition: .5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* 展开状态 */
+        .nav.active span{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            background-color: #1f2536;
+            transform: translate(calc(60px * var(--x)), calc(60px * var(--y)));
+        }
+        .nav span ion-icon {
+            transition: .5s;
+            font-size: 0em;
+            color: #fff;
+        }
+        .nav.active span ion-icon {
+            font-size: 1.35em;
+        }
+        .nav.nav.active span:hover ion-icon {
+            color: #2dfc52;
+            /* 新的霓虹灯效果！ */
+            filter: drop-shadow(0 0 2px #2dfc52)
+            drop-shadow(0 0 5px #2dfc52)
+            drop-shadow(0 0 15px #2dfc52);
+        }
+        .nav.active ~ .close {
+            width: 40px;
+            height: 40px;
+            pointer-events: initial;
+            transition-delay: .8s;
+            background-color: #2dfc52;
+        }
+        .nav ~ .close ion-icon {
+            font-size: 2em;
+            scale: 0; 
+            color: #10131c;
+            transition: .5s;
+        }
+        .nav.active ~ .close ion-icon {
+            /* 缩放 */
+            scale: 1; 
+            transition-delay: 1s;
+        }
+    </style>
+    <body>
+        <div class="main">
+            <div class="nav">
+                <span style="--i:0;--x:-1;--y:0;">
+                    <ion-icon name="camera-outline"></ion-icon>
+                </span>
+                <span style="--i:1;--x:1;--y:0;">
+                    <ion-icon name="diamond-outline"></ion-icon>
+                </span>
+                <span style="--i:2;--x:0;--y:-1;">
+                    <ion-icon name="chatbubble-outline"></ion-icon>
+                </span>
+                <span style="--i:3;--x:0;--y:1;">
+                    <ion-icon name="alarm-outline"></ion-icon>
+                </span>
+                <span style="--i:4;--x:-1;--y:1;">
+                    <ion-icon name="game-controller-outline"></ion-icon>
+                </span>
+                <span style="--i:5;--x:-1;--y:-1;">
+                    <ion-icon name="moon-outline"></ion-icon>
+                </span>
+                <span style="--i:6;--x:1;--y:-1;">
+                    <ion-icon name="water-outline"></ion-icon>
+                </span>
+                <span style="--i:7;--x:1;--y:1;">
+                    <ion-icon name="time-outline"></ion-icon>
+                </span>
+            </div>
+            <div class="close">
+                <ion-icon name="close-outline"></ion-icon>
+            </div>
+        </div>
+    </body>
+    <script>
+        const nav = document.querySelector('.nav');
+        const close = document.querySelector('.close');
+        nav.onclick = () => {
+            nav.classList.add('active');
+        }
+        close.onclick = () => {
+            nav.classList.remove('active');
+        }
+    </script>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED风格时钟</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vew;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+    }
+    .box {
+        --clr: #1e1e22;
+        --clr-active: #ff0000;
+        --thickness: 1.5vmin;
+        --length: 4.5vmin;
+        --gap: .1vmin;
+        display: flex;
+        gap: calc(var(--thickness) * 1.5);
+        background-color: #060606;
+        border: calc(var(--thickness) * 1.5) solid #363636;
+        border-radius: calc(var(--thickness) * 3);
+        padding: calc(var(--thickness) * 2);
+        box-shadow: 0 6vmin 20vmin rgba(0,0,0,.6);
+    }
+    .box .colon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: calc(var(--thickness) * 2.5);
+    }
+    .box .colon::before,
+    .box .colon::after {
+        content: "";
+        display: block;
+        width: var(--thickness);
+        height: var(--thickness);
+        border-radius: 50%;
+        background-color: var(--clr-active);
+        /* 荧光效果 */
+        filter: drop-shadow(0 0 1vmin var(--clr-active));
+    }
+    /* 居然用 grid 布局做 */
+    .box .number {
+        display: grid;
+        gap: var(--gap);
+        grid-template:
+        ".... r1c2 ...." var(--thickness)
+        "r2c1 .... r2c3"    var(--length)
+        ".... r3c2 ...." var(--thickness)
+        "r4c1 .... r4c3"    var(--length)
+        ".... r5c2 ...." var(--thickness) /
+        var(--thickness) var(--length) var(--thickness);
+    }
+    .box .number span {
+        grid-area: var(--ga-name);
+        background-color: var(--clr);
+        border-radius: var(--thickness);
+        filter: drop-shadow(0 0 .75vmin var(--clr));
+        transition: .5s;
+    }
+    .box .number span.active {
+        background-color: var(--clr-active);
+        filter: drop-shadow(0 0 .75vmin var(--clr-active));
+    }
+</style>
+<body>
+    <div class="box">
+        <!-- 每个数字都用 7 条段码显示 -->
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+        <div class="colon"></div>
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+        <div class="colon"></div>
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+        <div class="number">
+            <span style="--ga-name: r1c2;"></span>
+            <span style="--ga-name: r2c1;"></span>
+            <span style="--ga-name: r2c3;"></span>
+            <span style="--ga-name: r3c2;"></span>
+            <span style="--ga-name: r4c1;"></span>
+            <span style="--ga-name: r4c3;"></span>
+            <span style="--ga-name: r5c2;"></span>
+        </div>
+    </div>
+    <script>
+        const num2ctrl = [
+            [1,1,1,0,1,1,1],
+            [0,0,1,0,0,1,0],
+            [1,0,1,1,1,0,1],
+            [1,0,1,1,0,1,1],
+            [0,1,1,1,0,1,0],
+            [1,1,0,1,0,1,1],
+            [1,1,0,1,1,1,1],
+            [1,0,1,0,0,1,0],
+            [1,1,1,1,1,1,1],
+            [1,1,1,1,0,1,1]
+        ];
+
+        const dashs = []; // 所有 span 构成的数组
+        document.querySelectorAll(".number").forEach((num) => {
+            dashs.push(Array.from(num.children))
+        })
+
+        function split_num(n) {
+            return [Math.floor(n / 10), n % 10];
+        }
+        function time2num() { // [h,h,m,m,s,s]
+            const t = new Date();
+            return [split_num(t.getHours()), split_num(t.getMinutes()), split_num(t.getSeconds())].flat();
+        }
+        function display() {
+            time2num().forEach((val, num_idx) => {
+                const numEle = dashs[num_idx];
+                numEle.forEach((dash, dash_idx) => {
+                    if (num2ctrl[val][dash_idx] == 1) {
+                        dash.className = 'active';
+                    } else {
+                        dash.className = '';
+                    }
+                })
+            })
+        }
+        
+        window.onload = () => {
+            display();
+            setInterval(display, 1000);
+        }
+    </script>
+</body>
+</html>

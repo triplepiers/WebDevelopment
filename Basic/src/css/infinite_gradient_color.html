@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <title>永续渐变的背景颜色捏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* box-sizing: border-box; */
+        }
+        body {
+            /* width: 100vw; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            letter-spacing: .2em;
+            text-shadow: 0 0 15px rgba(0,0,0,.6);
+            background-image: linear-gradient(125deg, #2c3450, #27ae60, #2980b9, #e74c3c, #8e44ad);
+            background-size: 500%; /* 因为是五色渐变（大概？） */
+            animation: bk 10s linear infinite;
+        }
+        /* 在一个里面做了往返 - 或许 anmation-direction: alternate 也能解决？ */
+        @keyframes bk {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-color: 0% 50%;
+            }
+        }
+    </style>
+    <body>
+        <div class="text">永续渐变的背景颜色捏</div>
+    </body>
+</html>

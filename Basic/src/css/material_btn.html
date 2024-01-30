@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拟物质感按钮</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #acbaca;
+    }
+    .btn {
+        width: 300px;
+        height: 300px;
+        border-radius: 50px;
+        background-color: #c9d5e0;
+        box-shadow: 30px 30px 30px -10px rgba(0,0,0,.15), /* 第三个参数是模糊半径 - 与偏移量一致制造浮空感; 第四个参数截断 10px 的阴影 */
+                    inset 15px 15px 10px rgba(255,255,255,.75), /* 内阴影 - 营造高光*/
+                    -15px -15px 35px rgba(255,255,255,.55), /* 外阴影 - 左上光照*/
+                    inset -1px -1px 10px rgba(0,0,0,.2) /* 内阴影 - 右下明暗交接线*/;
+    }
+</style>
+<body>
+    <div class="btn"></div>
+</body>
+</html>

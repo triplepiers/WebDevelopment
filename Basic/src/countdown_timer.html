@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #2f363e;
+}
+.newYear {
+    font-size: 8em;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    list-style: .6em;
+    display: none;
+}
+.newYear span {
+    font-size: .5em;
+    font-weight: 300;
+}
+#time {
+    display: flex;
+    gap: 30px;
+}
+#time .circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#time .circle svg {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    transform: rotate(270deg);
+}
+#time .circle svg circle {
+    width: 100%;
+    height: 100%;
+    fill: transparent;
+    stroke-width: 8;
+    stroke: #282828;
+    transform: translate(5px, 5px);
+
+}
+#time .circle svg circle:nth-child(2) {
+    stroke: var(--clr);
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+} 
+#time div {
+    position: absolute;
+    text-align: center;
+    font-weight: 500;
+    color: #fff;
+    font-size: 1.5em;
+}
+#time div span {
+    position: absolute;
+    transform: translateX(-50%) translateY(-10px);
+    font-size: .35em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+#time .dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-self: flex-start;
+    z-index: 999;
+}
+#time .dots::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 15px;
+    height: 15px;
+    background-color: var(--clr);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--clr),
+    0 0 60px var(--clr);
+}
+</style>
+<body>
+    <div id="time">
+        <div class="circle" style="--clr:#fff;">
+            <div class="dots day_dot"></div>
+            <svg>
+                <!-- 一个当背景，一个显示 -->
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="dd"></circle>
+            </svg>
+            <div id="days">00<br><span>Days</span></div>
+        </div>
+
+        <div class="circle" style="--clr:#ff2972;">
+            <div class="dots hour_dot"></div>
+            <svg>
+                <!-- 一个当背景，一个显示 -->
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="hh"></circle>
+            </svg>
+            <div id="hours">00<br><span>Hours</span></div>
+        </div>
+
+        <div class="circle" style="--clr:#fee800;">
+            <div class="dots min_dot"></div>
+            <svg>
+                <!-- 一个当背景，一个显示 -->
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="mm"></circle>
+            </svg>
+            <div id="minutes">00<br><span>Mins</span></div>
+        </div>
+
+        <div class="circle" style="--clr:#04fc43;">
+            <div class="dots sec_dot"></div>
+            <svg>
+                <!-- 一个当背景，一个显示 -->
+                <circle cx="70" cy="70" r="70"></circle>
+                <circle cx="70" cy="70" r="70" id="ss"></circle>
+            </svg>
+            <div id="seconds">00<br><span>Secs</span></div>
+        </div>
+    </div>
+    <h2 class="newYear">2023<br><span>Happy New Year</span></h2>
+</body>
+<script>
+    let d = document.getElementById('days');
+    let h = document.getElementById('hours');
+    let m = document.getElementById('minutes');
+    let s = document.getElementById('seconds');
+
+    let dd = document.getElementById('dd');
+    let hh = document.getElementById('hh');
+    let mm = document.getElementById('mm');
+    let ss = document.getElementById('ss');
+
+    let d_dot = document.querySelector('.day_dot');
+    let h_dot = document.querySelector('.hour_dot');
+    let m_dot = document.querySelector('.min_dot');
+    let s_dot = document.querySelector('.sec_dot');
+
+    let endDate = '02/01/2023 00:00:00'; // mm/dd/yyyy
+
+    let x = setInterval(()=>{
+        let now = new Date(endDate).getTime();
+        let countDown = new Date().getTime();
+        let dist = now - countDown;
+
+        // clac
+        let day = Math.floor(dist / (1000 * 60 * 60 * 24));
+        let hr = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let min = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+        let sec = Math.floor((dist % (1000 * 60)) / (1000));
+
+        // output
+        d.innerHTML = day + "<br><span>Days</span>";
+        h.innerHTML = hr + "<br><span>Hours</span>";
+        m.innerHTML = min + "<br><span>Mins</span>";
+        s.innerHTML = sec + "<br><span>Secs</span>";
+
+        // stroke
+        dd.style.strokeDashoffset = 440 - (440 * day) / 365; // 365day/year
+        hh.style.strokeDashoffset = 440 - (440 * hr) / 24;
+        mm.style.strokeDashoffset = 440 - (440 * min) / 60;
+        ss.style.strokeDashoffset = 440 - (440 * sec) / 60;
+
+        // dots
+        d_dot.style.transform = `rotateZ(${day * 0.986}deg)`; // 360deg / 365day = 0.986
+        h_dot.style.transform = `rotateZ(${hr * 15}deg)`; // 360deg / 24hour = 15
+        m_dot.style.transform = `rotateZ(${min * 6}deg)`;
+        s_dot.style.transform = `rotateZ(${sec * 6}deg)`;
+
+
+        //count down fin
+        if(dist < 0) {
+            clearInterval(x);
+            document.getElementById("time").style.display = 'none';
+            document.querySelector('.newYear').style.display = 'block';
+        }
+    })  
+</script>
+</html>

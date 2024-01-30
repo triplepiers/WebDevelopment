@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>弧边选项卡</title>
+    <!--        
+        1. 通过 perspective + renslateX 将矩形转为梯形
+        2. 使用径向渐变实现外圆弧
+     -->
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    input {display: none;}
+    /* 选项卡 */
+    .tabs .label {
+        display: inline-block;
+        position: relative;
+        margin: 0 3px;
+        /* 加景深，让边框不是正圆 */
+        perspective: 100px;
+    }
+    .tabs .label label {
+        transition: .5s;
+        position: relative;
+        width: 150px;
+        height: 40px;
+        display: block;
+        --color: aquamarine;
+        background-color: var(--color);
+        color: white;
+        /* 上半边的圆弧 */
+        border-radius: 10px 10px 0 0;
+        line-height: 40px;
+        text-align: center;
+        transform-origin: center bottom;
+        transform: rotateX(30deg);
+    }
+    /* 用伪元素做下半边的圆弧 */
+    .tabs .label label::before,
+    .tabs .label label::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        display: block;
+        background-color: var(--color);
+        transition: .5s;
+        bottom: 0;
+    }
+    .tabs .label label::before {
+        left: -10px;
+        /* 径向渐变实现弧边 */
+        background: radial-gradient(circle at 0 0 , transparent 10px, var(--color) 10px);
+    }
+    .tabs .label label::after {
+        right: -10px;
+        background: radial-gradient(circle at 10px 0 , transparent 10px, var(--color) 10px);
+    }
+    /* 内容区 */
+    .tabs .panel {
+        width: 475px; 
+        height: 300px;
+        border: 2px solid green;
+        border-radius: 4px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+    }
+    #label1:checked ~ .label #tag1,
+    #label2:checked ~ .label #tag2,
+    #label3:checked ~ .label #tag3{
+        --color: purple;
+        z-index: 1;
+    }
+    #label1:checked ~ .panels #p1,
+    #label2:checked ~ .panels #p2,
+    #label3:checked ~ .panels #p3{
+        display: flex;
+    }
+</style>
+<body>
+    <div class="tabs">
+        <!-- 使用相同 name 实现互斥选择 -->
+        <input type="radio" name="tabs" id="label1" checked>
+        <input type="radio" name="tabs" id="label2">
+        <input type="radio" name="tabs" id="label3">
+        <!-- 选项部分 -->
+        <div class="label">
+            <label id='tag1' for="label1">选项1</label>
+        </div>
+        <div class="label">
+            <label id='tag2' for="label2">选项2</label>
+        </div>
+        <div class="label">
+            <label id='tag3' for="label3">选项3</label>
+        </div>
+        <!-- 主题部分 -->
+        <div class="panels">
+            <div id='p1' class="panel">面板1</div>
+            <div id='p2' class="panel">面板2</div>
+            <div id='p3' class="panel">面板3</div>
+        </div>
+    </div>
+</body>
+</html>

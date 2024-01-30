@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #333;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 600px;
+        }
+        .wrapper .carousel {
+            /* cursor: pointer; */
+            white-space: nowrap;
+            /* 去间距 */
+            width: 100%;
+            font-size: 0px;
+            cursor: pointer;
+            overflow: hidden;
+            /* 平滑滚动 */
+            scroll-behavior: smooth;
+        }
+
+        .carousel.dragging {
+            /* 使得drag实时响应 */
+            cursor: grab;
+            scroll-behavior: auto;
+        }
+
+        .carousel.dragging img {
+            /* 避免被拖拽 */
+            pointer-events: none;
+        }
+
+        .wrapper .carousel img {
+            width: 100%;
+            object-fit: cover;
+            margin-left: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.3);
+        }
+
+        .wrapper .carousel img:first-child {
+            margin-left: 0;
+        }
+
+        .wrapper ion-icon {
+            cursor: pointer;
+            /* display: block; */
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-size: 1.2rem;
+            background-color: white;
+            color: #333;
+            
+            transform: translateY(-50%);
+            position: absolute;
+            top: 50%;
+        }
+
+        .wrapper ion-icon:first-child {
+            left: -15px;
+        }
+        
+        .wrapper ion-icon:last-child {
+            right: -15px;
+        }
+    </style>
+</head>
+<body>
+ <div class="wrapper">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+    <div class="carousel">
+        <img src="../../img/turn1.jpg" alt="img">
+        <img src="../../img/turn2.jpg" alt="img">
+        <img src="../../img/turn3.jpg" alt="img">
+        <img src="../../img/turn4.jpg" alt="img">
+        <img src="../../img/turn5.png" alt="img">
+    </div>
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+ </div>
+</body>
+<script>
+    const carousel = document.querySelector(".wrapper .carousel");
+    const img = document.querySelector("img");
+    const w = img.width + 14;
+    let maxScrollWidth = carousel.scrollWidth - carousel.clientWidth;
+    // button
+    l_arrow = document.querySelectorAll(".wrapper ion-icon")[0];
+    r_arrow = document.querySelectorAll(".wrapper ion-icon")[1];
+
+    l_arrow.addEventListener("click", () => {
+        carousel.scrollLeft += -w;
+        showHideIcon();
+        // setTimeout(() => showHideIcon(), 60); // 每60ms调用
+    });
+    r_arrow.addEventListener("click", () => {
+        carousel.scrollLeft += w;
+        showHideIcon();
+        // setTimeout(() => showHideIcon(), 60); // 每60ms调用
+    });
+
+    const showHideIcon = () => {
+        // l_arrow.style.display = carousel.scrollLeft == 0 ? "none" : "block";
+        // r_arrow.style.display = carousel.scrollLeft == maxScrollWidth ? "none" : "block";
+    }
+
+    let isDrag = false, prevPageX, prevScrollLeft;
+
+    const dragstart = (e) => {
+        prevPageX = e.pageX;
+        prevScrollLeft = carousel.scrollLeft;
+        isDrag = true;
+    }
+
+    const dragstop = () => {
+        isDrag = false;
+        carousel.classList.remove("dragging");
+    }
+
+    const dragging = (e) => {
+        if(!isDrag) return;
+        e.preventDefault(); // 防止img被拖拽
+        carousel.classList.add("dragging");
+        let Diff = e.pageX - prevPageX;
+        carousel.scrollLeft = prevScrollLeft - Diff;
+        // console.log(e.pageX);
+    }
+
+    carousel.addEventListener("mousedown", dragstart);
+    carousel.addEventListener("mouseup", dragstop);
+    carousel.addEventListener("mouseleave", dragstop);
+    carousel.addEventListener("mousemove", dragging);
+
+</script>
+</html>

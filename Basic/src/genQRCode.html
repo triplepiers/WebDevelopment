@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用 QRCode.js 生成二维码</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.css" rel="stylesheet">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(#f2f2fb 50%, #377dff 50%);
+    }
+    .wrapper {
+        background-color: #fff;
+        padding: 5em 4em;
+        position: relative;
+        width: 31.25em;
+        border-radius: .6em;
+        background-origin: 0 1.5em 3em rgba(3,21,55,.3);
+    }
+    #usrInput {
+        width: 100%;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid #000;
+        padding: .5em 1em;
+        font-size: 1em;
+    }
+    .options {
+        margin-top: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    /* 重置默认的下拉列表样式 */
+    .options select {
+        appearance: none;
+        width: 8em;
+        padding: .45em .9em;
+        font-size: 1.25em;
+        letter-spacing: .5px;
+        background-color: #377dff;
+        color: #fff;
+        border: none;
+        border-radius: .3em;
+    }
+    .options select::-ms-expand {
+        display: none;
+    }
+    .options i {
+        color: #fff;
+        position: absolute;
+        left: 12em;
+    }
+    .options select option {
+        background-color: #fff;
+        color: #377dff;
+        letter-spacing: .06em;
+        font-weight: 400;
+        font-size: 1.12em;
+    }
+    .options select option.selecter {
+        display: none;
+    }
+    input.clr-input {
+        -webkit-apprearance: none;
+        appearance: none;
+        background-color: transparent;
+        width: 3.1em;
+        height: 3.1em;
+        border: none;
+    }
+    input.clr-input::-webkit-color-swatch,
+    input.clr-input::-moz-color-swatch {
+        border-radius: .3em;
+        border: .18em solid #191f3f;
+    }
+
+    .box {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .box * {
+        font-size: 1em;
+        padding: .8em 2em;
+        border-radius: .5em;
+        margin-top: 2em;
+    }
+    .box button:disabled {
+        color: #a3aab6;
+        border-color: #a3aab6;
+    }
+    .box button {
+        background-color: transparent;
+        color: #377dff;
+        border: .18em solid #377dff;
+    }
+    .box a {
+        background-color: #377dff;
+        color: #fff;
+        text-decoration: none;
+        border: .18em solid #377dff;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2em;
+    }
+    .hide {
+        display: none;
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <input type="text" id="usrInput"
+        placeholder="Enter some text or URL">
+        <div class="options">
+            <select name="" id="" class="sizeOptions">
+                <option value="100" selected>100 x 100</option>
+                <option value="200">200 x 200</option>
+                <option value="300">300 x 300</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+            <input type="color" id="bgClr" class="clr-input"/>
+            <input type="color" id="fgClr" class="clr-input"/>
+        </div>
+        <div class="box">
+            <button id="submit">Generate</button>
+            <a href="#" id="download">Download</a>
+        </div>
+        <div class="container"></div>
+    </div>
+    <script>
+        const container = document.querySelector(".container");
+        const usrInput = document.getElementById("usrInput");
+        const btnSubmit = document.getElementById("submit");
+        const btnDownld = document.getElementById("download");
+        const sizeOptions = document.querySelector(".sizeOptions");
+        const bgClr = document.getElementById("bgClr");
+        const fgClr = document.getElementById("fgClr");
+        let QR_Code;
+        let sizeOpt, bgClrOpt, fgClrOpt;
+
+        sizeOptions.addEventListener("change", ()=>sizeOpt=sizeOptions.value);
+        bgClr.addEventListener("input", ()=>bgClrOpt=bgClr.value);
+        fgClr.addEventListener("input", ()=>fgClrOpt=fgClr.value);
+        // fotmat input
+        const fomatter = (val) => {
+            val = val.replace(/[^a-z0-9A-Z]+/g, "");
+            return val
+        }
+
+        btnSubmit.addEventListener("click", async()=>{
+            container.innerHTML = "";
+            QR_Code = await new QRCode(container, {
+                text: usrInput.value,
+                width: sizeOpt,
+                height: sizeOpt,
+                colorDark: fgClrOpt,
+                colorLight: bgClrOpt
+            });
+
+            const url = container.firstChild.toDataURL("image/png");
+            btnDownld.href = url;
+            
+            let usrIpt = usrInput.value;
+            try {
+                usrIpt = new URL(usrIpt).hostname;
+            } catch(_) {
+                usrIpt = fomatter(usrIpt);
+                btnDownld.download = `${usrIpt}QR`;
+                btnDownld.classList.remove('hide');
+            }
+        })
+
+        // 是否显示 submit 按钮
+        usrInput.addEventListener("input", ()=>{
+            if (usrInput.value.trim().length < 1) {
+                btnSubmit.disabled = true;
+                btnSubmit.href = '#';
+                btnSubmit.classList = 'hide';
+            } else {
+                btnSubmit.disabled = false;
+            }
+        })
+
+        window.onload = () => {
+            container.innerHTML = "";
+            sizeOpt = 100;
+            sizeOptions.value = 100;
+            usrInput.value = "";
+            bgClr.value = bgClrOpt = '#ffffff';
+            fgClr.value = fgClrOpt = '#377dff';
+            btnDownld.classList = 'hide';
+            btnSubmit.disabled = true;
+        }
+    </script>
+</body>
+</html>

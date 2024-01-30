@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>文字弹跳加载动画</title>
+    </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Luckiest Guy:200,300,400,500,600,700,800,900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Luckiest Guy', cursive;
+        }
+        body {
+            position: absolute;
+            width: 95%;
+            height: 98%;
+            background-color: skyblue;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        h1 {
+            cursor: default;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            margin: auto;
+            display: block;
+            text-align: center;
+        }
+        h1 span {
+            position: relative;
+            top: 20px;
+            display: inline-block;
+            font-size: 80px;
+            color: #fff;
+            text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc, 0 5px 0 #ccc,
+            0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent, 0 9px 0 transparent,
+            0 10px 10px rgba(0,0,0,.4);
+            animation: bounce .3s ease infinite alternate;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        @keyframes bounce {
+            100% {
+                top: -20px; /* 实际运动40px */
+                text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc, 0 5px 0 #ccc,
+                0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent, 0 9px 0 transparent,
+                0 10px 10px rgba(0,0,0,.4);
+            }
+        }
+    </style>
+    <body>
+        <h1>
+            <span style="--i:0;">L</span>
+            <span style="--i:1;">o</span>
+            <span style="--i:2;">a</span>
+            <span style="--i:3;">d</span>
+            <span style="--i:4;">i</span>
+            <span style="--i:5;">n</span>
+            <span style="--i:6;">g</span>
+            <span style="--i:7;">.</span>
+            <span style="--i:8;">.</span>
+            <span style="--i:9;">.</span>
+        </h1>
+    </body>
+    <script>
+
+    </script>
+</html>

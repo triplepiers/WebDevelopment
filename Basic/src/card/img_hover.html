@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    :root {
+        --gradient: linear-gradient(to right, #0ebeff, #29b0f7, #44a2ee, #5e95e6, #7987dd, #9479d5, #af6dcc, #c95ec4, #e450bb, #ff42b3);
+    }
+    body {
+        width: 100%;
+        min-height: 100vh;
+        background-color: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        position: relative;
+        width: 400px;
+        background-color: #aaa;
+        padding: 4px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .card > .container {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        overflow: hidden;
+        filter: brightness(1);
+        transition: .5s;
+    }
+    img {
+        vertical-align: bottom;
+        width: 100%;
+        object-fit: cover;
+        scale: 1;
+        transition: .5s;
+    }
+    .container:hover {
+        filter: brightness(.4);
+    }
+    .container:hover > img {
+        scale: 1.2;
+    }
+    .container:hover ~ .title {
+        bottom: 55px;
+        transition-delay: 0s;
+    }
+    .container:hover ~ .sub {
+        bottom: 20px;
+        transition-delay: .1s; /* 后进先出，先进后出 */
+    }
+    .title {
+        pointer-events: none; /* 防止因为hover到标题上导致鬼畜 */
+        position: absolute;
+        width: fit-content;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-image: var(--gradient);
+        left: 15px;
+        transition: .3s;
+        bottom: -25px;
+        transition-delay: .1s;
+    }
+    .sub {
+        pointer-events: none;
+        position: absolute;
+        color: white;
+        font-size: 25px;
+        left: 15px;
+        transition: .3s;
+        transition-delay: 0s;
+        bottom: -35px;
+    }
+</style>
+<body>
+    <div class="card">
+        <div class="container">
+            <img src="../../img/carousel_4.png" alt="">
+        </div>
+        <div class="title">UI/UX Design</div>
+        <div class="sub">Project Title</div>
+    </div>
+</body>
+</html>

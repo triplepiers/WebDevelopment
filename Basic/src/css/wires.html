@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用 CSS 搓三根数据线！</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        position: relative;
+        width: 425px;
+        display: flex;
+        gap: 100px;
+    }
+
+    .pr {position: relative;}
+    .pa {position: absolute;}
+
+    .cord1 .wire {
+        width: 15px;
+        height: 200px;
+        border-left: 4px solid #47525d;
+        border-right: 4px solid #47525d;
+    }
+    .cord1 .cord-bot {
+        height: 35px;
+        width: 25px;
+        border: 4px solid #47525d;
+        border-top: none;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        margin-left: -5px;
+    }
+    .cord1 .cord-mid {
+        height: 70px;
+        width: 45px;
+        border: 4px solid #47525d;
+        border-radius: 5px;
+        margin-left: -15px;
+    }
+    .cord1 .cord-mid .smile .eye {
+        height: 7px;
+        width: 7px;
+        border-radius: 50%;
+        background-color: #47525d;
+        top: 15px;
+    }
+    .cord1 .cord-mid .smile .eye.l {
+        left: 8px;
+    }
+    .cord1 .cord-mid .smile .eye.r {
+        right: 8px;
+    }
+    .cord1 .cord-mid .smile .mouth {
+        width: 13px;
+        height: 7px;
+        background-color: #fff;
+        border-bottom: 3px solid #47525d;
+        transition: ease .1s;
+        top: 30px;
+        left: 12px;
+    }
+    .cord1:hover .cord-mid .smile .mouth {
+        border-bottom-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        border-left: 3px solid #47525d;
+        border-right: 3px solid #47525d;
+    }
+    .cord1 .cord-top {
+        background-color: #dadcdf;
+        width: 30px;
+        height: 30px;
+        border: 4px solid #47525d;
+        border-bottom: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin-left: -7px;
+    }
+    .cord1 .cord-top .jack {
+        border: 1.5spx solid #b0b5ba;
+        background-color: #fff;
+        width: 14px;
+        height: 8px;
+        border-radius: 3px;
+        top: 7px;
+        left: 4px;
+        position: absolute;
+    }
+
+    .cord2 .wire {
+        border-left: 4px solid #47525d;
+        border-right: 4px solid #47525d;
+        width: 15px;
+        height: 200px;
+        background-color: #899097;
+    }
+    .cord2 .cord-bot {
+        height: 20px;
+        width: 35px;
+        background-color: #898989;
+        border: 4px solid #47525d;
+        border-top: none;
+        margin-left: -10px;
+    }
+    .cord2 .cord-mid {
+        height: 110px;
+        width: 70px;
+        background-color: #898989;
+        border: 4px solid #47525d;
+        border-radius: 5px;
+        margin-left: -28px;
+    }
+    .cord2 .cord-mid .smile .eye {
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        top: 15px;
+        background-color: #47525d;
+    }
+    .cord2 .cord-mid .smile .eye.l {
+        left: 13px;
+    }
+    .cord2 .cord-mid .smile .eye.r {
+        right: 13px;
+    }
+    .cord2 .cord-mid .smile .mouth {
+        width: 20px;
+        height: 8px;
+        top: 38px;
+        left: 21px;
+        border-bottom: 3px solid #47525d;
+        transition: ease .1s;
+    }
+    .cord2:hover .cord-mid .smile .mouth {
+        border-bottom-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        background-color: #6c757d;
+        border: 3px solid #47525d;
+    }
+    .cord2 .cord-top {
+        height: 45px;
+        width: 45px;
+        background-color: #dad1b2;
+        border: 4px solid #47525d;
+        border-bottom: none;
+        margin-left: -15px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+    .cord2 .cord-top .jack {
+        background-color: #bca98f;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 12px;
+        border-radius: 3px;
+    }
+    .cord2 .cord-top .jack.l {left: 5px;}
+    .cord2 .cord-top .jack.r {right: 5px;}
+
+    .cord3 .wire {
+        width: 15px;
+        height: 200px;
+        border-left: 4px solid #47525d;
+        border-right: 4px solid #47525d;
+        background-color: #84bef4;
+    }
+    .cord3 .cord-bot {
+        height: 40px;
+        width: 78px;
+        background-color: #84bef4;
+        border: 4px solid #47525d;
+        border-top: none;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        margin-left: -32px;
+    }
+    .cord3 .cord-mid {
+        height: 140px;
+        width: 150px;
+        background-color: #84bef4;
+        border: 4px solid #47525d;
+        margin-left: -69px;
+        border-radius: 10px;
+    }
+    .cord3 .cord-mid .smile .eye {
+        width: 13px;
+        height: 7px;
+        border: 3px solid #47525d;
+        border-top: none;
+        border-bottom-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        top: 25px;
+    }
+    .cord3 .cord-mid .smile .eye.l {left: 30px;}
+    .cord3 .cord-mid .smile .eye.r {right: 30px;}
+    .cord3 .cord-mid .smile .mouth {
+        width: 30px;
+        height: 15px;
+        border-top: 3px solid #47525d;
+        border-bottom-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        top: 50px;
+        left: 57px;
+        transition: ease .1s;
+    }
+    .cord3:hover .cord-mid .smile .mouth {
+        border: 3px solid #47525d;
+    }
+    .cord3 .cord-mid .line-wrap {
+        margin-top: 80px;
+        width: 100%;
+    }
+    .cord3 .cord-mid .line-wrap .line {
+        width: 80%;
+        height: 3px;
+        background-color: #66aef1;
+        margin-left: 10%;
+        margin-top: 10px;
+    }
+    .cord3 .cord-top {
+        height: 30px;
+        width: 100px;
+        background-color: #dadcdf;
+        margin-left: -44px;
+        border: 4px solid #47525d;
+        border-bottom: none;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+    }
+    .cord3 .screw-top {
+        height: 17px;
+        width: 12px;
+        background-color: #dadcdf;
+        border: 4px solid #47525d;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        left: -60px;
+        top: 17px;
+    }
+    .cord3 .screw-top.r {
+        left: 60px;
+    }
+    .cord3 .cord-top .jack {
+        background-color: #a3a9ae; 
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 10px;
+        border-radius: 50%;
+    }
+    .cord3 .screw-bot {
+        height: 40px;
+        width: 15px;
+        background-color: #66aef1;
+        border: 4px solid #47525d;
+        top: -4px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .cord3 .screw-bot .line {
+        background-color: #467caf;
+        position: absolute;
+        height: 100%;
+        width: 1px;
+    }
+    .cord3 .screw-bot .line.l {
+        left: 2px;
+    }
+    .cord3 .screw-bot .line.r {
+        right: 1.5px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="ftl cord1">
+            <div class="pr cord-top">
+                <div class="jack"></div>
+            </div>
+            <div class="pr cord-mid">
+                <div class="smile">
+                    <div class="pa eye l"></div>
+                    <div class="pa eye r"></div>
+                    <div class="pa mouth"></div>
+                </div>
+            </div>
+            <div class="cord-bot"></div>
+            <div class="wire"></div>
+        </div>
+        <div class="ftl cord2">
+            <div class="pr cord-top">
+                <div class="jack l"></div>
+                <div class="jack r"></div>
+            </div>
+            <div class="pr cord-mid">
+                <div class="smile">
+                    <div class="pa eye l"></div>
+                    <div class="pa eye r"></div>
+                    <div class="pa mouth"></div>
+                </div>
+            </div>
+            <div class="pr cord-bot"></div>
+            <div class="wire"></div>
+        </div>
+        <div class="ftl cord3">
+            <div class="pr">
+                <div class="pa screw-top l"></div>
+                <div class="pr cord-top">
+                    <div class="jack" style="left: 15px;"></div>
+                    <div class="jack" style="left: 42px;"></div>
+                    <div class="jack" style="right: 15px;"></div>
+                </div>
+                <div class="pa screw-top r"></div>
+            </div>
+            <div class="pr cord-mid">
+                <div class="smile">
+                    <div class="pa eye l"></div>
+                    <div class="pa eye r"></div>
+                    <div class="pa mouth">
+                        <div class="pa teech l"></div>
+                        <div class="pa teech r"></div>
+                    </div>
+                    <div class="line-wrap">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pr">
+                <div class="pa screw-bot" style="left: -55px;">
+                    <div class="ftl line l"></div>
+                    <div class="ftl line r"></div>
+                </div>
+                <div class="cord-bot"></div>
+                <div class="pa screw-bot" style="right: 12px;">
+                    <div class="ftl line l"></div>
+                    <div class="ftl line r"></div>
+                </div>
+            </div>
+            <div class="wire"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- svg 卫星环绕地球， 火狐有错位 -->
+<html>
+<style>
+    body {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+        width: 90vw;
+        height: 90vh;
+    }
+    .sat-loader {
+        width: 7em;
+        --center: 50;
+        --earth-fill: white;
+        --earth-r: 1.75em;
+        --earth-stroke: black;
+        --earth-stroke-width: 4;
+        --max: 88;
+        --min: 15;
+    }
+    .sat-loader .earth {
+        cx: var(--center);
+        cy: var(--center);
+        r: var(--earth-r);
+        fill: var(--earth-fill);
+        stroke: var(--earth-stroke);
+        stroke-width: var(--earth-stroke-width);
+    }
+
+    .sat-loader .orbit {
+        cx: var(--center);
+        cy: var(--center);
+        rx: 3em;
+        ry: 0.3em;
+        fill: none;
+        stroke: black;
+        stroke-width: 1;
+        transform-origin: center;
+        transform: rotate(-45deg);
+        stroke-dasharray: 220 55;
+        stroke-dashoffset: 100;
+    }
+
+    .sat-loader .sat-bk {
+        r: 0.5em;
+        fill: black;
+        animation: sat 4000ms ease-in-out infinite;
+    }
+    .sat-loader .sat-ft {
+        r: 0.5em;
+        fill: black;
+        animation: sat-ft 4000ms ease-in-out infinite;
+    }
+    @keyframes sat-ft {
+        0% {
+            opacity: 1;
+            cx: var(--max);
+            cy: var(--min);
+        }   
+        50% {
+            opacity: 0;
+            cx: var(--min);
+            cy: var(--max);
+        }     
+        100% {
+            opacity: 1;
+            cx: var(--max);
+            cy: var(--min);
+        }
+    }
+    @keyframes sat {
+        0% {
+            cx: var(--max);
+            cy: var(--min);
+        }   
+        50% {
+            cx: var(--min);
+            cy: var(--max);
+        }     
+        100% {
+            cx: var(--max);
+            cy: var(--min);
+        }
+    }
+</style>
+<body>
+    <svg class="sat-loader" viewBox="0 0 100 100">
+        <circle class="sat-bk"></circle>
+        <circle class="earth"></circle>
+        <ellipse class="orbit"></ellipse>
+        <circle class="sat-ft"></circle>
+    </svg>
+</body>
+</html>

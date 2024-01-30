@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 使用了托管在 CDN 上的 fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>堆叠玻璃质感卡片</title>
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins";
+    }
+
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0f222f;
+    }
+
+    .container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container .glass {
+        position: relative;
+        width: 200px;
+        height: 240px;
+        /* 给底部文字留高度，使得 icon 居中 */
+        padding-bottom: 40px;
+        background: linear-gradient(#fff2, transparent);
+        border: 1px solid rgba(255, 255, 255, .1);
+        box-shadow: 0 25px 25px rgba(0, 0, 0, .25);
+        /* 如果直接用 filter 会导致字也直接花掉 */
+        backdrop-filter: blur(10px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .5s;
+        border-radius: 10px;
+        margin: 0 -45px;
+        transform: rotate(calc(var(--r) * 1deg));
+    }
+    .container:hover .glass {
+        transform: rotate(0);
+        margin: 0 20px;
+    }
+
+    .container .glass::before {
+        content: attr(data-text);
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        background-color: rgba(255, 255, 255, .05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    /* 设置 icon 样式 */
+    .container .glass i {
+        color: #fff;
+        font-size: 4em;
+
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="glass" style="--r:-15;" data-text="Design">
+            <i class="fa-regular fa-pen-to-square"></i>
+        </div>
+        <div class="glass" style="--r:5;" data-text="Code">
+            <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="glass" style="--r:25;" data-text="Launch">
+            <i class="fa-solid fa-rocket"></i>
+        </div>
+        <div class="glass" style="--r:-15;" data-text="Earn">
+            <i class="fa-solid fa-money-bill"></i>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用JS实现删除复原</title>
+    <!-- 使用了 boxicon图标库 & typed.js -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #222;
+    }
+    /* 顶栏部分 - 固定定位 + 置顶 */
+    header {
+        color: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        /* 原来 padding 也可以用百分比的么 */
+        padding: 20px 10%;
+        /* 感觉改成和背景一个颜色会更好，不然上划的时候要寄 */
+        background-color: transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 999;
+    }
+    /* 左上角的商标部分 */
+    header .logo {
+        font-size: 25px;
+        font-weight: 600;
+        cursor: default;
+        /* 出场动画用 */
+        opacity: 0;
+        animation: goRight 1s forwards;
+    }
+    /* logo 从左向右运动 */
+    @keyframes goRight {
+        0% {
+            transform: translateX(-100px);
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    /* 顶栏右侧的菜单项 */
+    header .navbar a {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 500;
+        margin-left: 35px;
+        /* 出场动画用 */
+        opacity: 0;
+        transition: .3s;
+        animation: goUp 1s forwards;
+        /* 根据 i 计算 delay（记得算上 logo 的运动时间） */
+        animation-delay: calc(.2s * var(--i) + .2s);
+    }
+    @keyframes goUp {
+        0% {
+            transform: translateY(100px);
+        }
+
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    header .navbar a:hover,
+    header .navbar a.active {
+        color: #b7b2a9;
+    }
+    /* 主要内容区 */
+    section.home {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        /* 整体是左右布局 */
+        justify-content: space-between;
+        align-items: center;
+        padding: 70px 10% 0;
+        color: #fff;
+    }
+    /* 左侧文字区域 */
+    section.home .home-content {
+        max-width: 600px;
+    }
+    section.home .home-content h1 {
+        font-size: 56px;
+        font-weight: 700;
+        margin: -3px 0;
+        /* 入场 */
+        opacity: 0;
+        transition: .3s;
+        animation: goRight 1s forwards;
+        animation-delay: 2s;
+    }
+    section.home .home-content h3 {
+        font-size: 32px;
+        font-weight: 700;
+        /* 入场渐变 */
+        opacity: 0;
+        transition: .3s;
+        animation: goDown 1s forwards;
+        animation-delay: 1.4s;
+    }
+    @keyframes goDown {
+        0% {
+            transform: translateY(-100px);
+        }
+
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    section.home .home-content p {
+        font-size: 16px;
+        /* 入场动画 */
+        opacity: 0;
+        transition: .3s;
+        animation: goLeft 1s forwards;
+        animation-delay: 2s;
+    }
+    @keyframes goLeft {
+        0% {
+            transform: translateX(100px);
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    /* 左侧下方的 icon */
+    section.home .home-content .social-media a {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border: 2px solid #b7b2a9;
+        border-radius: 50%;
+        margin: 30px 15px 30px 0;
+        /* 需要改变的部分 */
+        opacity: 0;
+        transition: .5s;
+        color: #b7b2a9;
+        background-color: transparent;
+        animation: goLeft .5s forwards;
+        animation-delay: calc(.2s * var(--i) + 1.8s);
+    }
+    section.home .home-content .social-media a:hover {
+        background-color: #b7b2a9;
+        color: #333;
+        box-shadow: 0 0 10px #b7b2a9;
+    }
+    /* 最下方的 button */
+    section.home .home-content .btn {
+        display: inline-block;
+        padding: 12px 28px;
+        text-decoration: none;
+        border-radius: 40px;
+        font-size: 16px;
+        color: #1f242d;
+        letter-spacing: 1px;
+        font-weight: 600;
+        /* hover 效果 */
+        opacity: 0;
+        transition: .5s;
+        background: #b7b2a9;
+        box-shadow: 0 0 10px #b7b2a9;
+        animation: goUp .5s forwards;
+        animation-delay: 3.9s;
+    }
+    section.home .home-content .btn:hover {
+        box-shadow: 0 0 20px #b7b2a9;
+    }
+    /* 点击效果 */
+    section.home .home-content .btn:active {
+        background: none;
+        color: #b7b2a9;
+        border: 2px solid #b7b2a9;
+    }
+    /* 表现 type 的小标题 */
+    section.home .home-content #type {
+        margin-bottom: 30px;
+        /* 入场动画 */
+        animation: goUp 1s forwards;
+        animation-delay: 1.4s;
+    }
+    /* type 的文字 */
+    section.home .home-content #type span {
+        color: #b7b2a9;
+    }
+    /* 右侧图片区域 */
+    section.home .home-img img {
+        filter: brightness(.8);
+        max-width: 450px;
+        border-radius: 50%;
+        margin-right: -20px;
+        box-shadow: 0 0 15px #b7b2a9;
+        /* 入场放大 */
+        opacity: 0;
+        transition: .5s;
+        /* 按顺序执行多个动画 */
+        animation: zoomIn .5s forwards, floatImage 4s infinite;
+        /* delay 也是分别加的 */
+        animation-delay: 4s, 4.5s;
+    }
+    @keyframes zoomIn {
+        0% {
+            transform: scale(0);
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    @keyframes floatImage {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-24px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+</style>
+<body>
+    <header class="header">
+        <a href="#" class="logo">Protfolio.</a>
+  
+        <nav class="navbar">
+          <a href="#" class="active item" style="--i: 1">Home</a>
+          <a href="#" class="item" style="--i: 2">About</a>
+          <a href="#" class="item" style="--i: 3">Skills</a>
+          <a href="#" class="item" style="--i: 4">Portfolio</a>
+          <a href="#" class="item" style="--i: 5">Contact</a>
+        </nav>
+    </header>
+  
+    <section class="home">
+        <div class="home-content">
+            <h3>Hello, It's Me</h3>
+            <h1>Call Me SeaBee</h1>
+            <h3 id="type">And I'm a <span class="multiple-text"></span></h3>
+            <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing dlit .
+            Accusantium,ab autem repellat reiciendis ipsam perspicictis.
+            </p>
+            <div class="social-media">
+            <a href="#" style="--i: 7"><i class="bx bxl-tiktok"></i></a>
+            <a href="#" style="--i: 8"><i class="bx bxl-facebook-circle"></i></a>
+            <a href="#" style="--i: 9"><i class="bx bxl-google"></i></a>
+            <a href="#" style="--i: 10"><i class="bx bxl-linkedin-square"></i></a>
+            </div>
+            <a href="#" class="btn">Download CV</a>
+        </div>
+        <div class="home-img">
+            <img src="../../img/me.jpg" alt="" />
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/typed.js@2.0.132/dist/typed.umd.js"></script>
+    <script>
+        // 处理 navBar 点击事件（加 .active）
+        const navItems = document.querySelectorAll('header .navbar a');
+        // 清除 active
+        function clear() {
+            navItems.forEach(function(item) {
+                item.classList.remove('active')
+            })
+        }
+        navItems.forEach(item => item.addEventListener('click', function() {
+            clear();
+            this.classList.add('active');
+        }))
+        // 实现打字机效果（使用 type.js）
+        var typed = new Typed('.multiple-text', {
+            // 内容列表
+            strings: ['Frontend Developer', 'Github Copier', 'Document Modifier'],
+            // 数字越大越慢
+            typeSpeed: 200,
+            backSpeed: 100,
+            // 打完-删除的delay(ms)
+            backDelay: 1000,
+            loop: true
+        })
+
+    </script>
+</body>
+</html>

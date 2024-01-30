@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover 时的文字流动闪光特效</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@700&diplay=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Roboto';
+            list-style: none;
+        }
+        body {
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: none;
+        }
+        ul {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        ul li {
+            position: relative;
+            padding: 10px 0;
+            text-align: center;
+        }
+        ul li a {
+            color: #444;
+            cursor: none;
+            user-select: none;
+        }
+        /* 逐字拆分后得到 */
+        ul li a span {
+            position: relative;
+            font-size: 2.5em;
+            letter-spacing: .05em;
+            transition: .25s;
+            background-color: transparent;
+        }
+        ul li:hover a span {
+            color: #fff;
+            font-size: 3em;
+            text-shadow:  0 0 5px #fff, 0 0 15px #fff, 0 0 30px #fff;
+        }
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 0 5px #fff, 0 0 15px #fff, 0 0 30px #fff, 0 0 60px #fff;
+            transform: translate(-50%, -50%); /* 使得光标指向圆心 */
+            pointer-events: none;
+            opacity: 0;  /* 初始隐藏 */
+            transition: .5s linear;
+        }
+        body:hover #cursor {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Hover Effect</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Profolio</a></li>
+        <li><a href="#">Contact</a></li>
+        <div id="cursor"></div>
+    </ul>
+    <script>
+        // 光标追踪
+        const cursor = document.getElementById("cursor")
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.top = `${e.pageY}px`;
+            cursor.style.left = `${e.pageX}px`;
+        })
+    </script>
+    <script>
+        // 菜单项动画
+        let texts = document.querySelectorAll("ul li a").forEach((text) => {
+            text.innerHTML = 
+                text.innerText.split('')
+                .map((letters, idx) => `<span style="transition-delay:${idx*0.05}s;">${letters}</span>`)
+                .join('');
+        })
+    </script>
+</body>
+</html>

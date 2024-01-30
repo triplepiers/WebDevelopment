@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>原生js实现的scroll reveal</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: hsl(0, 0%, 2%);
+            color: hsl(0, 0%, 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        .section {
+            /* 没见过的grid布局orz */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+        .img-box {
+            height: 800px;
+            overflow: hidden;
+        }
+        .img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(2);
+            transition: 1.2s cubic-bezier(0.17, 0.97, 0.38, 1);
+        }
+        /* 让图片有一种渐入感 */
+        .reveal .img {
+            transform: scale(1);
+        }
+        .content-box {
+            padding-inline: 10em;
+        }
+        .title {
+            font-size: 5em;
+            max-width: max-content;
+            margin-block-end: .25em;
+        }
+        .text {
+            opacity: .6;
+            line-height: 2.25;
+        }
+        [data-reveal="left"] {
+            clip-path: inset(0 100% 0 0);
+        }
+        [data-reveal="left"].reveal {
+            animation: reveal-left 1.2s cubic-bezier(0.17, 0.97, 0.38, 1) forwards 300ms;
+        }
+        @keyframes reveal-left {
+            0% {
+                clip-path: inset(0 100% 0 0);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+        [data-reveal="right"] {
+            clip-path: inset(0 0 0 100%);
+        }
+        [data-reveal="right"].reveal {
+            animation: reveal-right 1.2s cubic-bezier(0.17, 0.97, 0.38, 1) forwards 300ms;
+        }
+        @keyframes reveal-right {
+            0% {
+                clip-path: inset(0 0 0 100%);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+    </style>
+    <body>
+        <section class="section">
+            <div class="img-box" data-reveal="left">
+                <img src="../../img/carousel_1.png" class="img">
+            </div>
+            <div class="content-box">
+                <h2 class="title" data-reveal="left">Renegades</h2>
+                <p class="text" data-reveal="left">got a fire in my soul, i've lost my faith in this broken system. got love from my home, but if we're crying is there anyone listening? we're the forgotten generation, we want an open conversation. follow me in this road. we will never let go</p>
+            </div>
+            <!-- 有点妙的，因为用了 grid 布局，所以直接调换顺序（而不用用容器打包一行） -->
+            <div class="content-box">
+                <h2 class="title" data-reveal="right">Renegades</h2>
+                <p class="text" data-reveal="right">got a fire in my soul, i've lost my faith in this broken system. got love from my home, but if we're crying is there anyone listening? we're the forgotten generation, we want an open conversation. follow me in this road. we will never let go</p>
+            </div>
+            <div class="img-box" data-reveal="right">
+                <img src="../../img/carousel_2.png" class="img">
+            </div>
+            <div class="img-box" data-reveal="left">
+                <img src="../../img/carousel_3.png" class="img">
+            </div>
+            <div class="content-box">
+                <h2 class="title" data-reveal="left">Renegades</h2>
+                <p class="text" data-reveal="left">got a fire in my soul, i've lost my faith in this broken system. got love from my home, but if we're crying is there anyone listening? we're the forgotten generation, we want an open conversation. follow me in this road. we will never let go</p>
+            </div>
+            <!-- 有点妙的，因为用了 grid 布局，所以直接调换顺序（而不用用容器打包一行） -->
+            <div class="content-box">
+                <h2 class="title" data-reveal="right">Renegades</h2>
+                <p class="text" data-reveal="right">got a fire in my soul, i've lost my faith in this broken system. got love from my home, but if we're crying is there anyone listening? we're the forgotten generation, we want an open conversation. follow me in this road. we will never let go</p>
+            </div>
+            <div class="img-box" data-reveal="right">
+                <img src="../../img/carousel_4.png" class="img">
+            </div>
+        </section>
+    </body>
+    <script>
+        const revealElements = document.querySelectorAll("[data-reveal]");
+
+        const scrollReveal = function() {
+            for (var i = 0, len = revealElements.length; i < len ; i++) {
+                const isElementOnScreen = revealElements[i].
+                getBoundingClientRect().top < window.innerHeight;
+
+                if (isElementOnScreen) {
+                    revealElements[i].classList.add("reveal");
+                } else {
+                    revealElements[i].classList.remove("reveal");
+                }
+            }
+        }
+        // 仅监听scroll的话 - 用户打开不滑动就会黑屏 -> 增加对 load 事件的监听
+        window.addEventListener("scroll", scrollReveal);
+        window.addEventListener("load", scrollReveal);
+    </script>
+</html>

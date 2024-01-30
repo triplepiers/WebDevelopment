@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CSS连续动画尝试 - 适用于开屏</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #c7bcba;
+        }
+        body {
+            background-color: #201f1b;
+            overflow: hidden;
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .nav {
+            width: 80%;
+            height: 50px;
+            position: absolute;
+            /* 开局隐藏 */
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            /* 第二个是 duration， 第四个是 delay */
+            animation: anim4 2s forwards 3s;
+        }
+        @keyframes anim4 {
+            from {
+                top: -50%;
+            }
+            to {
+                top: 40px;
+            }
+        }
+        .menu ul li {
+            list-style: none;
+            display: inline-block;
+            padding-left: 50px;
+        }
+
+        .con {
+            width: 80%;
+            margin: auto;
+            padding-top: 120px;
+            position: absolute;
+            /* 开局左藏 */
+            left: -100%;
+            animation: anim3 2s forwards 3s;
+        }
+        @keyframes anim3 {
+            from {
+                left: -100%;
+            }
+            to {
+                /* 因为总宽80，实际上水平居中 */
+                left: 10%;
+            }
+        }
+        .con h1 {
+            width: 50%;
+            font-size: 50px;
+            color: #d6720b;
+        }
+        .line {
+            width: 60%;
+            height: 2px;
+            background-color: #c7bcba;
+            margin: 10px 0;
+        }
+        .con p {
+            width: 48%;
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 200;
+        }
+        .con a {
+            width: 160px;
+            height: 40px;
+            display: block;
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: 200;
+            text-decoration: none;
+            text-align: center;
+            line-height: 40px;
+            background-color: #d6720b;
+            border-radius: 2px;
+        }
+        .robot {
+            width: 500px;
+            height: 400px;
+            background-image: url("../../img/card1.png");
+            background-size: cover;
+            position: absolute;
+            bottom: -100%;
+            left: 30%;
+            /* 分两段实现上移 & 右移 */
+            animation: anim 2s forwards, anim2 3s forwards 3s;
+        }
+        /* 这里放的是点亮后的差分图片 */
+        /* .robot::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            z-index: -1;
+        } */
+        @keyframes anim {
+            from {
+                bottom: -100%;
+            }
+            to {
+                bottom: 0%;
+            }
+        }
+        @keyframes anim2 {
+            from {
+                left: 30%;
+                /* width: ... */
+            }
+            to {
+                left: 50%;
+                /* width: 0 */
+                /* 露出下方的差分图片，实现自右向左渐变 */
+            }
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="nav">
+                <div class="logo" style="color:#d6720b;">
+                    E-ROBOT
+                </div>
+                <div class="menu">
+                    <ul>
+                        <li>HOME</li>
+                        <li>STORY</li>
+                        <li>ROLE</li>
+                        <li>LEVEL</li>
+                        <li>CONTACT</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="con">
+                <h1>ROBOT WAR</h1>
+                <div class="line"></div>
+                <p>
+                    Through our work, a story told. This centralized storytelling elment is the key to enriching our work.
+                </p>
+                <a href="#">LEARN MORE</a>
+            </div>
+            <div class="robot"></div>
+        </div>
+    </body>
+</html>

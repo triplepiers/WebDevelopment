@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #28272a;
+        }
+        a {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background-color: #333333;
+            display: flex;
+            justify-content: center; /*水平居中*/
+            align-items: center; /*垂直居中*/
+            gap: 10px; /*i & span的间距*/
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            letter-spacing: 0.2em;
+            font-size: 1.25em;
+            text-transform: uppercase; /*全转大写？？*/
+            font-weight: 500; /*bold*/
+
+        }
+        a::before {
+            content: '';
+            position: absolute;
+            /*看起是搞一个和button一样大的元素*/
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #359ad8;
+            transform: scaleX(0);
+            transition: transform 0.5s ease-in-out;
+            transform-origin: right;  /*加了这个以后就变成从左往右了*/
+        }
+        a:hover::before {
+            transform: scaleX(100%); /*我不知道为什么这是一个从中间到两边的动画*/
+            transform-origin: left;  /*形成一个loop，而不是折返（和上面的transform反向*/
+        }
+        a span {
+            display: inline-block;
+            z-index: 2;
+            transition: 0.5s ease-in-out;
+
+        }
+        a:hover span { /*soga, 原来可以单独选取hover状态下的元素*/
+            color: #333;
+        }
+        a i {
+            position: relative;
+            display: inline-block;
+            width: 2px;
+            height: 30px;
+            background-color: #d3d636;
+            transition: 0.5s, wigth 0.5s, height 0.5s;
+            transition-delay: 0s, 0.5s, 1s; /*秒欸，变成了分布动画*/
+        }
+        a:hover i {
+            width: 30px;
+            height: 2px;
+            background-color: #333;
+            transition-delay: 0s, 1s, 0.5s; /*逆向分步*/
+        }
+        a i::before { /*好家伙，手画箭头*/
+            content: '';
+            position: absolute;
+            top: 0.5px;
+            right: 0;
+            width: 50%;
+            height: 2px;
+            background-color: transparent;
+            rotate: 0;
+            transform-origin: right; /*否则默认按中心旋转*/
+            transition: 1s;
+        }
+        a:hover i::before {
+            background-color: #333;
+            rotate: 45deg;
+            transition-delay: 1.5s;
+        }
+        a i::after { /*好家伙，手画箭头*/
+            content: '';
+            position: absolute;
+            top: -0.5px;
+            right: 0;
+            width: 50%;
+            height: 2px;
+            background-color: transparent;
+            rotate: 0;
+            transform-origin: right; /*否则默认按中心旋转*/
+            transition: 1s;
+        }
+        a:hover i::after {
+            background-color: #333;
+            rotate: -45deg;
+            transition-delay: 1s; /*分布动画*/
+        }
+    </style>
+</head>
+<body>
+    <!-- 好家伙，实际上是把<a>做成了一个button -->
+    <a href = "#">
+        <i></i> 
+        <!-- i 是用来做文字前面的小竖条的 -->
+        <span>Explore</span>
+    </a>
+</body>
+</html>

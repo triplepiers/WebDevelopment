@@ -1,0 +1,84 @@
+<!-- 如你所见，一个霓虹灯式的侧边栏 -->
+<!DOCTYPE html>
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #252839;
+        }
+        ul {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            gap: 30px;
+        }
+        ul li {
+            position: relative;
+            font-size: 4em;
+            display: block;
+        }
+        ul li a {
+            position: relative;
+            text-decoration: none;
+            line-height: 1em;
+            height: 1em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            /* 搞个空心字捏 */
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,.5);
+        }
+        ul li a::before {
+            top: 15%;
+            left: .3px;
+            border: px sloid red;
+            /* 实心 */
+            display: block;
+            content: attr(data-text); /* 复制了data-text的值作为before的内容 */
+            position: absolute;
+            color: var(--clr);
+            width: 0%;
+            overflow: hidden;
+            transition: .7s ease;
+            /* 竖线 */
+            border-right: 8px solid var(--clr);
+            -webkit-text-size-adjust: 1px var(--clr);
+        }
+        ul li:hover a::before {
+            width: 100%;
+            -webkit-text-stroke: 1px var(--clr);
+            filter: drop-shadow(0 0 25px var(--clr));
+        }
+    </style>
+    <body>
+        <ul>
+            <li style="--clr:#00ade1">
+                <a href="#" data-text="&nbsp;Home">&nbsp;Home&nbsp;</a>
+            </li>
+            <li style="--clr:#ff6493">
+                <a href="#" data-text="&nbsp;About">&nbsp;About&nbsp;</a>
+            </li>
+            <li style="--clr:#ffdd1c">
+                <a href="#" data-text="&nbsp;Services">&nbsp;Services&nbsp;</a>
+            </li>
+            <li style="--clr:#00dc82">
+                <a href="#" data-text="&nbsp;Team">&nbsp;Team&nbsp;</a>
+            </li>
+            <li style="--clr:#dc00d4">
+                <a href="#" data-text="&nbsp;Contact">&nbsp;Contact&nbsp;</a>
+            </li>
+        </ul>
+    </body>
+</html>

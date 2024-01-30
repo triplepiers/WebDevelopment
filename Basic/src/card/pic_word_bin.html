@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>局部滚动的左右分栏图文卡片</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 5vmax;
+            background-color: #aaa;
+            padding: 10vmax 0;
+        }
+        .card {
+            background-color: #fff;
+            width: 60vmax;
+            height: 30vmax;
+            border-radius: 3vmax;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,.3);
+            display: flex;
+        }
+        .card .pic,
+        .card .word_wrap {
+            flex-shrink: 0;
+            width: 50%;
+            height: 100%;
+        }
+        .card .pic {
+            background-image: url("../../img/carousel_13.png");
+            background-position: center;
+            background-size: cover;
+        }
+        .card .word_wrap {
+            position: relative;
+            padding: 7% 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: end;
+        }
+        .card .word_wrap .word {
+            font-size: .8vmax;
+            max-height: 16vmax;
+            line-height: 1.8vmax;
+            width: 100%;
+            overflow: hidden;
+            letter-spacing: .2vmax;
+            text-overflow: ellipsis;
+            /* 不换行时启用 */
+            /* white-space: nowrap; */
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            /* 最大露出行数，需要妥善设置高度截掉后面的部分 */
+            -webkit-line-clamp: 8;
+        }
+        .card .word_wrap .button {
+            background-color: #7C2626;
+            color: #fff;
+            width: fit-content;
+            font-size: 1.5vmax;
+            letter-spacing: .1vmax;
+            padding: .2vmax 1vmax;
+            border-radius: .3vmax;
+        }
+        .card .word_wrap .word2 {
+            height: 100%;
+            font-size: .8vmax;
+            line-height: 1.8vmax;
+            width: 100%;
+            overflow-y: scroll;
+            letter-spacing: .2vmax;
+        }
+        .card2 .word_wrap::after {
+            position: absolute;
+            width: fit-content;
+            bottom: 4%;
+            right: 13%;
+            content: 'SCROLL TO VIEW THE COMPLETE CONTENT >';
+            color: #7C2626;
+            font-size: .7vmax;
+        }
+    </style>
+    <body>
+        <div class="card">
+            <div class="pic"></div>
+            <div class="word_wrap">
+                <div class="word">
+                        &nbsp;&nbsp;&nbsp;&nbsp;伊芙利特，前莱茵生命医疗对象，重度感染者。拥有极高的源石适应性，伴随有多发性点火现象。进入莱茵生命前的履历缺失。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;现于罗德岛接受治疗，由医疗干员赫默担任监护与担保人。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;无种族立场，极端排外的感染者组织。他们宣称“感染者应对自己的身份感到骄傲，积极去获取并使用属于自己的力量”。试图用最原始的手段去争夺世界的公正。以某座被摧毁的伟大城市为开端，医疗机构“罗德岛”的突然介入，令整个事态向着未知发展。
+                </div>
+                <div class="button">READ MORE</div>
+            </div>
+        </div>
+        <div class="card card2">
+            <div class="word_wrap">
+                <div class="word2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;伊芙利特，前莱茵生命医疗对象，重度感染者。拥有极高的源石适应性，伴随有多发性点火现象。进入莱茵生命前的履历缺失。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;现于罗德岛接受治疗，由医疗干员赫默担任监护与担保人。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;无种族立场，极端排外的感染者组织。他们宣称“感染者应对自己的身份感到骄傲，积极去获取并使用属于自己的力量”。试图用最原始的手段去争夺世界的公正。以某座被摧毁的伟大城市为开端，医疗机构“罗德岛”的突然介入，令整个事态向着未知发展。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;伊芙利特，前莱茵生命医疗对象，重度感染者。拥有极高的源石适应性，伴随有多发性点火现象。进入莱茵生命前的履历缺失。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;现于罗德岛接受治疗，由医疗干员赫默担任监护与担保人。<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;无种族立场，极端排外的感染者组织。他们宣称“感染者应对自己的身份感到骄傲，积极去获取并使用属于自己的力量”。试图用最原始的手段去争夺世界的公正。以某座被摧毁的伟大城市为开端，医疗机构“罗德岛”的突然介入，令整个事态向着未知发展。
+                </div>
+            </div>
+            <div class="pic"></div>
+        </div>
+    </body>
+</html>

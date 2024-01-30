@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上下布局的导致边框半径卡</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins';
+    }
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #333;
+    }
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+    .container {
+        position: relative;
+        width: 320px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .container .img {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        border-radius: 15px;
+    }
+    /* 圆角遮盖 */
+    .container .img::after {
+        position: absolute;
+        bottom: 70px;
+        left: 0;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-bottom-left-radius: 50%;
+        box-shadow: -10px 10px 0 #333;
+        /* background-color: red; */
+    }
+    .container .content {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        background-color: #fff;
+        border-radius: 15px;
+        border-top-left-radius: 0;
+        padding: 0 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    /* 用 price 做出上凸 */
+    .container .content .price {
+        position: absolute;
+        top: -80px;
+        left: 0;
+        height: 80px;
+        width: 50%;
+        background-color: #fff;
+        /* 假镂空 */
+        border-top: 10px solid #333;
+        border-right: 10px solid #333;
+        border-top-right-radius: 25px;
+    }
+    /* 左上单独遮盖 */
+    .container .content .price::before,
+    .container .content .price::after {
+        position: absolute;
+        content: '';
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        box-shadow: -10px -10px 0 #333;
+    }
+
+    .container .content .price::after {
+        bottom: 0;
+        right: -25px;
+        box-shadow: -10px 10px 0 #fff;
+    }
+    /* 文字样式 */
+    .price a {
+        position: relative;
+        background-color: #333;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        margin: 15px;
+        display: block;
+        border-radius: 7px;
+        font-weight: 600;
+    }
+    .content ul {
+        color: #333;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="../../img/沙罗蚀相.jpeg" alt="" sizes="" srcset="">
+        </div>
+        <div class="content">
+            <div class="price">
+                <a href="#">GFrontline</a>
+            </div>
+            <ul>
+                <li>Spring Field</li>
+                <li>Somewhere</li>
+                <li>1200sqm</li>
+                <li>House</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

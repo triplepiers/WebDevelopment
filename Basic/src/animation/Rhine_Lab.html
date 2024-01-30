@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- 一个很莱茵生命的动画hhh，全篇充斥着一些我不理解的操作 -->
+<html>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #251134;
+        }
+        #infinity path {
+            /* 原路径是两个实心的区块，此处隐藏，只利用其外边界建立填充区域 */
+            fill: transparent;
+            stroke-width: 40;
+            stroke: url(#gradient);
+            /* 奇妙裁切，但我不理解 */
+            stroke-dasharray: 350 750;
+            /* 把两头裁圆了，但我大为震撼 */
+            stroke-linecap: round;
+            animation: inf 3s linear infinite;
+        }
+        #infinity path:nth-child(2) {
+            /* 这个没有动画，是用来做背景的轨道的 —— 我还是不理解dasharray是干嘛的 */
+            stroke: #13061e;
+            stroke-width: 40;
+            stroke-dasharray: 0 0;
+            animation: none;
+        }
+        #infinity path:nth-child(4) {
+            /* 用来罩滤镜，模拟霓虹灯效果 - 但是不是只有三个path么？ */
+            /* 因为只有发光的部分需要加blur，所以动画是跟着发光部分一起走的 */
+            filter: blur(10px);
+        }
+        @keyframes inf {
+            /* 焯，他动了，但我不理解 */
+            100% {
+                stroke-dashoffset: 1100;
+            }
+        }
+    </style>
+    <body>
+        <div class="container">
+            <svg version="1.1" id="infinity" width="600px" x="0px" y="0px" viewbox="0 0 515.9 274.6">
+                <defs>
+                    <!-- gradient 定义了一个渐变的背景填充色 -->
+                    <linearGradient id="gradient">
+                        <stop offset="0%" stop-color="#1cff00"/>
+                        <stop offset="25%" stop-color="#ffa900"/>
+                        <stop offset="50%" stop-color="#f646ff"/>
+                        <stop offset="75%" stop-color="#00fffd"/>
+                        <stop offset="100%" stop-color="#00b9ff"/>
+                    </linearGradient>
+                </defs>
+                <path d="M259.2,135.4c42.9,43.9,63.7,82.6,108.5,82.6s80.8-36,80.8-80.8S412.4,56,367.6,56.5s-61.4,33.2-102,78.9 C224.5,176,193.1,218,148.3,218s-80.8-36-80.8-80.8s36.1-80.7,80.9-80.7S223.6,99.4,259.2,135.4z"/>
+                <path d="M259.2,135.4c42.9,43.9,63.7,82.6,108.5,82.6s80.8-36,80.8-80.8S412.4,56,367.6,56.5s-61.4,33.2-102,78.9 C224.5,176,193.1,218,148.3,218s-80.8-36-80.8-80.8s36.1-80.7,80.9-80.7S223.6,99.4,259.2,136.4z"/>
+                <path d="M259.2,135.4c42.9,43.9,63.7,82.6,108.5,82.6s80.8-36,80.8-80.8S412.4,56,367.6,56.5s-61.4,33.2-102,78.9 C224.5,176,193.1,218,148.3,218s-80.8-36-80.8-80.8s36.1-80.7,80.9-80.7S223.6,99.4,259.2,135.4z"/>
+            </svg>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- 一个弥散阴影的button，白色背景凑合，深色背景不太行 -->
+<html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        /* box-sizing: border-box; */
+    }
+    body {
+        /* background-color: white; */
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .drop {
+        position: absolute;
+        top: 50%;
+        display: flex;
+        border: none;
+        border-radius: 5rem;
+        color: white;
+        font-size: 3.5rem;
+        letter-spacing: 0.3rem;
+        text-transform: uppercase;
+        background-image: linear-gradient(to right, #f83945 0%, #3d3993 80%);
+        padding: 1rem 4.5rem;
+    }
+    .drop::before { 
+        /* 此处用内容为空的before来做弥散光，对content:none设置样式无意义 */
+        content: "";
+        background: inherit;
+        width: 85%;
+        height: 3.5rem;
+        position: absolute;
+        left: .5em;
+        bottom: 0;
+        z-index: -1;
+        filter: blur(3em) brightness(0.3);
+    }
+</style>
+<body>
+    <button class="drop">Honkai</button>
+</body>
+</html>

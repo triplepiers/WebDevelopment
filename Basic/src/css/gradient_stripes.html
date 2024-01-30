@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS渐变生成纹样</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        background-color: #333;
+        gap: 30px;
+        padding: 50px 100px;
+    }
+
+    section {
+        width: 400px;
+        height: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, .6);
+    }
+
+    /* 苏格兰裙 */
+    .one {
+        background-image:
+            /* 创建（半透）横向长条 */
+            linear-gradient(0deg,
+                transparent 50%,
+                hsl(231, 53%, 75%, .5) 50%),
+            /* 创建两个纵向长条 */
+            linear-gradient(90deg,
+                hsl(226, 39%, 32%) 50%,
+                hsl(226, 39%, 10%) 50%);
+        /* 重复形成填充 */
+        background-size: 3rem 3rem;
+    }
+
+    /* 锯齿 */
+    .two {
+        background-color: hsl(0, 39%, 15%);
+        background-image:
+            /* 使用四个三角形填充出内接菱形 */
+            linear-gradient(-45deg,
+                transparent 75%,
+                hsl(0, 39%, 70%) 75%),
+            linear-gradient(45deg,
+                transparent 75%,
+                hsl(0, 39%, 70%) 75%),
+            linear-gradient(-135deg,
+                transparent 75%,
+                hsl(0, 39%, 70%) 75%),
+            linear-gradient(135deg,
+                transparent 75%,
+                hsl(0, 39%, 70%) 75%);
+        background-size: 2rem 2rem;
+        /* 移动一半形成锯齿（不移动是棋盘） */
+        background-position: 1em 0, 1em 0, 0 0, 0 0;
+    }
+
+    /* 网格 */
+    .three {
+        background-color: #212223;
+        background-image:
+            radial-gradient(circle,
+                transparent 1rem,
+                #212223 1rem),
+            /* 左 & 上边框 */
+            linear-gradient(teal .5rem,
+                transparent .5rem),
+            linear-gradient(90deg,
+                teal .5rem,
+                transparent .5rem);
+        /* 单元格大小 */
+        background-size: 5rem 5rem;
+        /* 一半单元格大小 => 只移动圆 */
+        background-position: 2.75rem 2.75rem, 0 0, 0 0;
+    }
+
+    .four {
+        background-color: #232221;
+        /* background-image: 
+            radial-gradient(
+                circle,
+                transparent 1rem,
+                #a1b1c1 1rem,
+                #a1b1c1 3rem,
+                steelblue 3rem,
+                steelblue 5rem,
+                transparent 5rem
+            );
+        background-size: 10rem 10rem; */
+        background-image:
+            radial-gradient(circle at 100% 50%,
+                transparent 1rem,
+                #a1b1c1 1rem,
+                #a1b1c1 1.5rem,
+                transparent 1.5rem),
+            radial-gradient(circle at 0% 50%,
+                transparent 1rem,
+                #f1b1c1 1rem,
+                #f1b1c1 1.5rem,
+                transparent 1.5rem);
+        background-size: 3rem 5rem;
+        background-position: 0 0, 0 2.5rem;
+    }
+
+    .five {
+        background-color: #313466;
+        background-image:
+            conic-gradient(from 330deg at 50% 60%,
+                #11ffbb 60deg,
+                transparent 60deg),
+            conic-gradient(from 150deg at 50% 30%,
+                #5255bb 60deg,
+                transparent 60deg);
+        background-size: 3rem 3rem;
+        background-position: 0 0, 1.5rem -.5rem;
+    }
+</style>
+
+<body>
+    <section class="one"></section>
+    <section class="two"></section>
+    <section class="three"></section>
+    <section class="four"></section>
+    <section class="five"></section>
+</body>
+
+</html>

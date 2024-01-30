@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侧边栏粘滞定位</title>
+    <!-- 一个侧边栏滚动至粘滞底边的例子（需要包一层 content-wrap 用来做绝对定位） -->
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        min-height: 100vh;
+        width: 100vw;
+        position: relative;
+        background-color: #333;
+        padding: 0 50px;
+        padding-top: 50px;
+    }
+    .main .item {
+        width: 400px;
+        height: 300px;
+        border-radius: 10px;
+        margin-bottom: 50px;
+        background-color: aquamarine;
+    }
+    .sidebar {
+        position: absolute;
+        top: 50px;
+        left: 500px;
+    }
+    .sidebar .content-wrap {
+        position: relative;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .sidebar .item {
+        width: 200px;
+        height: 150px;
+        border-radius: 8px;
+        background-color: blueviolet;
+    }
+</style>
+<body>
+    <div class="main">
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+    </div>
+    <div class="sidebar">
+        <div class="content-wrap">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item">last</div>
+        </div>
+    </div>
+    <script>
+        let sidebar = document.querySelector('.sidebar');
+        let sidebarContent = document.querySelector('.sidebar .content-wrap');
+
+        // 视口高度
+        let viewportHeight = window.innerHeight;
+        // sideBar 实际高度
+        let contentHeight = sidebarContent.getBoundingClientRect().height;
+        // 50 是 padding-top
+        const paddingTop = 50;
+        const diff = (contentHeight-viewportHeight) + paddingTop;
+
+        window.onscroll = () => {
+            // 当前滚动距离
+            let scrollTop = window.scrollY;
+            
+
+            // 滚动距离超过 最大滚动距离
+            if(scrollTop >= diff) {
+                sidebarContent.style.position = 'fixed';
+
+            } else {
+                sidebarContent.style.position = '';
+            }
+        }
+    </script>
+</body>
+</html>

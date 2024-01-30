@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700");
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Quicksand';
+        /* 用圆圈取代光标 */
+        cursor: none;
+    }
+    body {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+    }
+    ul {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    li {
+        list-style: none;
+        
+    }
+    a {
+        display: inline-block;
+        margin: 10px 0;
+        position: relative;
+
+        text-decoration: none;
+        font-size: 2em;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: white;
+    }
+    /* 光标跟踪 */
+    #cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #fff;
+        pointer-events: none;
+
+        /* 鼠标位于圆心 */
+        transform: translate(-50%, -50%);
+        mix-blend-mode: difference;        /* 混合模式？ */
+    }
+
+    ul li:hover ~ #cursor {
+        transform: translate(-50%, -50%) scale(4);
+        background-color: black;
+        /* 艹，我的妈直接拿 shadow 盖住了 -> 顺便因为 diff 字也会变色 */
+        box-shadow: 0 0 0 100vh white;
+    }
+</style>
+<body>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Protfolio</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Contact</a></li>
+        <!-- 为了能通过 hover 选中 cursor，所以写在 ul 里面 -->
+        <div id="cursor"></div>
+    </ul>
+    <script>
+        // 控制光标位置
+        const cursor = document.getElementById("cursor")
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.pageX + 'px'
+            cursor.style.top  = e.pageY + 'px'
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>大概是一个暗色毛玻璃质感的侧边栏</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: rgba(255,255,255,.6);
+        }
+        .wrap {
+            width: 100%;
+            min-height: 100vh;
+            background-color: aquamarine;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav {
+            width: 110px;
+            /* width: 280px; */
+            height: 600px;
+            /* 偏黑的磨砂玻璃 */
+            background-color: rgba(0,0,0,.8);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: .5s;
+        }
+        .nav:hover {
+            width: 280px;
+
+        }
+        /* 顶上的三个按钮 */
+        .btn {
+            width: 60px;
+            height: 10px;
+            display: flex;
+            justify-content: space-around;
+            margin-left: 25px;
+            margin-top: 25px;
+        }
+        .btn .btn-item {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .btn-item:nth-child(1) {
+            background-color: #eb5a56;
+        }
+        .btn-item:nth-child(2) {
+            background-color: #f8bc33;
+        }
+        .btn-item:nth-child(3) {
+            background-color: #62cb44;
+        }
+        /* 头像 */
+        .icon {
+            width: 250px;
+            height: 60px;
+            margin-left: 25px;
+            margin-top: 20px;
+            display: flex;
+        }
+        .icon .icon-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,.3);
+            overflow: hidden;
+        }
+        .icon .icon-img img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        /* 头像描述 */
+        .icon-con {
+            height: 60px;
+            margin-left: 25px;
+        }
+        .icon-con p {
+            padding-top: 5px;
+        }
+        .icon h2 {
+            font-weight: 700;
+        }
+        /* 分割线 */
+        .line {
+            width: 60px;
+            height: 1px;
+            background-color: rgba(245,253,255,.5);
+            margin: 20px 25px;
+            transition: .5s;
+        }
+        .nav:hover .line {
+            width: 230px;
+        }
+        /* 菜单小类标题 */
+        .title {
+            width: 60px;
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        .title p {
+            font-size: 14px;
+        }
+        /* 竖排菜单栏 */
+        .menu {
+            width: 230px;
+            margin-left: 25px;
+        }
+        .item {
+            display: flex;
+            position: relative;
+            transition: .5s;
+            border-radius: 6px;
+        }
+        .item .licon {
+            width: 60px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .item .con {
+            width: 0;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .5s;
+            overflow: hidden;
+            position: relative;
+            left: 20px;
+            opacity: 0;
+        }
+        .nav:hover .item .con {
+            width: 160px;
+            opacity: 1;
+        }
+        i {
+            font-size: 26px;
+        }
+        /* 左侧高亮条 */
+        .light {
+            width: 6px;
+            height: 50px;
+            background-color: #eb5a56;
+            position: absolute;
+            left: -25px;
+            transition: .5s;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            opacity: 0;
+        }
+        .item:hover .light {
+            opacity: 1;
+        }
+        /* serve - 深色选项 */
+        .serve {
+            width: 60px;
+            background-color: rgba(0,0,0,.7);
+            margin-left: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: .5s;
+        }
+        .serve .item:hover {
+            background-color: rgba(53, 53, 53, 0.7);
+        }
+        .nav:hover .serve {
+            width: 230px;
+        }
+    </style>
+    <body>
+        <div class="wrap">
+            <div class="nav">
+                <div class="btn">
+                    <div class="btn-item"></div>
+                    <div class="btn-item"></div>
+                    <div class="btn-item"></div>
+                </div>
+                <div class="icon">
+                    <div class="icon-img"><img src="../img/me.jpg"></div>
+                    <div class="icon-con">
+                        <p>Good Day,</p>
+                        <h2>SeaBee</h2>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="title">
+                    <p>Menu</p>
+                </div>
+                <div class="menu">
+                    <div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div>
+                    <div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div><div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="title">
+                    <p>Service</p>
+                </div>
+                <div class="serve">
+                    <div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div>
+                    <div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div><div class="item">
+                        <div class="light"></div>
+                        <div class="licon">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <div class="con">Discount</div>
+                        <div class="ricon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+
+    </script>
+</html>

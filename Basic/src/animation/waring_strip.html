@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600,700,800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #111;
+    pointer-events: none;
+}
+section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(transparent, transparent, #0005, #0004);
+    z-index: 999;
+    pointer-events: none;
+}
+.scroll {
+    width: calc(100% + 400px);
+    left: -400px;
+    display: flex;
+    box-shadow: 0 15px 10px rgba(0,0,0,.5);
+    transform: rotate(calc(var(--d) * 1deg)) translateY(calc(var(--y) * 1px));
+}
+.scroll div {
+    background-color: #e9c804;
+    color: #1d1104;
+    font-size: 3em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    white-space: nowrap;
+    animation: animate 60s linear infinite;
+    animation-delay: -60s;
+}
+.scroll div:nth-child(2) {
+    animation: animate2 60s linear infinite;
+    animation-delay: -30s;
+}
+@keyframes animate {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+@keyframes animate2 {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-200%);
+    }
+}
+</style>
+<body>
+    <section>
+        <div class="scroll" style="--d:25;--y:200;">
+            <!-- 把两条拼起来，搞成infinite -->
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+        </div>
+        <div class="scroll" style="--d:-25;--y:400;">
+            <!-- 把两条拼起来，搞成infinite -->
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+        </div>
+        <div class="scroll" style="--d:15;--y:500;">
+            <!-- 把两条拼起来，搞成infinite -->
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+        </div>
+        <div class="scroll" style="--d:-5;--y:50;">
+            <!-- 把两条拼起来，搞成infinite -->
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+        </div>
+        <div class="scroll" style="--d:-15;--y:-350;">
+            <!-- 把两条拼起来，搞成infinite -->
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+            <div>
+                <span>Police line do not cross - Police line do not cross - Police line do not cross - Police line do not cross - </span>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+
+</script>
+</html>

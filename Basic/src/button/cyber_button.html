@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>就是一个2077画风的按钮</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                min-height: 100vh;
+                background: linear-gradient(78deg, #fff700 50%, #e3dc02 50%);
+            }
+            .btn {
+                --clip-base: polygon(
+                0 0,
+                100% 0,
+                100% 100%,
+                95% 100%,
+                95% 90%,
+                85% 90%,
+                85% 100%,
+                8% 100%,
+                0 70%
+                );
+                width: 60vmin;
+                height: 15vmin;
+                background-color: transparent;
+                color: #fff;
+                font-size: 5vmin;
+                font-weight: 700;
+                line-height: 15vmin;
+                letter-spacing: .2vmin;
+                border: none;
+                cursor: pointer;
+                user-select: none;
+                position: relative;
+            }
+            .btn::before,
+            .btn::after {
+                content: '';
+                inset: 0;
+                clip-path: var(--clip-base);
+                position: absolute;
+                z-index: -1;
+            }
+            .btn::before {
+                background-color: #02ffd3;
+                transform: translateX(.6vmin);
+            }
+            .btn::after {
+                background-color: #ff013c;
+            }
+            .btn i {
+                color: #000;
+                font-size: .5vmin;
+                position: absolute;
+                right: 6.5%;
+                bottom: -47%;
+            }
+            .btn .glitch {
+                display: none;
+                inset: -0.5vmin;
+                background-color: #02ffd3;
+                text-shadow: -.2vmin -.2vmin #02ffd3,
+                .2vmin .2vmin #fff700;
+                clip-path: var(--clip-base);
+                position: absolute;
+                animation: ani 2s infinite linear;
+
+                /* 都是用作动画的裁剪区域变量，可以按照自己的想法来 */
+                --clip-0: polygon(0 0, 0 0, 0 0, 0 0);
+                --clip-1: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+                --clip-2: polygon(
+                    0 80%,
+                    100% 80%,
+                    100% 100%,
+                    95% 100%,
+                    95% 90%,
+                    85% 90%,
+                    85% 100%,
+                    5% 100%,
+                    0 80%
+                );
+                --clip-3: polygon(0 54%, 100% 54%, 100% 44%, 0 44%);
+                --clip-4: polygon(0 60%, 100% 60%, 100% 40%, 0 40%);
+                --clip-5: polygon(0 40%, 100% 40%, 100% 85%, 4% 85%, 0 70%);
+                --clip-6: polygon(0 63%, 100% 63%, 100% 80%, 3% 80%, 0 70%);
+                --clip-7: polygon(0 10%, 100% 10%, 100% 0, 0 0);
+
+            }
+            @keyframes ani {
+                0% {
+                    clip-path: var(--clip-1);
+                }
+                2% {
+                    clip-path: var(--clip-2);
+                    transform: translate(-1vmin);
+                }
+                6% {
+                    clip-path: var(--clip-2);
+                    transform: translate(1vmin);
+                }
+                8% {
+                    clip-path: var(--clip-2);
+                    transform: translate(-1vmin);
+                }
+                9% {
+                    clip-path: var(--clip-2);
+                }
+                10% {
+                    clip-path: var(--clip-3);
+                    transform: translate(1vmin);
+                }
+                13% {
+                    clip-path: var(--clip-3);
+                }
+                13.1% {
+                    clip-path: var(--clip-0);
+                    transform: translate(1vmin);
+                }
+                15% {
+                    clip-path: var(--clip-4);
+                    transform: translate(1vmin);
+                }
+                20% {
+                    clip-path: var(--clip-4);
+                    transform: translate(-1vmin);
+                }
+                20.1% {
+                    clip-path: var(--clip-0);
+                    transform: translate(1vmin);
+                }
+                25% {
+                    clip-path: var(--clip-5);
+                    transform: translate(1vmin);
+                }
+                30% {
+                    clip-path: var(--clip-5);
+                    transform: translate(-1vmin);
+                }
+                30.1% {
+                    clip-path: var(--clip-0);
+                }
+                35% {
+                    clip-path: var(--clip-6);
+                    transform: translate(-1vmin);
+                }
+                40% {
+                    clip-path: var(--clip-6);
+                    transform: translate(1vmin);
+                }
+                45% {
+                    clip-path: var(--clip-6);
+                    transform: translate(-1vmin);
+                }
+                50% {
+                    clip-path: var(--clip-6);
+                }
+                55% {
+                    clip-path: var(--clip-7);
+                    transform: translate(1vmin);
+                }
+                60% {
+                    clip-path: var(--clip-7);
+                }
+                60.1% {
+                    clip-path: var(--clip-0);
+                }
+                65% {
+                    clip-path: var(--clip-5);
+                    transform: translate(-1vmin);
+                }
+                68% {
+                    clip-path: var(--clip-5);
+                    transform: translate(1vmin);
+                }
+                80% {
+                    clip-path: var(--clip-0);
+                }
+                100% {
+                    clip-path: var(--clip-0);
+                }
+            }
+            .btn .glitch::before {
+                content: '';
+                inset: .2vmin .8vmin .6vmin .5vmin;
+                background-color: #ff013c;
+                position: absolute;
+                z-index: -1;
+            }
+            .btn:hover .glitch {
+                display: block;
+            }
+        </style>
+        <body>
+            <button class="btn">
+                <span>CyberPunk 2077</span>
+                <span class="glitch">CyberPunk 2077</span>
+                <i class="r18">R18</i>
+            </button>
+        </body>
+    </head>
+</html>

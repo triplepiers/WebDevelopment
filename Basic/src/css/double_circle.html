@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CSS Tricky Shape</title>
+        <!-- 我不知道为什么要用#000的填充+blur滤镜做阴影，但我大受震撼 -->
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #111;
+        }
+        .box {
+            position: relative;
+            width: 340px;
+            height: 200px;
+            display: flex;
+        }
+        .box .circle {
+            position: relative;
+            min-width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 25px solid #fff;
+        }
+        .box .circle:nth-child(2) {
+            border-color: #f00;
+            left: -60px;
+        }
+        /* 用before做遮罩 */
+        .box .circle:nth-child(1)::before {
+            content: '';
+            position: absolute;
+            z-index: 999;
+            /* 在border内再空出一个和border等宽的距离，负值就是向外膨胀出一个一样的圈 */
+            inset: -25px;
+            border: 25px solid transparent;
+            border-top: 25px solid #fff;
+            border-right: 25px solid #fff;
+            border-radius: 50%;
+            /* 转成上半部分白 */
+            transform: rotate(-45deg);
+        }
+        /* 上侧交叠部分的阴影 - 用黑色的背景然后blur做的？？ */
+        .box .circle:nth-child(1)::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            inset: -25px;
+            border-radius: 50%;
+            border: 25px solid transparent;
+            border-right: 25px solid #000;
+            transform: rotate(-65deg);
+            filter: blur(15px);
+        }
+        /* 红圈部分同理 */
+        .box .circle:nth-child(2)::before {
+            content: '';
+            position: absolute;
+            z-index: 999;
+            /* 在border内再空出一个和border等宽的距离，负值就是向外膨胀出一个一样的圈 */
+            inset: -25px;
+            border: 25px solid transparent;
+            border-bottom: 25px solid #f00;
+            border-left: 25px solid #f00;
+            border-radius: 50%;
+            /* 转成上半部分白 */
+            transform: rotate(-45deg);
+        }
+        .box .circle:nth-child(2)::after {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            inset: -25px;
+            border-radius: 50%;
+            border: 25px solid transparent;
+            border-left: 25px solid #000;
+            transform: rotate(-65deg);
+            filter: blur(15px);
+        }
+    </style>
+    <body>
+        <div class="box">
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    </body>
+</html>

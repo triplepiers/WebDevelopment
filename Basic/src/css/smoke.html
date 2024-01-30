@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字烟雾化</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    section {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #111;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+    section .text {
+        position: relative;
+        color: #fff;
+        margin: 40px;
+        max-width: 800px;
+        user-select: none;
+        font-size: 1.5em;
+    }
+    section .text span {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        transform-origin: bottom;
+    }
+    section .text span.smoke {
+        animation: besmoke 2s linear forwards;
+    }
+    @keyframes besmoke {
+        0% {
+            opacity: 1;
+            filter: blur(0);
+            transform: translate(0,0) rotate(0deg) scale(1);
+        }
+        50% {
+            opacity: 1;
+            pointer-events: none;
+        }
+        100% {
+            opacity: 0;
+            filter: blur(20px);
+            transform: translate(300px, -300px) rotate(720deg) scale(4);
+        }
+    }
+</style>
+
+<body>
+    <section>
+        <p class="text">
+            Verum, sine mendacio, certum et verissimum: Quod est inferius est sicut quod est superius, et quod est
+            superius est sicut quod est inferius, ad perpetranda miracula rei unius. Et sicut res omnes fuerunt ab uno,
+            meditatione unius, sic omnes res natae ab hac una re, adaptatione. Pater eius est Sol. Mater eius est Luna.
+            Portavit illud Ventus in ventre suo. Nutrix eius terra est. Pater omnis telesmi totius mundi est hic.
+            Virtus eius integra est si versa fuerit in terram. Separabis terram ab igne, subtile ab spisso, suaviter,
+            magno cum ingenio. Ascendit a terra in coelum, iterumque descendit in terram, et recipit vim superiorum et
+            inferiorum. Sic habebis Gloriam totius mundi. Ideo fugiet a te omnis obscuritas. Haec est totius
+            fortitudinis fortitudo fortis, quia vincet omnem rem subtilem, omnemque solidam penetrabit. Sic mundus
+            creatus est. Hinc erunt adaptationes mirabiles, quarum modus est hic. Itaque vocatus sum Hermes
+            Trismegistus, habens tres partes philosophiae totius mundi. Completum est quod dixi de operatione Solis.
+        </p>
+    </section>
+    <script>
+        // split to spans
+        const text = document.querySelector("p.text");
+        // 我超，从未见过的正则表达式替换方法
+        text.innerHTML = text.textContent.replace(/\S/g, "<span>$&</span>");
+
+        // 实现 hover 逐字符雾化
+        document.querySelectorAll('p.text span').forEach((letter) => {
+            letter.addEventListener('mouseover', (e)=>{
+                e.target.classList = 'smoke';
+            })
+        })
+    </script>
+</body>
+
+</html>

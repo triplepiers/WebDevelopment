@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剪切路径动画尝试</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #333;
+        gap: 100px;
+    }
+    .clip {
+        width: 200px;
+        height: 200px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .img {
+        width: 100%;
+        height: 100%;
+        background-image: url(../../img/me.jpg);
+        background-size: cover;
+    }
+    #clip {
+        clip-path: polygon(50% 0, 50% 0, 100% 100%, 0% 100%);
+    }
+    #circle {
+        clip-path: polygon(25% 0, 50% 50%, 0 25%, 0 25%, 0 25%, 0 25%, 0 0);
+    }
+    @keyframes circular {
+        0% {
+            clip-path: polygon(25% 0, 50% 50%, 0 25%, 0 25%, 0 25%, 0 25%, 0 0);
+        }
+        25% {
+            clip-path: polygon(25% 0, 50% 50%, 0 100%, 0 100%, 0 100%, 0 100%, 0 0);
+        }
+        50% {
+            clip-path: polygon(25% 0, 50% 50%, 100% 100%, 100% 100%, 100% 100%, 0 100%, 0 0);
+        }
+        75% {
+            clip-path: polygon(25% 0, 50% 50%, 100% 0, 100% 0, 100% 100%, 0 100%, 0 0);
+        }
+        100% {
+            clip-path: polygon(25% 0, 50% 50%, 25% 0, 100% 0, 100% 100%, 0 100%, 0 0);
+        }
+    }
+    .circle:hover #circle {
+        animation: circular 1.5s linear forwards;
+    }
+    @keyframes back {
+        0% {
+            clip-path: circle(70.7% at 50% 50%);
+        }
+        100% {
+            clip-path: circle(49.9% at 50% 50%);
+        }
+    }
+    @keyframes clip {
+        0% {
+            clip-path: polygon(50% 0, 50% 0, 100% 100%, 0% 100%);
+        }
+        50% {
+            clip-path: polygon(100% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        100% {
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+        }
+    }
+    @keyframes restart {
+        0% {
+            clip-path: circle(49.9% at 50% 50%);
+        }
+        25% {
+            clip-path: circle(0% at 50% 50%);
+        }
+        26% {
+            clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+        }
+        50% {
+            clip-path: polygon(50% 0, 50% 0, 100% 100%, 0% 100%);
+        }
+        75% {
+            clip-path: polygon(100% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        100% {
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+        }
+    }
+</style>
+<body>
+    <div class="clip">
+        <div class="img" id="clip"></div>
+    </div>
+    <!-- 一个顺时针动画的尝试 -> border 50% 的方形 -->
+    <div class="circle">
+        <div class="img" id="circle"></div>
+    </div>
+    <script>
+        var lock = true;
+        var init = true;
+        const clip = document.getElementById("clip");
+        clip.onmouseover = function() {
+            if(lock) {
+                if(init) {
+                    clip.style.animation = "clip 2s ease-in-out forwards";
+                    lock = false;
+                    setTimeout("lock=true;", 2000);
+                } else {
+                    clip.style.animation = "restart 2.2s ease-in-out forwards";
+                    lock = false;
+                    setTimeout("lock=true;", 2000);
+                }
+            }
+        }
+        clip.onmouseleave = function() {
+            if(init) {
+                init = false;
+            }
+            if(lock) {
+                clip.style.animation = "back 1s ease-in-out forwards";
+                state = 0;
+                lock = false;
+                setTimeout("lock=true", 1000);
+            } else {
+                setTimeout("clip.style.animation = 'back 1s ease-in-out forwards'", 2000);
+            }
+        }
+    </script>
+</body>
+</html>

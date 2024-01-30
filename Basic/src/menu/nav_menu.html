@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900'); 
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body {
+        min-height: 100vh;
+        background-image: linear-gradient(45deg, #ff216d, #2196f3);
+    }
+    .navi {
+        position: fixed;
+        top: 20px;
+        height: 20px;
+        right: 20px;
+        width: 250px;
+        z-index: 100;
+        border-radius: 4px 4px 0 0;
+        /* overflow: hidden; */
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .toggle {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: white;
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center; /*水平居中*/
+        color: #ff216d;
+        padding: 5px 20px;
+        border-radius: 4px 4px 0 0;
+    }
+    .toggle::before {
+        content: 'Menu';
+        margin-right: 10px;
+    }
+    .toggle.active::before {
+        content: 'Close';
+    }
+    .toggle span {
+        position: relative;
+        width: 20px;
+        height: 50px;
+    }
+    /* 手画俩线 */
+    .toggle span::before {
+        content: '';
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ff216d;
+        transition: 0.5s;
+    }
+    .toggle span::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #2196f3;
+        transition: 0.5s;
+    }
+    .toggle.active span::before {
+        transform: rotate(225deg);
+        top: 24px;
+    }
+    .toggle.active span::after {
+        transform: rotate(135deg);
+        top: 24px;
+    }
+
+    ul {
+        position: relative;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    ul li {
+        position: relative;
+        list-style: none;
+        transition: 0.5s;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(-250px);
+    }
+    .navi.active ul li {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0px);
+        transition-delay: calc(0.1s*var(--i)); /*形成一个动画梯度*/
+    }
+    ul li a{
+        position: relative;
+        text-decoration: none;
+        display: block;
+        padding: 10px 20px;
+        height: 50px;
+        background-color: white;
+        color: #333;
+        transition: 0.5s;
+    }
+    ul li a:hover {
+        color: #2196f3;
+        background-color: #f6f6f6;
+    }
+</style>
+<body>
+    <div class="navi">
+        <div class="toggle"><span></span></div>
+        <ul>
+            <li style="--i:0;"><a href="#">Home</a></li>
+            <li style="--i:1;"><a href="#">About</a></li>
+            <li style="--i:2;"><a href="#">Service</a></li>
+            <li style="--i:3;"><a href="#">Work</a></li>
+            <li style="--i:4;"><a href="#">Team</a></li>
+            <li style="--i:5;"><a href="#">Contact</a></li>
+        </ul>
+    </div>
+</body>
+<script>
+    let navi = document.querySelector('.navi');
+    document.querySelector('.toggle').onclick = function() {
+        this.classList.toggle('active');
+        navi.classList.toggle('active');
+    }
+</script>
+</html>

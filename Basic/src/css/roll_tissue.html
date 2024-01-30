@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>一筒卷纸</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #3fb5e7;
+        }
+        .roll {
+            position: relative;
+        }
+        .roll_body {
+            width: 200px;
+            height: 200px;
+            background-color: #fefefe;
+            /* 没懂？ */
+            border-radius: 0 40px 40px/0 50% 50% 0;
+        }
+        .roll_side {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -40px;
+            width: 80px;
+            background-color: #f2fcfe;
+            border-radius: 50%;
+        }
+        .roll_side .hole {
+            position: absolute;
+            width: 30px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #b6e5f9;
+            border-radius: 50%;
+        }
+        .roll_face {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background-color: #fefefe;
+            top: 40%;
+            right: 1px;
+            border-radius: 0 0 5px 5px;
+            border-top: 2px dashed #dff8fd;
+            overflow: hidden;
+        }
+        .roll_face::after {
+            content: '';
+            position: absolute;
+            height: 40px;
+            width: auto;
+            bottom: -10px;
+            left: -10px;
+            right: -10px;
+            background-color: #f2fcfe;
+            transform: rotate(-8deg);
+        }
+    </style>
+    <body>
+        <div class="roll">
+            <div class="roll_body"></div>
+            <div class="roll_side">
+                <div class="hole"></div>
+            </div>
+            <div class="roll_face"></div>
+        </div>
+    </body>
+</html>

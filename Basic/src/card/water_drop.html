@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- 水滴卡片，附悬停交互 -->
+<!-- 奇妙的边缘生成器：9elements.github.io/fancy-border-radius -->
+<html>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');   
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #eff0f4;
+        }
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* nowrap强制所有元素绑在同一行，过窄时溢出；
+               wrap在过窄时会自动换行 */
+            flex-wrap: wrap;
+            padding: 50px 0;
+            gap: 40px 60px;
+        }
+        .container .drop {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            padding: 50px 0;
+            /* 很奇妙，加了inset之后就变成向内的阴影了 */
+            box-shadow: inset 20px 20px 20px rgba(0,0,0,.05),
+            25px 35px 20px rgba(0,0,0,.05),
+            25px 30px 30px rgba(0,0,0,.05),
+            inset -20px -20px 25px rgba(255,255,255,.9);
+            /* 随后一行是逆向的高光 */
+            transition: .5s ease-in-out;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container .drop:nth-child(1) {
+            border-radius: 30% 70% 70% 30% / 57% 42% 58% 43% ;
+        }
+        .container .drop:nth-child(2) {
+            border-radius: 73% 27% 37% 63% / 57% 42% 58% 43% ;
+        }
+        .container .drop:nth-child(3) {
+            border-radius: 44% 56% 35% 65% / 81% 69% 31% 19%  ;
+        }
+        .container .drop:hover {
+            /* 好家伙，直接过渡成正圆 */
+            border-radius: 50%;
+        }
+        /* 高光的两个圆圈 */
+        .container .drop::before {
+            content: "";
+            position: absolute;
+            top: 50px;
+            left: 90px;
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .container .drop::after {
+            content: "";
+            position: absolute;
+            top: 84px;
+            left: 124px;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .container .drop .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 40px;
+            gap: 15px;
+        }
+        /* 序号的小水滴 */
+        .container .drop .content h2 {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background-color: #eff0f4;
+            border-radius: 50%;
+            box-shadow: inset 2px 5px 10px rgba(0,0,0,.1),
+                        inset -2px -5px 10px rgba(255,255,255,1),
+                              15px 15px 10px rgba(0,0,0,.05),
+                              15px 10px 15px rgba(0,0,0,.025);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: var(--clr);
+        }
+        .container .drop .content a {
+            position: relative;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background-color: var(--clr);
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 2px 2px rgba(0,0,0,.25);
+            opacity: .75;
+            transition: .5s;
+        }
+        .container .drop:hover .content a {
+            opacity: 1;
+        }
+        /* 不明所以的白色横条 */
+        .container .drop .content a::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 65%;
+            height: 5px;
+            border-radius: 5px;
+            background-color: rgba(255,255,255,.5);
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="drop" style="--clr:#ff0f5b;">
+                <div class="content">
+                    <h2>01</h2>
+                    <p>I counldn'y wait for you to clean the cupboard. Cause i really want yo stay at your house. Got the speed of light, here.</p>
+                    <a href="#">Read Mode</a>
+                </div>
+            </div>
+            <div class="drop" style="--clr:#be01fe;">
+                <div class="content">
+                    <h2>02</h2>
+                    <p>I counldn'y wait for you to clean the cupboard. Cause i really want yo stay at your house. Got the speed of light, here.</p>
+                    <a href="#">Read Mode</a>
+                </div>
+            </div>
+            <div class="drop" style="--clr:#01b4ff;">
+                <div class="content">
+                    <h2>03</h2>
+                    <p>I counldn'y wait for you to clean the cupboard. Cause i really want yo stay at your house. Got the speed of light, here.</p>
+                    <a href="#">Read Mode</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

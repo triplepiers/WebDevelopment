@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>左右布局的轮播图</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100%;
+        min-height: 100vh;
+        background-color: rgb(200,182,182);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        position: relative;
+        width: 650px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .container .main {
+        width: 400px;
+        height: 500px;
+        transition: .4s;
+        background-size: cover;
+    }
+    .container .list {
+        width: 200px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .container .list .card {
+        position: relative;
+        width: 200px;
+        height: 90px;
+        right: 0;
+        transition: .5s;
+        overflow: hidden;
+    }
+    .card img {
+        position: absolute;
+        right: 0;
+        width: 200px;
+        /* transform: translate(0, -50px); */
+        transition: .5s;
+        /* 强行移动使之居中？ */
+    }
+    .card.hide {
+        opacity: 0;
+        /* 左移100% */
+        right: 250px;
+    }
+    .card:hover img {
+        opacity: 0;
+        right: 250px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="main"></div>
+        <div class="list">
+            <div class="card hide"><img src="./pic/1.jpg" alt=""></div>
+            <div class="card"><img src="./pic/2.jpg" alt=""></div>
+            <div class="card"><img src="./pic/3.jpg" alt=""></div>
+            <div class="card"><img src="./pic/4.jpg" alt=""></div>
+            <div class="card"><img src="./pic/5.jpg" alt=""></div>
+        </div>
+    </div>
+    <script>
+        // 获取 main 容器
+        let main = document.querySelector('.main');
+        // main.style.backgroundImage = "url('./pic/"+ [1] + ".jpg')";
+        // 获取 main 的图片路径
+        let cards = document.querySelectorAll('.card');
+        // 重置函数
+        function clear() {
+            cards.forEach(item => item.classList.remove('hide'));
+        }
+        // 选中函数
+        let idx = 0;
+        function choose() {
+            console.log(idx)
+            clear();
+            cards[idx].classList.add('hide');
+        }
+        // 计时器
+        var time;
+        function timer() {
+            time = setInterval(() => {
+                choose();
+                main.style.backgroundImage = "url('./pic/"+ [idx+1] + ".jpg')";
+                idx++;
+                if(idx == 5) idx = 0;
+            }, 1500)
+        }
+        // mouseOn
+        for(let i = 0; i < cards.length; i++) {
+            cards[i].onmousemove = function() {
+                main.style.backgroundImage = "url('./pic/"+ [i+1] + ".jpg')";
+                clear();
+                clearInterval(time);
+                idx = i+1;
+                if(idx >= 5) idx = 0;
+                timer();
+            }
+        }
+        timer();
+    </script>
+</body>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翻转卡片</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-image: linear-gradient(to right bottom, #e3dbf6, #a99bf9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        position: relative;
+        width: 350px;
+        height: 515px;
+        /* 转起来有倾斜感 */
+        perspective: 1000px;
+    }
+    /* 加个 inner 是为了 hover 的时候不会闪现 */
+    .card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: 1s;
+        transform: rotateY(0);
+        transform-style: preserve-3d;
+    }
+    .card:hover .card-inner {
+        transform: rotateY(180deg);
+    }
+    .front {
+        border-radius: 15px;
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../../img/carousel_18.png');
+        background-size: cover;
+        background-position: center;
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    .front > h2 {
+        font-weight: 500;
+        color: #fff;
+    }
+    .front > p {
+        color: #ccc;
+        font-size: 13px;
+    }
+    .front > button {
+        width: 120px;
+        border: 1px solid #fff;
+        color: #fff;
+        background-color: transparent;
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin-top: 20px;
+    } 
+    .back {
+        border-radius: 15px;
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        padding: 30px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transform: rotateY(180deg);
+    }
+    .back img {
+        width: 150px;
+        height: 150px;
+    }
+    .back h1 {
+        font-size: 50px;
+        line-height: 55px;
+        margin-bottom: 10px;
+    }
+    .back h1 span {
+        font-weight: 400;
+    }
+    .back p{
+        font-size: 14px;
+    }
+    .back .row {
+        display: flex;
+        margin-top: 30px;
+    }
+    .back .row .col {
+        flex: 1;
+        position: relative;
+        color: #555;
+        font-size: 12px;
+        text-align: center;
+    }
+    .back .row .col::after {
+        content: '';
+        width: 1.5px;
+        height: 20px;
+        background-color: #7800ad;
+        position: absolute;
+        top: 5px;
+        right: 0;
+    }
+    .back .row .col:last-child::after {
+        display: none;
+    }
+    .back .row .col h2 {
+        font-size: 20px;
+    }
+    .back .row .col p {
+        margin-top: 5px;
+    }
+    .back button {
+        background-color: #7800ad;
+        color: #fff;
+        border: 0;
+        outline: 0;
+        padding: 8px 25px;
+        border-radius: 30px;
+        font-size: 14px;
+        margin-right: 15px;
+        box-shadow: 0 8px 10px rgba(120,0,17,.3);
+    }
+    .back a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px;
+        text-decoration: none;
+    }
+    .back a i {
+        display: block;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        color: #555;
+    }
+</style>
+<body>
+    <div class="card">
+       <div class="card-inner">
+            <div class="front">
+                <h2>Sea Bee</h2>
+                <p>A Salty Fish in ZJU</p>
+                <button>Hover <Menu></Menu></button>
+            </div>
+            <div class= "back">
+                <img src="../../img/me.jpg"/>
+                <div class="wrap">
+                    <h1>Sea <span>Bee</span></h1>
+                    <p>I'm current a Software Engneering student in ZJU.</p>
+                    <div class="row">
+                        <div class="col">
+                            <h2>12K</h2>
+                            <p>Followers</p>
+                        </div>
+                        <div class="col">
+                            <h2>250</h2>
+                            <p>Following</p>
+                        </div>
+                        <div class="col">
+                            <h2>5K</h2>
+                            <p>Likes</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button>Follow</button>
+                        <a href="#"><i class="bx bxl-facebook-circle"></i></a>
+                        <a href="#"><i class="bx bxl-linkedin-square"></i></a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!-- 通过滚动条交互的由近及远动画：https://juejin.cn/post/7087766484587380767 -->
+<!-- 1. 我们给容器设置上 transform-style: preserve-3d 和 perspective: xpx，那么处于这个容器的子元素就将位于3D空间中，
+     2. 再给子元素设置不同的 transform: translateZ()，这个时候，不同元素在 3D Z轴方向距离屏幕（我们的眼睛）的距离也就不一样
+     3. 滚动滚动条，由于子元素设置了不同的 transform: translateZ()，那么他们滚动的上下距离 translateY 相对屏幕（我们的眼睛），也是不一样的，这就达到了滚动视差的效果。-->
+<html>
+    <style>
+        body {
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #333;
+        }
+        .scroller {
+            width: 100%;
+            height: 1000vh;
+            overflow-x: hidden;
+            position: relative;
+            overflow-y: auto;
+        }
+        main {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            perspective: 15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+        }
+        @media only screen and (max-width: 600px) {
+            main {
+                font-size: 1.6rem;
+            }
+        }
+        .chat {
+            padding: 1rem;
+            transform-style: preserve-3d;
+            transform-origin: bottom center;
+            transform: translateY(calc(-50% + 10rem)) translateZ(calc(100vh * var(--phase, 0))) rotateX(90deg);
+            height: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            max-width: 80rem;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        .chat .dialog {
+            height: 100%;
+            transform: rotateX(-90deg);
+            transform-origin: center bottom;
+            flex: 1;
+            opacity: calc(1 - var(--focal));
+            display: flex;
+            align-items: flex-end;
+            position: relative;
+            width: 100%;
+        }
+        .chat .dialog figure {
+            display: flex;
+            align-items: flex-end;
+            position: absolute;
+            width: 100%;
+        }
+        .chat .dialog figure img {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 5rem;
+            margin-inline-end: 1rem;
+            border: solid 1px rgba(0, 0, 0, 0.3);
+        }
+        .chat .dialog figure p {
+            background-color: lightsteelblue;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 60%;
+            border: solid 1px rgba(0, 0, 0, 0.3);
+            color: rgba(0, 0, 0, 0.7);
+        }
+        @media only screen and (max-width: 600px) {
+            .chat .dialog figure p {
+                padding: 1rem;
+            }
+        }
+        .chat .dialog.me {
+            justify-content: flex-end;
+        }
+        .chat .dialog.me img {
+            margin-inline-end: 0;
+            margin-inline-start: 1rem;
+        }
+        .chat .dialog.me figure {
+            flex-direction: row-reverse;
+        }
+        .chat .dialog.me figure p {
+            background-color: palegoldenrod;
+        }
+    </style>
+    <body>
+        <div class="scroller"></div>
+<main>
+	<section class="chat">
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Scroll to see the chat.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Lorem ipsum dolor sit.</p>
+			</figure>
+		</div>
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat rerum non quod nulla excepturi.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Lorem, ipsum.</p>
+			</figure>
+		</div>
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ex rem? Sint ratione reprehenderit ut, asperiores incidunt recusandae illo soluta molestiae culpa eius.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Lorem ipsum dolor sit amet!</p>
+			</figure>
+		</div>
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Lorem ipsum dolor sit amet.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Lorem ipsum dolor sit.</p>
+			</figure>
+		</div>
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat rerum non quod nulla excepturi, quam doloremque.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, harum?</p>
+			</figure>
+		</div>
+		<div class="dialog you">
+			<figure>
+				<img src="https://picsum.photos/id/38/256/256" />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+			</figure>
+		</div>
+		<div class="dialog me">
+			<figure>
+				<img src="https://picsum.photos/id/39/256/256" />
+				<p>Leave a like if you like this pen! xD</p>
+			</figure>
+		</div>
+	</section>
+</main>
+    </body>
+    <script>
+        const chats = [...document.querySelectorAll('.chat .dialog')];
+
+        const onScroll = _ => {
+            const { scrollTop, scrollHeight, clientHeight } = document.scrollingElement;
+            const phase = scrollTop / (scrollHeight - clientHeight);
+            document.body.style.setProperty('--phase', phase);
+            
+            chats.forEach((e, i) => {
+                const step = 1 / chats.length;
+                const focalPoint = step * (i - 1);
+                const focal = Math.min(Math.max(1 - (phase - focalPoint) / step, -1), 1);
+                e.style.setProperty('--focal', focal);
+                e.style.opacity = Math.min(Math.max(1 + focal * 2, 0), 1);
+                
+                const dist = (phase - step * i) / step;
+                e.style.filter = `blur(${Math.min(Math.abs(dist ** 2 * 0.5), 1.2)}rem)`;
+            });
+        };
+
+        window.addEventListener('scroll', onScroll);
+        onScroll();
+    </script>
+</html>
