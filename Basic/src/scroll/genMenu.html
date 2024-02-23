@@ -202,6 +202,11 @@
                 Blogs that make up the entire website usually rely on the content itself rather than sell a product or
                 market a service.
             </p>
+            <p>
+                When blogs are a section of a larger website, the website provides the bulk of the information and uses
+                a blog feature to keep users updated and engaged. For example, think of an online store that also offers
+                a blog about their various products and how to use them.
+            </p>
         </article>
     </main>
     <script>
@@ -221,14 +226,24 @@
             }
 
             activate() {
+                let idx = 0;
                 for (let t of this.titles) {
-                    if (t.offsetTop - document.documentElement.scrollTop > 30) {
+                    let offset = t.offsetTop - document.documentElement.scrollTop;
+                    if (offset > 20) {
+                        console.log(idx)
                         // clear
                         this.menu.childNodes.forEach(item => item.className = "");
+
                         // activate
-                        document.querySelector(`main #menu *[titleId="${t.id}"]`).className = "active"
+                        if(idx == 0 && offset<this.maxOffset) {
+                            document.querySelector(`main #menu *[titleId="${t.id}"]`).className = "active";
+                        } else {
+                            document.querySelector(`main #menu *[titleId="${this.titles[idx-1].id}"]`).className = "active";
+                        }
+                        
                         return;
                     }
+                    idx += 1;
                 }
             }
 
@@ -256,8 +271,13 @@
 
             scrollActive() {
                 this.activate();
+                this.maxOffset = document.body.clientHeight;
+
                 document.addEventListener("scroll", () => {
                     this.activate();
+                })
+                document.addEventListener("resize", () => {
+                    this.maxOffset = document.body.clientHeight;
                 })
             }
         }
