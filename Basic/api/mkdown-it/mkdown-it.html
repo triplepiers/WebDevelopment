@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配置 MarkDown-It</title>
+    <link rel="stylesheet" href="./tokyo-night-dark.min.css">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #333;
+        color: #bbb;
+        padding: 50px 40px;
+    }
+
+    main article * {
+        scroll-margin-top: 60px;
+    }
+
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 50px;
+        background-color: #000;
+        color: #fff;
+        line-height: 50px;
+        padding-left: 20px;
+        font-weight: 900;
+    }
+
+    main {
+        display: flex;
+        column-gap: 20px;
+        justify-content: center;
+        padding-top: 30px;
+    }
+
+    main menu {
+        flex-shrink: -1;
+        flex-grow: -1;
+        min-width: 250px;
+    }
+
+    main #menu {
+        position: fixed;
+        top: 120px;
+        width: 250px;
+    }
+
+    main #menu * {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.2em;
+        transition: .6s;
+    }
+
+    main #menu *.active {
+        color: orange;
+    }
+
+    main #menu h1 {
+        color: #777;
+    }
+
+    main #menu h2 {
+        margin: 20px 0 5px 0;
+    }
+
+    main #menu h3 {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 8px 0;
+        padding-left: 1em;
+    }
+
+    main article {
+        max-width: 800px;
+    }
+
+    article h1 {
+        font-size: 40px;
+        color: #fff;
+        margin: 30px 0;
+    }
+
+    article h2 {
+        font-size: 30px;
+        color: #50b72d;
+        margin: 20px 0;
+    }
+
+    article h3 {
+        font-size: 20px;
+        color: #ebe126;
+        margin: 10px 0;
+    }
+
+    article p {
+        text-align: justify;
+        text-indent: 1.8em;
+        line-height: 2em;
+        margin: .5em;
+    }
+
+    /* 代码块圆角 */
+    pre code {
+        border-radius: 10px;
+    }
+</style>
+
+<body>
+    <header>
+        HEADER: 占一下位置
+    </header>
+    <main>
+        <menu>
+            <div id="menu">
+                <h1>Menu</h1>
+            </div>
+        </menu>
+        <article></article>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.0/markdown-it.min.js"
+        integrity="sha512-A1dmQlsxp9NpT1ON0E7waXFEX7PXtlOlotHtSvdchehjLxBaVO5itVj8Z5e2aCxI0n02hqM1WoDTRRh36c5PuA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+
+    <script>
+        class MenuGenerator {
+            constructor(titleNameList = ['h2', 'h3']) {
+                this.menu = document.querySelector('main #menu');
+                // init position
+                this.menu.style.left = document.querySelector('main menu').offsetLeft;
+
+                // 预处理
+                let titles = ""
+                titleNameList.forEach(titleName => {
+                    titles += `main article ${titleName}, `
+                });
+                this.titles = document.querySelectorAll(titles.slice(0, -2));
+            }
+
+            activate() {
+                let idx = 0;
+                for (let t of this.titles) {
+                    let offset = t.offsetTop - document.documentElement.scrollTop;
+                    if (offset > 20) {
+                        // clear
+                        this.menu.childNodes.forEach(item => item.className = "");
+
+                        // activate
+                        if (idx == 0 && offset < this.maxOffset) {
+                            document.querySelector(`main #menu *[titleId="${t.id}"]`).className = "active";
+                        } else {
+                            document.querySelector(`main #menu *[titleId="${this.titles[idx - 1].id}"]`).className = "active";
+                        }
+
+                        return;
+                    }
+                    idx += 1;
+                }
+            }
+
+            genMenu() {
+                let idx = 0;
+                this.titles.forEach(item => {
+                    // 正文标题处理
+                    item.id = `${idx}`;
+
+                    // 目录生成
+                    let curItem = document.createElement(`${item.tagName}`);
+                    curItem.innerText = item.innerText;
+                    curItem.setAttribute("titleId", `${idx}`);
+
+                    // 添加滚动事件
+                    curItem.addEventListener("click", (e) => {
+                        location.href = `#${e.target.getAttribute("titleId")}`;
+                    })
+
+                    this.menu.appendChild(curItem);
+
+                    idx += 1
+                })
+            }
+        }
+    </script>
+
+    <script>
+        function fetchAndRender(URL, articleEle) {
+            // 载入 mkdonw-it
+            const md = window.markdownit({
+                html:   true, // 允许使用 HTML 标签
+                breaks: true  // 将 '\n' 转成 <br>
+            });
+            
+            // response.body 是个 ReadableStream
+            fetch(URL)
+                .then((response) => response.body.pipeTo(
+                    new WritableStream({
+                        write(chunk) {
+                            // render
+                            articleEle.innerHTML += md.render(
+                                new TextDecoder().decode(new Uint8Array(chunk))
+                            );
+                        }
+                    })
+                ))
+                .then(() => { // hilight
+                    /* 关于更改样式 hilightJS 样式表的说明
+                        1. 前往 https://highlightjs.org/download
+                        2. 勾选所有需要 parse 的语言
+                        3. Download & 解压
+                        4. 打开 /styles 找到需要的主题样式表，引入（在 <head> 里更改）
+                    */
+                    document.querySelectorAll('pre code').forEach((el) => {
+                        hljs.highlightElement(el);
+                    });
+                })
+                .then(() => new MenuGenerator(["h2", "h3"]).genMenu()) // genMenu
+        }
+    </script>
+
+    <script>
+        window.onload = () => {
+            var article = document.querySelector("main article");
+            if (article) { fetchAndRender("./md-text.md", article) }; // 获取文本内容并渲染
+        }
+    </script>
+</body>
+
+</html>
