@@ -1,0 +1,97 @@
+<!-- 
+    
+    REFERENCE: https://github.com/WebDevSimplified/logical.so-scroll-animation
+    - Top-Right 颜色渐变的实现：监听 scroll 事件，并用 JS 修改透明度
+    - Change-Img 使用 Intersection Observer 监听
+      => 在每个 section 末尾添加 div[data-img-to-show]
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="imgs">
+    <img src="./img/1.png" data-img id="img-1" class="top-section-img show" />
+    <img src="./img/2.png" data-img id="img-2" />
+    <img src="./img/3.png" data-img id="img-3" />
+  </div>
+  <section class="top-section full-screen-section">
+    <div class="left">
+      <h1>Build Better Backends</h1>
+      <p>
+        The only platform that gives AI the ability to autonomously build web
+        services.
+      </p>
+    </div>
+    <div class="right"></div>
+  </section>
+  <section class="full-screen-section first-main-section">
+    <h1>Completely Visual</h1>
+    <p>Never touch the command line, from provision to production.</p>
+    <div data-img-to-show="#img-1"></div>
+  </section>
+  <section class="full-screen-section">
+    <h1>Full Stack</h1>
+    <p>
+      Never manage infrastructure again. One click gets you: a database, APIs,
+      deployments, hosting, etc.
+    </p>
+    <div data-img-to-show="#img-2"></div>
+  </section>
+  <section class="full-screen-section">
+    <h1>Launch Faster</h1>
+    <p>Logical can get systems to market in minutes instead of weeks.</p>
+    <div data-img-to-show="#img-3"></div>
+  </section>
+  <script>
+    // 监听页面滚动进度，并设置 CSS 属性
+    function setScrollVar() {
+      const htmlEle = document.documentElement;
+
+      // 垂直滚动百分比
+      const percentY = htmlEle.scrollTop / htmlEle.clientHeight;
+
+      // 只关注 [0, 100]（首屏）进度
+      htmlEle.style.setProperty(
+        "--scroll",
+        Math.min(percentY * 100, 100)
+      );
+    }
+
+    // 刷新页面时，应用更改
+    setScrollVar();
+    // 监听页面滚动事件，设置滚动变量
+    window.addEventListener("scroll", setScrollVar);
+    // resize 可能改变 clientHeight
+    window.addEventListener("resize", setScrollVar);
+
+    // 监听 [data-img-to-show] 标签是否进入视口
+    const observer = new IntersectionObserver(entries => {
+      // 逆序遍历，保证两个页面同时在视口内时，显示下一张
+      for (let i = entries.length - 1; i >= 0; i--) {
+        const entry = entries[i]; // 就是第 i 个 data-img-to-show
+        if (entry.isIntersecting) {
+          // clear Imgs
+          document.querySelectorAll("[data-img]").forEach((img) => {
+            img.classList.remove("show"); // hide
+          })
+          // active (获取 data-img-to-show 属性值)
+          const img = document.querySelector(entry.target.dataset.imgToShow);
+          img?.classList.add("show");
+          // only the LAST section
+          break;
+        }
+      }
+    })
+
+    document.querySelectorAll("[data-img-to-show]").forEach((item) => {
+      observer.observe(item); // 监听每一个 [data-img-to-show]
+    })
+  </script>
+</body>
+</html>
