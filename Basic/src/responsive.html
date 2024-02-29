@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不适用媒体查询实现响应式布局</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    section {
+        min-height: 100vh;
+        width: 100%;
+        background-color: #333;
+        color: aquamarine;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 50px;
+    }
+    section h1 {
+        font-size: 50px;
+    }
+    section .parent {
+        width: 100%;
+        outline: 5px solid hotpink;
+        padding: 1rem;
+    }
+    section#flex .cluster {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+    section .cluster div,
+    section .auto-grid div,
+    section .flexible-grid div,
+    section .reel div,
+    section .main-with-sidebar div {
+        background-color: darkblue;
+        color: aqua;
+        padding: 5px 20px;
+        text-wrap: nowrap;
+    }
+    section#grid .auto-grid {
+        --min-col-width: 18rem;
+        display: grid;
+        gap: 1rem;
+        /* 规定了 最大&最小 列宽 10rem, 1fr */
+        /* 前面的 min 防止太窄的时候溢出 */
+        grid-template-columns: repeat(auto-fit, minmax(min(var(--min-col-width), 100%), 1fr));
+    }
+    section#flex-grid .flexible-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    section#flex-grid .flexible-grid > * {
+        flex: 1;
+    }
+    section#reel .reel {
+        --gap: 1rem;
+        display: grid;
+        gap: var(--gap);
+        /* 自动生成列，有点像 flex-row */
+        grid-auto-flow: column;
+        /* 等宽：每一列列宽占比 0-100%*/
+        grid-auto-columns: 30%;
+        overflow-x: scroll;
+        /* 显示横向滚动条 */
+        scroll-snap-type: x mandatory;
+        /* snap-align 的边距 */
+        scroll-padding: var(--gap);
+    }
+    section#reel .reel > * {
+        /* 只要余量足够，左边对准开头 */
+        scroll-snap-align: start;
+    }
+    section#lr .main-with-sidebar {
+        display: flex; 
+        flex-wrap: wrap;
+        align-items: start;
+        gap: 1rem;
+    }
+    section .main-with-sidebar p {
+        width: 100%;
+        margin: 10px;
+        text-wrap: wrap;
+        line-height: 1.5em;
+    }
+    /* 规定 min-width */
+    section#lr .main {
+        flex-basis: 500px;
+        /* 允许 main 内容增宽 */
+        flex-grow: 999;
+    }
+    section#lr .sidebar {
+        flex-basis: 300px;
+        /* 独占一行时撑满（大比例使得同一行时，sidebar 基本不变） */
+        flex-grow: 1;
+    }
+</style>
+<body>
+    <section id="flex">
+        <h1>Flex</h1>
+        <div class="parent">
+            <div class="cluster">
+                <div>雪灾这大</div>
+                <div>较无望</div>
+                <div>叉老师</div>
+                <div>图书馆</div>
+                <div>之云课堂</div>
+                <div>素质拓展</div>
+                <div>RVPN</div>
+                <div>WebVPN</div>
+                <div>折大邮箱</div>
+                <div>智慧树</div>
+            </div>
+        </div>
+    </section>
+    <section id="grid">
+        <h1>Auto-Grid 等宽</h1>
+        <div class="parent">
+            <div class="auto-grid">
+                <div>雪灾这大</div>
+                <div>较无望</div>
+                <div>叉老师</div>
+                <div>图书馆</div>
+                <div>之云课堂</div>
+                <div>素质拓展</div>
+                <div>RVPN</div>
+                <div>WebVPN</div>
+                <div>折大邮箱</div>
+                <div>智慧树</div>
+            </div>
+        </div>
+    </section>
+    <section id="flex-grid">
+        <h1>Flex-Grid 自适应</h1>
+        <div class="parent">
+            <div class="flexible-grid">
+                <div>雪灾这大</div>
+                <div>较无望</div>
+                <div>叉老师</div>
+                <div>图书馆</div>
+                <div>之云课堂</div>
+                <div>素质拓展</div>
+                <div>RVPN</div>
+                <div>WebVPN</div>
+                <div>折大邮箱</div>
+                <div>智慧树</div>
+            </div>
+        </div>
+    </section>
+    <section id="reel">
+        <h1>Reel</h1>
+        <div class="parent">
+            <div class="reel">
+                <div>雪灾这大</div>
+                <div>较无望</div>
+                <div>叉老师</div>
+                <div>图书馆</div>
+                <div>之云课堂</div>
+                <div>素质拓展</div>
+                <div>RVPN</div>
+                <div>WebVPN</div>
+                <div>折大邮箱</div>
+                <div>智慧树</div>
+            </div>
+        </div>
+    </section>
+    <section id="lr">
+        <h1>Main with Sidebar</h1>
+        <div class="parent main-with-sidebar">
+            <div class="main">
+                <h2>Definition of a blog</h2>
+                <p>Blogs are a type of regularly updated websites that provide insight into a certain topic. The word blog is a combined version of the words “web” and “log.” At their inception, blogs were simply an online diary where people could keep a log about their daily lives on the web. They have since morphed into an essential forum for individuals and businesses alike to share information and updates. In fact, many people even make money blogging as professional full-time bloggers. </p>
+                <p>As the publishing world has evolved, and more of it has moved online, blogs have come to occupy a central position in this digital content world. Blogs are a source of knowledge, opinion and concrete advice. While not yet posed to replace journalism as an art form, people increasingly look to trusted blogs to find answers to their questions, or to learn how to do something. </p>
+                <p>The top section of a blog often contains your blog's title or logo, along with a navigation menu that helps visitors explore different sections or categories of your blog. You might decide to categorize blogs from the same topic together, for repeat readers who are looking specifically from posts from that area of interest. </p>
+            </div>
+            <div class="sidebar">
+                <h2>Sidebar</h2>
+                <p>A blog may have a sidebar on one or both sides of the main content area. The sidebar often contains additional information or features such as a search bar, recent posts, popular posts, categories, tags, social media links, an about section, and advertisements. You can this part of your blog to help establish your blogs navigation, and site hierarchy to users and search engines. </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
