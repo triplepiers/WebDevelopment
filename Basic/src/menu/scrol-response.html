@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <title>响应式全屏滚动指示器</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: 'Ubuntu';
+        width: 100vw;
+        min-height: 100vh;
+        transition: all .5s ease, width 0s;
+    }
+    .info {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        color: #373737;
+        font-size: 1rem;
+        padding: 20px 0;
+    }
+    header {
+        width: 100%;
+    }
+    header nav {
+        top: 0;
+        left: 0;
+        position: fixed;
+        width: 100%;
+        height: 50px;
+        background-color: #343434;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        transition: .5s ease;
+    }
+    header nav a {
+        color: #fff;
+        text-decoration: none;
+        padding: 14px 0;
+        z-index: 1;
+        width: 100%;
+        font-size: 1.4rem;
+        border: 2px solid #000;
+        border-top-width: 0;
+        border-bottom-width: 4px;
+        transition: .5s ease;
+    }
+    /* 给菜单项加 hover 颜色 */
+    header nav a:nth-child(2):hover {
+        background-color: #f57c00;
+    }
+    header nav a:nth-child(3):hover {
+        background-color: #d32f2f;
+    }
+    header nav a:nth-child(4):hover {
+        background-color: #388e3c;
+    }
+    header nav a:nth-child(5):hover {
+        background-color: #7b1fa2;
+    }
+    /* 滚动进度条颜色 */
+    header nav::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 20%;
+        height: 100%;
+        z-index: -1;
+        background-image: linear-gradient(90deg, 
+            #1976d2 0 calc(20vw),
+            #f57c00 0 calc(40vw),
+            #d32f2f 0 calc(60vw),
+            #388e3c 0 calc(80vw),
+            #7b1fa2 0 100vw
+        );
+        animation: scroll-progress linear;
+        /*  
+            我超妙啊，直接用 scroll(root) 来监听滚动进度
+            但只能适用于全屏的样子
+        */
+        animation-timeline: scroll(root);
+    }
+    @keyframes scroll-progress {
+        100% {
+            width: 100%;
+        }
+    }
+    section {
+        height: 100vh;
+        min-height: 100vh;
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        border-bottom: 3px solid #000;
+        font-size: 4rem;
+    }
+    /* 控制下背景颜色 */
+    section#html {
+        background-color: #1976d2;
+    }
+    section#css {
+        background-color: #f57c00;
+    }
+    section#js {
+        background-color: #d32f2f;
+    }
+    section#php {
+        background-color: #388e3c;
+    }
+    section#sql {
+        background-color: #7b1fa2;
+    }
+    section p {
+        font-size: 1.25rem;
+    }
+    .hint {
+        position: fixed;
+        top: calc(50vh - 15px);
+        right: 20px;
+        width: 30px;
+        height: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .hint::after {
+        content: "Scroll";
+        position: absolute;
+        right: 2.5rem;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        bottom: .6rem;
+    }
+    .hint i {
+        font-size: 3rem;
+        color: #fff;
+    }
+    @media screen and (max-width: 700px) {
+        header nav a {
+            font-size: 1.2rem;
+        }
+        .hint::after {
+            font-size: 0;
+        }
+    }
+</style>
+<body>
+    <div class="info">
+        Progress Bar Only Works in CHROME!
+    </div>
+    <header>
+        <nav>
+            <a href="#html">HTML</a>
+            <a href="#css">CSS</a>
+            <a href="#js">JS</a>
+            <a href="#php">PHP</a>
+            <a href="#sql">SQL</a>
+        </nav>
+    </header>
+    <div class="hint">
+        <i class="bx bx-chevron-up"></i>
+        <i class="bx bx-dots-vertical-rounded"></i>
+        <i class="bx bx-mouse"></i>
+        <i class="bx bx-dots-vertical-rounded"></i>
+        <i class="bx bx-chevron-down"></i>
+    </div>
+
+    <section id="html">
+        <h2>HTML</h2>
+        <p>HyperText Markup Language</p>
+    </section>
+
+    <section id="css">
+        <h2>CSS</h2>
+        <p>Cascading Style Sheets</p>
+    </section>
+
+    <section id="js">
+        <h2>JS</h2>
+        <p>Client-Side Scripting Language</p>
+    </section>
+    
+    <section id="php">
+        <h2>PHP</h2>
+        <p>HyperText Preprocessor</p>
+    </section>
+
+    <section id="sql">
+        <h2>SQL</h2>
+        <p>Structured Query Language</p>
+    </section>
+</body>
+</html>
