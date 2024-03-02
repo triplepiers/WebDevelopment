@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>书本翻页模拟</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-color:rgb(95, 95, 95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    ul {
+        position: relative;
+        list-style: none;
+        width: 240px;
+        height: 340px;
+        
+        transform-style: preserve-3d;
+        perspective: 900px;
+    }
+    ul li {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        box-shadow: 1px 4px 5px rgba(0,0,0,.2);
+
+        /* 翻页 */
+        transform-origin: left;
+        transition: .5s ease;
+        transform: rotateY(0);
+        
+    }
+    ul li img {
+        user-select: none;
+        -webkit-user-drag: none;
+
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    ul:hover li {
+        transform: rotateY(calc(-1deg * (20 + var(--i)*2)));
+    }
+    ul.unfold li {
+        transform: rotateY(-180deg);
+        transition: 1s linear;
+        transition-delay: calc(var(--i) * .5s);
+    }
+</style>
+<body>
+    <ul id="book">
+        <li style="--i: 0;"><img src="../../img/carousel_1.png"></li>
+        <li style="--i: 1;"><img src="../../img/carousel_2.png"></li>
+        <li style="--i: 2;"><img src="../../img/carousel_3.png"></li>
+        <li style="--i: 3;"><img src="../../img/carousel_4.png"></li>
+        <li style="--i: 4;"><img src="../../img/carousel_5.png"></li>
+        <li style="--i: 5;"><img src="../../img/carousel_6.png"></li>
+        <li style="--i: 6;"><img src="../../img/carousel_7.png"></li>
+    </ul>
+    <script>
+        const book = document.getElementById("book");
+        if (book) {
+            book.addEventListener("click", ()=>book.classList.toggle("unfold"))
+        }
+    </script>
+</body>
+</html>
