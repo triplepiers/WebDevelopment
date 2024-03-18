@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自动生成标题实验</title>
+    <style>
+        :root {
+            --topBarHeight: 50px;
+            --footerHeight: 100px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-padding-top: calc(var(--topBarHeight) + 5px);
+        }
+
+        body {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #333;
+            color: #fff;
+            padding-bottom: var(--footerHeight);
+        }
+
+        header {
+            position: fixed;
+            z-index: 50;
+            top: 0;
+            width: 100%;
+            height: var(--topBarHeight);
+            background-color: rgba(0,0,0,.6);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .poster {
+            width: 100%;
+            height: 600px;
+            background-color: green;
+            margin-top: var(--topBarHeight);
+        }
+
+        .main {
+            display: flex;
+        }
+
+        .menubg {
+            border-right: 3px solid plum;
+            position: relative;
+            flex: 1;
+            min-width: 180px;
+            max-width: 240px;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            background-color: #333;
+            width: 100%;
+            border-top: 3px solid plum;
+            font-size: 30px;
+            line-height: 60px;
+            text-align: center;
+            padding: 20px;
+            height: var(--footerHeight);
+            background-color: #333;
+        }
+
+        #menu {
+            position: sticky;
+            top: var(--topBarHeight);
+            padding: 30px 20px;
+            width: 100%;
+            color: hotpink;
+        }
+
+        #menu .h2-sec {
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid .5s, opacity .8s;
+            opacity: 0;
+            font-size: 0;
+            padding-left: 15px;
+        }
+
+        #menu .t1.unfold+.h2-sec {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            font-size: 10px;
+        }
+
+        .h2-sec .t2 {
+            min-height: 0;
+        }
+
+        .t1.unfold+.h2-sec .t2 {
+            padding: 3px 0;
+        }
+
+        #menu.fixed {
+            position: fixed;
+            top: var(--topBarHeight);
+            width: 25%;
+            width: calc(min(max(180px, 25vw), 240px));
+        }
+
+        .content {
+            flex: 3;
+            padding: 20px 50px;
+            background-color: #333;
+        }
+
+        .t1 {
+            padding: 5px;
+            font-size: 15px;
+            transition: .5s;
+        }
+
+        .t1.unfold {
+            font-size: 20px;
+        }
+
+        p {
+            font-size: 15px;
+            margin: 20px 0;
+            line-height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>这是套铺巴尔</header>
+    <div class="poster"></div>
+    <div class="main">
+        <div class="menubg">
+            <div id="menu">
+            </div>
+        </div>
+        <div class="content">
+            <section class="s1">
+                <h1>1 第一节</h1>
+                <p>
+                    ※可复制正在再部署冷却的，或因部分机制暂时无法进行再部署的干员<br>
+                    ※复制的内容有且仅有描述中的内容。其中：<br>
+                    - 以相应的百分比复制当前生命上限/攻击/防御/法术抗性，与相同的当前阻挡数与初始攻击间隔作为自身的基础属性<br>
+                    - 以未受到模组/天赋影响的攻击范围作为自身的攻击范围<br>
+                    - 以复制干员的分支职业决定伤害类型，默认为法术，仅可设置为物理/法术<br>
+                    - 以复制干员的部署位判断自身的近战/远程特性<br>
+                    ※流形复制干员时，恢复所有生命值，重置自身窃取的攻击/防御及分裂计数；设置自身方向与进行复制行为时的方向一致，按上述规则重设自身属性值
+                    ※流形复制干员后，流形的攻击范围始终包含自身所在地块，始终可选择并优先选择自身阻挡的目标，始终仅可攻击1个目标，可对空<br>
+                    ※缪尔赛思的技能持续期间，流形已开启的技能会被中断，且无法开启其技能<br>
+                    ※进入战术点形态时，流形清空sp，且获得阻回；进入战术点形态不会使流形失去已复制的状态，不会重置窃取的攻击/防御及分裂计数<br>
+                    ※作为远程特性流形时：以自身当前方向为准召唤/刷新流形时，遵循前方1格>后方1格>左侧1格>右侧1格的顺序<br>
+                    ※更多信息参见流形
+                </p>
+                <section>
+                    <h2>1.1 第一小节</h2>
+                    <p>
+                        ※可复制正在再部署冷却的，或因部分机制暂时无法进行再部署的干员<br>
+                        ※复制的内容有且仅有描述中的内容。其中：<br>
+                        - 以相应的百分比复制当前生命上限/攻击/防御/法术抗性，与相同的当前阻挡数与初始攻击间隔作为自身的基础属性<br>
+                        - 以未受到模组/天赋影响的攻击范围作为自身的攻击范围<br>
+                        - 以复制干员的分支职业决定伤害类型，默认为法术，仅可设置为物理/法术<br>
+                        - 以复制干员的部署位判断自身的近战/远程特性<br>
+                        ※流形复制干员时，恢复所有生命值，重置自身窃取的攻击/防御及分裂计数；设置自身方向与进行复制行为时的方向一致，按上述规则重设自身属性值
+                        ※流形复制干员后，流形的攻击范围始终包含自身所在地块，始终可选择并优先选择自身阻挡的目标，始终仅可攻击1个目标，可对空<br>
+                        ※缪尔赛思的技能持续期间，流形已开启的技能会被中断，且无法开启其技能<br>
+                        ※进入战术点形态时，流形清空sp，且获得阻回；进入战术点形态不会使流形失去已复制的状态，不会重置窃取的攻击/防御及分裂计数<br>
+                        ※作为远程特性流形时：以自身当前方向为准召唤/刷新流形时，遵循前方1格>后方1格>左侧1格>右侧1格的顺序<br>
+                        ※更多信息参见流形
+                    </p>
+                </section>
+                <section>
+                    <h2>1.2 第二小节</h2>
+                    <p>
+                        ※可复制正在再部署冷却的，或因部分机制暂时无法进行再部署的干员<br>
+                        ※复制的内容有且仅有描述中的内容。其中：<br>
+                        - 以相应的百分比复制当前生命上限/攻击/防御/法术抗性，与相同的当前阻挡数与初始攻击间隔作为自身的基础属性<br>
+                        - 以未受到模组/天赋影响的攻击范围作为自身的攻击范围<br>
+                        - 以复制干员的分支职业决定伤害类型，默认为法术，仅可设置为物理/法术<br>
+                        - 以复制干员的部署位判断自身的近战/远程特性<br>
+                        ※流形复制干员时，恢复所有生命值，重置自身窃取的攻击/防御及分裂计数；设置自身方向与进行复制行为时的方向一致，按上述规则重设自身属性值
+                        ※流形复制干员后，流形的攻击范围始终包含自身所在地块，始终可选择并优先选择自身阻挡的目标，始终仅可攻击1个目标，可对空<br>
+                        ※缪尔赛思的技能持续期间，流形已开启的技能会被中断，且无法开启其技能<br>
+                        ※进入战术点形态时，流形清空sp，且获得阻回；进入战术点形态不会使流形失去已复制的状态，不会重置窃取的攻击/防御及分裂计数<br>
+                        ※作为远程特性流形时：以自身当前方向为准召唤/刷新流形时，遵循前方1格>后方1格>左侧1格>右侧1格的顺序<br>
+                        ※更多信息参见流形
+                    </p>
+                </section>
+            </section>
+            <section class="s1">
+                <h1>2 第二节</h1>
+                <p>※可复制正在再部署冷却的，或因部分机制暂时无法进行再部署的干员
+                    ※复制的内容有且仅有描述中的内容。其中：
+                    - 以相应的百分比复制当前生命上限/攻击/防御/法术抗性，与相同的当前阻挡数与初始攻击间隔作为自身的基础属性
+                    - 以未受到模组/天赋影响的攻击范围作为自身的攻击范围
+                    - 以复制干员的分支职业决定伤害类型，默认为法术，仅可设置为物理/法术
+                    - 以复制干员的部署位判断自身的近战/远程特性
+                    ※流形复制干员时，恢复所有生命值，重置自身窃取的攻击/防御及分裂计数；设置自身方向与进行复制行为时的方向一致，按上述规则重设自身属性值
+                    ※流形复制干员后，流形的攻击范围始终包含自身所在地块，始终可选择并优先选择自身阻挡的目标，始终仅可攻击1个目标，可对空
+                    ※缪尔赛思的技能持续期间，流形已开启的技能会被中断，且无法开启其技能
+                    ※进入战术点形态时，流形清空sp，且获得阻回；进入战术点形态不会使流形失去已复制的状态，不会重置窃取的攻击/防御及分裂计数
+                    ※作为远程特性流形时：以自身当前方向为准召唤/刷新流形时，遵循前方1格>后方1格>左侧1格>右侧1格的顺序
+                    ※更多信息参见流形。</p>
+                <h2>2.1 第二小节</h2>
+                <p>※可复制正在再部署冷却的，或因部分机制暂时无法进行再部署的干员
+                    ※复制的内容有且仅有描述中的内容。其中：
+                    - 以相应的百分比复制当前生命上限/攻击/防御/法术抗性，与相同的当前阻挡数与初始攻击间隔作为自身的基础属性
+                    - 以未受到模组/天赋影响的攻击范围作为自身的攻击范围
+                    - 以复制干员的分支职业决定伤害类型，默认为法术，仅可设置为物理/法术
+                    - 以复制干员的部署位判断自身的近战/远程特性
+                    ※流形复制干员时，恢复所有生命值，重置自身窃取的攻击/防御及分裂计数；设置自身方向与进行复制行为时的方向一致，按上述规则重设自身属性值
+                    ※流形复制干员后，流形的攻击范围始终包含自身所在地块，始终可选择并优先选择自身阻挡的目标，始终仅可攻击1个目标，可对空
+                    ※缪尔赛思的技能持续期间，流形已开启的技能会被中断，且无法开启其技能
+                    ※进入战术点形态时，流形清空sp，且获得阻回；进入战术点形态不会使流形失去已复制的状态，不会重置窃取的攻击/防御及分裂计数
+                    ※作为远程特性流形时：以自身当前方向为准召唤/刷新流形时，遵循前方1格>后方1格>左侧1格>右侧1格的顺序
+                    ※更多信息参见流形。</p>
+            </section>
+        </div>
+
+    </div>
+    <footer>
+        this is footer
+    </footer>
+    <script>
+
+        function genMenu() {
+            let menu = document.getElementById("menu");
+
+            let h1 = [...document.querySelectorAll(".content h1")];
+            let s1 = [...document.querySelectorAll(".content .s1")];
+
+            h1 = h1.map((item, idx) => {
+                // 设置 h1_ID
+                item.id = `${idx}`;
+
+                // 创建 t1 元素
+                let t1 = document.createElement("div");
+                t1.classList.add("t1");
+                t1.setAttribute('tid', `${idx}`);
+                t1.innerHTML = item.innerHTML;
+                menu.appendChild(t1);
+
+                // 创建 t2 容器
+                let sec = document.createElement("div");
+                sec.classList.add("h2-sec");
+                menu.appendChild(sec);
+
+                return [s1[idx], sec, 0];
+            });
+
+            let t2 = [...document.querySelectorAll(".content h2")];
+            let curSec = 0;
+
+            for (let h2 of t2) {
+                // 查找 h2 隶属的 h1
+                while (curSec < h1.length && h1[curSec][0].contains(h2) === false) {
+                    curSec += 1;
+
+                }
+                if (curSec >= h1.length) break; // 防止越界
+
+                // 设置 h2_ID
+                let curID = `${curSec}-${h1[curSec][2]}`
+                h1[curSec][2] += 1;
+                h2.id = curID;
+
+                // 创建 t2 元素
+                let t2 = document.createElement("div");
+                t2.classList.add("t2");
+                t2.setAttribute('tid', `${curID}`);
+                t2.innerHTML = h2.innerHTML;
+                h1[curSec][1].appendChild(t2);
+            }
+
+        }
+
+        function bind(tagStr, eventStr, func) {
+            let el = document.querySelectorAll(tagStr);
+            el.forEach((item) => item.addEventListener(eventStr, func))
+        }
+
+        function stickyMenu() {
+            // 主要还是监听滚动
+            const menu = document.getElementById("menu")
+
+            // 这个元素将被插入至 header 之前
+            const scrollWatcher = document.createElement('div')
+            scrollWatcher.setAttribute('data-scroll-watcher', '')
+            menu.before(scrollWatcher)
+
+            // 目的：偏移时添加 sticking
+            const navObserver = new IntersectionObserver(
+                (entries) => { // toggle 的作用是：不存在就添加，存在就删除
+                    menu.classList.toggle('fixed', !entries[0].isIntersecting)
+                }, {
+                // 不指定参数则判断与视口顶部相交，此时判断与下移 50px
+                rootMargin: "-50px 0px 0px 0px"
+            }
+            )
+            navObserver.observe(scrollWatcher) // 当 scrollWatcher 碰到视口顶部时，将触发构造函数中制定的 callback
+        }
+
+        let cb_t1 = function (e) {
+            // 修改展开状态
+            let t1 = [...document.querySelectorAll("#menu .t1")];
+            t1.forEach((item) => {
+                item.classList.remove("unfold");
+            });
+            e.target.classList.add("unfold");
+
+            // 滚动至对应位置
+            document.getElementById(e.target.getAttribute("tid"))
+                .scrollIntoView({
+                    block: "start",
+                    behavior: "smooth"
+                })
+        }
+
+        let cb_t2 = function(e) {
+            // 滚动至对应位置
+            document.getElementById(e.target.getAttribute("tid"))
+                .scrollIntoView({
+                    block: "start",
+                    behavior: "smooth"
+                })
+        }
+
+        Promise.resolve()
+            .then(() => stickyMenu())
+            .then(() => genMenu())
+            .then(() => bind("#menu .t1", "click", cb_t1))
+            .then(() => bind("#menu .t2", "click", cb_t2))
+
+
+    </script>
+</body>
+
+</html>

@@ -2,6 +2,10 @@
 
 ## 1 Todos
 
+- [] PRTS 角色展示组件复刻：https://m.prts.wiki/w/%E5%8F%8C%E6%9C%88#
+
+    `/api/CharName.ttf` 是不完整的字体包
+
 - [] 纯CSS视差：https://juejin.cn/post/7087766484587380767
 - [] Parralax Hover基本原理：https://juejin.cn/post/7126369893930237989
 

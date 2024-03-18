@@ -29,6 +29,8 @@
     ```
 ## [TailwindCSS](https://tailwindcss.com/docs)
 
+> 来自 [灰机Wiki的简要教程](https://www.huijiwiki.com/wiki/%E5%B8%AE%E5%8A%A9:Tailwind_CSS%E5%8F%82%E8%80%83#firstHeading)
+
 1. install TailwindCSS
 
     ```bash
