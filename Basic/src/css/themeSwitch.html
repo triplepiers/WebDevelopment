@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 CSS 变量的主题切换方案</title>
+</head>
+<style>
+    /* 记得对应的变量名要一致 */
+    :root {  /* :root 选的也是 html */
+        --ft-color: #333;
+        --bg-1: #c7ffdd;
+        --bg-2: #fbd988;
+    }
+    html[data-theme='dark'] {
+        --ft-color: #fff;
+        --bg-1: #102128;
+        --bg-2: #2d5567;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: var(--bg-1);
+        color: var(--ft-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .6s;
+    }
+    #switch {
+        user-select: none;
+        background-color: var(--bg-2);
+        font-size: 30px;
+        font-weight: 700;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <div class="btn" id="switch">Switch Theme</div>
+    <script>
+        const html = document.getElementsByTagName('html')[0];
+        var isDark = true;
+        document.getElementById('switch').addEventListener('click', () => {
+            if (isDark) {
+                html.dataset['theme'] = 'light';
+                isDark = false;
+            } else {
+                html.dataset['theme'] = 'dark';
+                isDark = true;
+            }
+        })
+    </script>
+</body>
+</html>
