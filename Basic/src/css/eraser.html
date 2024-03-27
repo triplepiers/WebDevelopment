@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字逐行擦除</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #333;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        max-width: 500px;
+        position: relative;
+    }
+
+    .container p {
+        line-height: 1.8em;
+        letter-spacing: .2em;
+        text-indent: 2em;
+    }
+    
+    .container p.eraser {
+        position: absolute;
+        top: 0;
+        left: 0;
+        inset: 0;
+    }
+
+    /* 通过修改 inline 元素实现：不然 background 不会分行 */
+    .container p.eraser span {
+        /* 只是需要一样的文本把盒子撑开 */
+        --p: 0%;
+        color: transparent;
+        background: linear-gradient(to right, transparent var(--p), #333 calc(var(--p) + 30px));
+        animation: erase 5s linear;
+    }
+
+    /* 通过 Houdini API 将 --p 变成 CSS 属性 */
+    @property --p {
+        syntax: '<percentage>';
+        initial-value: 0%;
+        inherits: false;
+    }
+
+    /* 因为 --p 本身是 CSS“属性” 而非 “变量”，所以不适用于 animation */
+    @keyframes erase {
+        to {
+            --p: 100%;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <p>
+            不要温和地走进那良夜，
+            老年应当在日暮时燃烧咆哮；
+            怒斥，怒斥光明的消逝。
+            虽然智慧的人临终时懂得黑暗有理，
+            因为他们的话没有迸发出闪电，他们
+            也并不温和地走进那个良夜。
+            善良的人，当最后一浪过去，高呼他们脆弱的善行
+            可能曾会多么光辉地在绿色的海湾里舞蹈，
+            怒斥，怒斥光明的消逝。
+            狂暴的人抓住并歌唱过翱翔的太阳，
+            懂得，但为时太晚，他们使太阳在途中悲伤，
+            也并不温和地走进那个良夜。
+            严肃的人，接近死亡，用炫目的视觉看出
+            失明的眼睛可以像流星一样闪耀欢欣，
+            怒斥，怒斥光明的消逝。
+            您啊，我的父亲。在那悲哀的高处。
+            现在用您的热泪诅咒我，祝福我吧。我求您
+            不要温和地走进那个良夜。
+            怒斥，怒斥光明的消逝。
+        </p>
+        <p class="eraser">
+            <!-- 里面套任意一个行元素 -->
+            <span>
+                不要温和地走进那良夜，
+                老年应当在日暮时燃烧咆哮；
+                怒斥，怒斥光明的消逝。
+                虽然智慧的人临终时懂得黑暗有理，
+                因为他们的话没有迸发出闪电，他们
+                也并不温和地走进那个良夜。
+                善良的人，当最后一浪过去，高呼他们脆弱的善行
+                可能曾会多么光辉地在绿色的海湾里舞蹈，
+                怒斥，怒斥光明的消逝。
+                狂暴的人抓住并歌唱过翱翔的太阳，
+                懂得，但为时太晚，他们使太阳在途中悲伤，
+                也并不温和地走进那个良夜。
+                严肃的人，接近死亡，用炫目的视觉看出
+                失明的眼睛可以像流星一样闪耀欢欣，
+                怒斥，怒斥光明的消逝。
+                您啊，我的父亲。在那悲哀的高处。
+                现在用您的热泪诅咒我，祝福我吧。我求您
+                不要温和地走进那个良夜。
+                怒斥，怒斥光明的消逝。
+            </span>
+        </p>
+    </div>
+</body>
+
+</html>
