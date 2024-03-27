@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .mix {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        background: url(../../img/card2.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+    }
+    .mix::before {
+        display: block;
+        content: "";
+        inset: 0;
+        background: url(../../img/card2.png) #0ff;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+        background-blend-mode: lighten;
+        mix-blend-mode: darken;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: -5px;
+    }
+    .mix::after {
+        display: block;
+        content: "";
+        inset: 0;
+        background: url(../../img/card2.png) #f40;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+        /* 背景图 & 颜色的混合 */
+        background-blend-mode: lighten;
+        /* 不同元素之间的图片混合 */
+        mix-blend-mode: darken;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: 5px;
+    }
+</style>
+<body>
+    <div class="mix"></div>
+</body>
+</html>
