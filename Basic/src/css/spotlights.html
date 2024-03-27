@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聚光灯文字效果</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #222;
+    }
+    .spot-wrap {
+        position: relative;
+    }
+    h1 {
+        user-select: none;
+        color: #333;
+        font-family: Helvetica;
+        font-size: 8rem;
+        letter-spacing: -.3rem;
+        position: relative;
+        text-wrap: nowrap;
+    }
+    /* 用 after 来做 */
+    h1.light {
+        pointer-events: none;
+        content: attr(data-txt);
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        transition: .6s;
+        /* 使用 clip-path 在左侧中心裁剪出一个 r=100px 的圆形遮罩 */
+        clip-path: circle(100px at 0% 50%);
+        /* 如果使用背景图片的话，创建文字形状的剪切遮罩 */
+        background-clip: text;
+        /* 设置的字体本身颜色会把背景盖掉，要设成透明 */
+        color: transparent;
+        background-image: linear-gradient(to top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    }
+</style>
+<body>
+    <div class="spot-wrap">
+        <h1 class="base">HelloWorld</h1>
+        <h1 class="light">HelloWorld</h1>
+    </div>
+    <script>
+        const base = document.querySelector('.spot-wrap .base');
+        const light = document.querySelector('.spot-wrap .light');
+
+        base.addEventListener('mouseover', ()=>{
+            // console.log("on")
+            base.onmousemove = (e)=> {
+                // console.log(e.offsetX)
+                light.style.clipPath = `circle(100px at ${e.offsetX}px 50%)`;
+            }
+        })
+        base.addEventListener('mouseleave', ()=> {
+            // console.log('leave')
+        })
+    </script>
+</body>
+</html>
