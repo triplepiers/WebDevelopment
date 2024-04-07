@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可拖拽调整列宽的 table</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    table {
+        width: 100%;
+        margin: 10px 20px;
+        font-size: 1.5rem;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 2px solid #000;
+        padding: 2rem 1rem;
+    }
+    th {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    td {
+        text-align: center;
+    }
+    th:not(:last-child),td:not(:last-child) {
+        /* 捏妈，重点就这一句 */
+        resize: horizontal;
+        overflow: auto;
+    }
+    tbody tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+<table>
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Row 1, Col 1</td>
+            <td>Row 1, Col 2</td>
+            <td>Row 1, Col 3</td>
+        </tr>
+        <tr>
+            <td>Row 2, Col 1</td>
+            <td>Row 2, Col 2</td>
+            <td>Row 2, Col 3</td>
+        </tr>
+        <tr>
+            <td>Row 3, Col 1</td>
+            <td>Row 3, Col 2</td>
+            <td>Row 3, Col 3</td>
+        </tr>
+        <tr>
+            <td>Row 4, Col 1</td>
+            <td>Row 4, Col 2</td>
+            <td>Row 4, Col 3</td>
+        </tr>
+        <tr>
+            <td>Row 5, Col 1</td>
+            <td>Row 5, Col 2</td>
+            <td>Row 5, Col 3</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+
+</html>
