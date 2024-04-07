@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拖拽排序菜单</title>
+    <title>（单列）拖拽排序菜单</title>
 </head>
 <style>
     * {
@@ -11,6 +12,7 @@
         padding: 0;
         box-sizing: border-box;
     }
+
     body {
         width: 100vw;
         min-height: 100vh;
@@ -18,9 +20,127 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: #b5aafa;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 3em 2em;
+        width: 90%;
+        max-width: 37em;
+        border-radius: .8em;
+    }
+
+    #list {
+        font-family: monospace;
+        position: relative;
+        padding-inline-start: 0;
+        list-style-type: none;
+    }
+
+    .list-item {
+        user-select: none;
+        padding: .8em 0;
+        border-radius: .2em;
+        margin: 1em auto;
+        border: 1px solid #000;
+        text-align: center;
+        transition: .6s;
+    }
+
+    .list-item:hover {
+        cursor: move;
+        background-color: #d1c9ff;
+        border-color: #8673f2;
+        color: #8673f2;
     }
 </style>
+
 <body>
-    
+    <div class="container">
+        <ul id="list"></ul>
+    </div>
+    <script>
+        let curEle = null;
+        const list = document.getElementById("list");
+        let init_x = 0, init_y = 0;
+        // 通过尝试创建 touchEvent 来判断当前设备是否支持触摸
+        const isTouchDevice = () => {
+            try {
+                document.createEvent("TouchEvent");
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // 创建 count 个 listItem
+        const creator = (list, count) => {
+            list.innerHTMl = "";
+            for (let i = 0; i < count; i++) {
+                list.innerHTML += `<li class="list-item" data-value="${i}">Item [${i}]</li>`;
+            }
+        }
+
+        // 返回对应的 listItem index
+        const getPosition = (target) => {
+            let res = "";
+            document.querySelectorAll("#list .list-item").forEach((item, idx) => {
+                let curVal = item.getAttribute("data-value");
+                if (curVal == target) {
+                    res = idx;
+                }
+            })
+            return res;
+        }
+
+        // drag & drop
+        function dragStart(e) {
+            // init_x = isTouchDevice() ? e.touches[0].clientX : e.clientX;
+            // init_y = isTouchDevice() ? e.touches[0].clientY : e.clientY;
+            init_x = e.clientX;
+            init_y = e.clientY;
+            curEle = e.target;
+        }
+        function dragOver(e) {
+            e.preventDefault();
+
+        }
+        const drop = (e) => {
+            e.preventDefault();
+            // let neo_x = isTouchDevice() ? e.touches[0].clientX : e.clientX;
+            // let neo_y = isTouchDevice() ? e.touches[0].clientY : e.clientY;
+            let neo_x = e.clientX, neo_y = e.clientY;
+            // 根据鼠标落点决定交换的对象
+            let targetEle = document.elementFromPoint(neo_x, neo_y);
+            // 决定起止位置编号
+            let curVal = curEle.getAttribute("data-value");
+            let tarVal = targetEle.getAttribute("data-value");
+            let [curPos, tarPos] = [getPosition(curVal), getPosition(tarVal)];
+            // 更新位置信息
+            init_x = neo_x;
+            init_y = neo_y;
+            // 这里控制了交换位置的逻辑（前插 / 后插）
+            try {
+                if (curPos < tarPos) {
+                    targetEle.insertAdjacentElement("afterend", curEle);
+                } else {
+                    targetEle.insertAdjacentElement("beforebegin", curEle);
+                }
+            } catch (e) { }
+        }
+
+        window.onload = async () => {
+            await creator(list, 7);
+            // 给每个 list-item 绑定事件
+            document.querySelectorAll("#list .list-item").forEach((item) => {
+                item.draggable = true;
+                item.addEventListener("dragstart", dragStart, false);
+                item.addEventListener("dragover", dragOver, false);
+                item.addEventListener("drop", drop, false);
+            })
+        }
+    </script>
 </body>
+
 </html>
