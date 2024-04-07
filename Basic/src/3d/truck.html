@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 threeJS 的卡车线框模型</title>
+    <!-- ref: b站 UP @步萌爱学习 -->
+    <!-- NOTION: https://woozy-enthusiasm-439.notion.site/928bb4deea28486a85c23268e98230c5?pvs=4 -->
+    <!-- 1. 点阵模拟地面 -->
+    <!-- 2. 卡车线框模型 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+    <!-- Dependency: threeJS -->
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@v0.149.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/"
+          }
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id="scene"></canvas>
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // 创建一个场景
+        const scene = new THREE.Scene();
+        // 创建一个（透视）相机
+        const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.set(-6, 5, 6);
+        camera.lookAt(new THREE.Vector3(0,0,0));
+        // 创建渲染器
+        const canvas = document.getElementById("scene");
+        const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 创建地面插入场景
+        var GroundGrid = CreateGroundGrid(100, 80, 0x004444, 0.05, 0x00aaaa);
+        GroundGrid.position.z = -0.1;
+        scene.add(GroundGrid);
+
+        // 导入卡车模型，并渲染（因为导入是个异步函数）
+        initModel();
+
+        // 封装一个函数，几何相关参数尽量参数化，方便快速调整尺寸改变渲染效果
+        // rangeSize：地面网格尺寸
+        // divisions:地面网格细分数
+        // color：网格线颜色
+        // R:圆点半径
+        // RColor：原点颜色
+        function CreateGroundGrid(rangeSize, divisions, color, R, RColor) {
+            var group = new THREE.Group();
+
+            //坐标轴辅助器
+            var gridHelper = new THREE.GridHelper(rangeSize, divisions, color, color);
+            group.add(gridHelper);
+            // console.log('gridHelper',gridHelper)
+            gridHelper.material.depthWrite = false;
+            gridHelper.renderOrder = -2;
+
+            // CircleGeometry圆形平面几何体
+            var geometry = new THREE.CircleGeometry(R, 20, 20);
+            geometry.rotateX(Math.PI / 2); //从XOY平面旋转到XOZ平面
+            // 可以选择基础网格材质，基础网格材质不受光照影响，和其它场景配合，颜色更稳定，而且节约渲染资源
+            var material = new THREE.MeshBasicMaterial({
+                color: RColor,
+                side: THREE.DoubleSide,
+                depthWrite: false,
+            });
+            // 共享材质和几何体数据，批量创建圆点mesh
+            var 间距 = rangeSize / divisions
+            var 范围一半 = rangeSize / 2
+            for (let i = 0; i < divisions; i++) {
+                for (let j = 0; j < divisions; j++) {
+                    var mesh = new THREE.Mesh(geometry, material);
+                    mesh.renderOrder = -1;
+                    mesh.translateX(-范围一半 + i * 间距);
+                    mesh.translateZ(-范围一半 + j * 间距);
+                    group.add(mesh)
+                }
+            }
+            return group
+        }
+
+        // 加载模型
+        function initModel() {
+            var loader = new GLTFLoader(); //创建一个GLTF加载器
+            let carUrl = new URL("./assets/truck.glb", import.meta.url).href;
+            loader.load(carUrl, function (gltf) {//gltf加载成功后返回一个对象
+                console.log('控制台查看gltf对象结构', gltf);
+                console.log('gltf对象场景属性', gltf.scene);
+
+                // 递归遍历gltf.scene，批量更改所有Mesh的材质
+                gltf.scene.traverse(function (object) {
+                    if (object.type === 'Mesh') {
+                        // console.log('控制台查看mesh材质', object.material);//控制台查看mesh材质
+                        // MeshLambertMaterial：受光照影响   MeshBasicMaterial：不受光照影响  
+                        object.material = new THREE.MeshLambertMaterial({
+                            color: 0x1A92C6, //批量设置颜色
+                            transparent: true,//允许透明计算
+                            opacity: 0.7,//半透明设置
+                        })
+                        // 设置模型边线
+                        var edges = new THREE.EdgesGeometry(object.geometry, 30);
+                        var edgesMaterial = new THREE.LineBasicMaterial({
+                            color: 0x31DEEF,
+                        });
+                        var line = new THREE.LineSegments(edges, edgesMaterial);
+                        object.add(line);
+                    }
+                })
+                //把gltf.scene中的所有模型添加到model组对象中
+                scene.add(gltf.scene);
+                // 渲染
+                renderer.render(scene, camera);
+            })
+        }
+    </script>
+</body>
+
+</html>
