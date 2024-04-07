@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(多列) 拖拽看板</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        position: relative;
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        gap: 2px;
+        overflow: hidden;
+    }
+
+    .droppable {
+        flex: 1;
+        height: 100vh;
+        overflow: scroll;
+        padding: 0 1rem;
+        background-image: linear-gradient(45deg, #ff4137, #eaad32);
+        border-radius: .5rem;
+    }
+
+    .draggable {
+        margin: 1rem 0;
+        padding: 0rem;
+        cursor: move;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+        color: #e9550c;
+        background-color: rgba(240, 240, 240, .7);
+    }
+
+    .dragging {
+        opacity: .5;
+    }
+</style>
+
+<body>
+    <script>
+        function creator(col, num) {
+            let i = 1;
+            for (let c = 0; c < col; c++) {
+                let column = document.createElement("div");
+                column.className = "droppable";
+                for (let n = 0; n < num; n++) {
+                    column.innerHTML += `<div class="draggable" draggable="true">${i}</div>`;
+                    i += 1;
+                }
+                document.body.appendChild(column);
+            }
+        }
+
+        // 获取被移动元素前最近的相邻元素
+        function getClosestFrontSibling(droppable, dragging_y) {
+            let siblings = droppable.querySelectorAll(".draggable:not(.dragging)");
+            let res = null;
+            for (let sibling of siblings) {
+                let bbox = sibling.getBoundingClientRect();
+                let bbox_center_y = bbox.y + bbox.height/2;
+                if (dragging_y >= bbox_center_y) {
+                    res = sibling;
+                } else {
+                    // 要么已经找到最近 / 要么是第一个
+                    return res;
+                }
+            }
+            return res;
+        }
+
+        window.onload = async () => {
+            await creator(4, 2);
+            const droppables = document.querySelectorAll(".droppable");
+            const draggables = document.querySelectorAll(".draggable");
+            // 对整个 window 监听 dragStart
+            document.addEventListener("dragstart", (e) => {
+                // 如果点在 draggable 上
+                if (e.target.classList.contains("draggable")) {
+                    e.target.classList.add("dragging");
+                }
+            })
+            document.addEventListener("dragend", (e) => {
+                // 如果点在 draggable 上
+                if (e.target.classList.contains("draggable")) {
+                    e.target.classList.remove("dragging");
+                }
+            })
+            droppables.forEach((item) => {
+                item.addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    let dragging = document.querySelector(".dragging");
+                    if (dragging) {
+                        // item.append(dragging);
+                        let frontSibling = getClosestFrontSibling(item, e.clientY);
+                        if (frontSibling) {
+                            frontSibling.insertAdjacentElement("afterend", dragging);
+                        } else { // 否则，插入首个位置
+                            item.prepend(dragging);
+                        }
+                    }
+                })
+            })
+        }
+
+    </script>
+</body>
+
+</html>
