@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fullPage.js 使用实例</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="./fullpage.js"></script>
+        <link rel="stylesheet" href="./fullpage.min.css">
+</head>
+<style>
+    .section {
+        background-color: var(--clr);
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 50px;
+        font-weight: 700;
+    }
+</style>
+<body>
+    <div id="fullpage">
+        <div class="section" style="--clr: #77DDFF;">Sec 1</div>
+        <div class="section" style="--clr: #77FFCC;">
+            <div class="slide">Sec 2-1</div>
+            <div class="slide">Sec 2-2</div>
+            <div class="slide">Sec 2-3</div>
+        </div>
+        <!-- 使用 active 类：默认从 sec3 进入 -->
+        <div class="section active" style="--clr: #D28EFF;">Sec 3</div>
+    </div>
+
+    <script type="module">
+        $(document).ready(function () {
+            // 选择器根据自己的封装情况来改
+            $('#fullpage').fullpage({
+                // options here
+                scrollHorizontally: true,
+                continuousVertical: true, // 循环展示
+                navigation: true,         // 显示 section 目录
+                slidesNavigation: true,   // 显示 slide   目录
+                controlArrows: false,     // 隐藏 slide 横向滑箭头
+            });
+
+            //methods
+            // $.fn.fullpage.setAllowScrolling(false); // 禁止滚动（只能方向键 / menu）
+        });
+    </script>
+</body>
+
+</html>
