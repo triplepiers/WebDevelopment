@@ -29,7 +29,7 @@
         justify-content: center;
         padding: 20px 30px;
         column-gap: 20px;
-
+        background-color: var(--dark);
         background-image: url(../../img/bg.jpg);
         background-size: cover;
         background-position: center center;
@@ -37,6 +37,8 @@
 
     /* 鼠标指针 */
     #cursor-inner {
+        pointer-events: none;
+        z-index: 999;
         background-color: #fff;
         width: 5px;
         height: 5px;
