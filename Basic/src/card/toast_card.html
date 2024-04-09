@@ -1,224 +1,243 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Toast通知栏</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: 'Poppins', sans-serif;
-            }
-            :root {
-                --dark: #34495e;
-                --light: #fff;
-                --success: #0abf30;
-                --error: #e24d4c;
-                --warning: #e9bd4c;
-                --info: #3498db;
-            }
-            body {
-                min-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: var(--dark);
-            }
-            .notifications {
-                position: fixed;
-                top: 30px;
-                right: 20px;
-            }
-            .notifications :where(.toast, .column) {
-                display: flex;
-                align-items: center;
-            }
-            .notifications .toast {
-                position: relative;
-                overflow: hidden;
-                width: 400px;
-                list-style: none;
-                border-radius: 4px;
-                padding: 16px 17px;
-                margin-bottom: 10px;
-                background-color: var(--light);
-                justify-content: space-between;
-                animation: show_toast .3s ease forwards;
-                /* forwards表示保持最后一个关键帧的状态 */
-            }
-            /* 一个刹车带回弹的入场效果 */
-            @keyframes show_toast {
-                0% {
-                    transform: translateX(100%);
-                }
-                40% {
-                    transform: translateX(-5%);
-                }
-                80% {
-                    transform: translateX(0%);
-                }
-                100% {
-                    transform: translateX(-10px);
-                }
-            }
-            /* 进度条 */
-            .toast::before {
-                position: absolute;
-                content: '';
-                height: 3px;
-                bottom: 0;
-                left: 0;
-                animation: timer 5s linear forwards;
-            }
-            @keyframes timer {
-                0% {
-                    width: 100%;
-                }
-                100% {
-                    width: 0%;
-                }
-            }
-            .toast.success::before {
-                background-color: var(--success);
-            }
-            .toast.error::before {
-                background-color: var(--error);
-            }
-            .toast.warning::before {
-                background-color: var(--warning);
-            }
-            .toast.info::before {
-                background-color: var(--info);
-            }
-            /* 图标 */
-            .toast .column i {
-                font-size: 1.75rem;
-            }
-            .toast.success .column i {
-                color: var(--success);
-            }
-            .toast.error .column i {
-                color: var(--error);
-            }
-            .toast.warning .column i {
-                color: var(--warning);
-            }
-            .toast.info .column i {
-                color: var(--info);
-            }
-            .toast .column span {
-                font-size:  1.07rem;
-                margin-left: 12px;
-            }
-            /* 叉号 */
-            .toast i:last-child {
-                color: #aeb0d7;
-                cursor: pointer;
-            }
-            .toast i:last-child:hover {
-                color: var(--dark);
 
-            }
-            /* 按钮 */
-            .buttons .btn {
-                border: none;
-                outline: none;
-                color: #fff;
-                font-size: 1.2rem;
-                cursor: pointer;
-                margin: 0 5px;
-                padding: 10px 20px;
-                border-radius: 4px;
-            }
-            #success {
-                background-color: var(--success);
-            }
-            #error {
-                background-color: var(--error);
-            }
-            #warning {
-                background-color: var(--warning);
-            }
-            #info {
-                background-color: var(--info);
-            }
-        </style>
-    </head>
-    <body>
-        <ul class="notifications">
-            <!-- prototypes of toasts -->
-            <!-- <li class="toast success">
-                <div class="column">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span>Success: This is a success toast.</span>
-                </div>
-                <i class="fa-solid fa-xmark"></i>
-            </li>
-            <li class="toast error">
-                <div class="column">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                    <span>Error: This is an error toast.</span>
-                </div>
-                <i class="fa-solid fa-xmark"></i>
-            </li>
-            <li class="toast warning">
-                <div class="column">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>Warning: This is a warning toast.</span>
-                </div>
-                <i class="fa-solid fa-xmark"></i>
-            </li>
-            <li class="toast info">
-                <div class="column">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Info: This is an information toast.</span>
-                </div>
-                <i class="fa-solid fa-xmark"></i>
-            </li> -->
-        </ul>
-        <div class="buttons">
-            <button class="btn" id="success">Sucess</button>
-            <button class="btn" id="error">Error</button>
-            <button class="btn" id="warning">Warning</button>
-            <button class="btn" id="info">Information</button>
-        </div>
-    </body>
-    <script>
-        const notifications = document.querySelector('.notifications');
-        const toastDetails = {
-            success: {
-                icon: 'fa-circle-check',
-                text: 'Success: This is a success toast.'
-            },
-            error: {
-                icon: 'fa-circle-xmark',
-                text: 'Error: This is an error toast.'
-            },
-            warning: {
-                icon: 'fa-triangle-exclamation',
-                text: 'Warning: This is a warning toast.'
-            },
-            info: {
-                icon: 'fa-circle-info',
-                text: 'Info: This is an information toast.'
-            },
+<head>
+    <title>Toast通知栏</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        function createToast(id) {
-            // create new toast
-            const toast = document.createElement('li');
-            toast.className = `toast ${id}`;
-            toast.innerHTML =  `<div class="column">
+
+        :root {
+            --dark: #34495e;
+            --light: #fff;
+            --success: #0abf30;
+            --error: #e24d4c;
+            --warning: #e9bd4c;
+            --info: #3498db;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark);
+        }
+
+        .notifications {
+            position: fixed;
+            top: 30px;
+            right: 20px;
+        }
+
+        .notifications :where(.toast, .column) {
+            display: flex;
+            align-items: center;
+        }
+
+        .notifications .toast {
+            position: relative;
+            overflow: hidden;
+            width: 400px;
+            list-style: none;
+            border-radius: 4px;
+            padding: 16px 17px;
+            margin-bottom: 10px;
+            background-color: var(--light);
+            justify-content: space-between;
+            animation: show_toast .3s ease forwards;
+            /* forwards表示保持最后一个关键帧的状态 */
+        }
+
+        /* 一个刹车带回弹的入场效果 */
+        @keyframes show_toast {
+            0% {
+                transform: translateX(100%);
+            }
+
+            40% {
+                transform: translateX(-5%);
+            }
+
+            80% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-10px);
+            }
+        }
+
+        /* 进度条 */
+        .toast::before {
+            position: absolute;
+            content: '';
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            animation: timer 5s linear forwards;
+        }
+
+        @keyframes timer {
+            0% {
+                width: 100%;
+            }
+
+            100% {
+                width: 0%;
+            }
+        }
+
+        .toast.success::before {
+            background-color: var(--success);
+        }
+
+        .toast.error::before {
+            background-color: var(--error);
+        }
+
+        .toast.warning::before {
+            background-color: var(--warning);
+        }
+
+        .toast.info::before {
+            background-color: var(--info);
+        }
+
+        /* 图标 */
+        .toast .column i {
+            font-size: 1.75rem;
+        }
+
+        .toast.success .column i {
+            color: var(--success);
+        }
+
+        .toast.error .column i {
+            color: var(--error);
+        }
+
+        .toast.warning .column i {
+            color: var(--warning);
+        }
+
+        .toast.info .column i {
+            color: var(--info);
+        }
+
+        .toast .column span {
+            font-size: 1.07rem;
+            margin-left: 12px;
+        }
+
+        /* 叉号 */
+        .toast i:last-child {
+            color: #aeb0d7;
+            cursor: pointer;
+        }
+
+        .toast i:last-child:hover {
+            color: var(--dark);
+
+        }
+
+        /* 按钮 */
+        .buttons .btn {
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 0 5px;
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+
+        #success {
+            background-color: var(--success);
+        }
+
+        #error {
+            background-color: var(--error);
+        }
+
+        #warning {
+            background-color: var(--warning);
+        }
+
+        #info {
+            background-color: var(--info);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 新建的 toast 会塞在这个 <ul> 里 -->
+    <ul class="notifications"></ul>
+    <div class="buttons">
+        <button class="btn" id="success">Sucess</button>
+        <button class="btn" id="error">Error</button>
+        <button class="btn" id="warning">Warning</button>
+        <button class="btn" id="info">Information</button>
+    </div>
+</body>
+<script>
+    let idx = 0;
+    const notifications = document.querySelector('.notifications');
+    const toastDetails = {
+        success: {
+            icon: 'fa-circle-check',
+            text: 'Success: This is a success toast.'
+        },
+        error: {
+            icon: 'fa-circle-xmark',
+            text: 'Error: This is an error toast.'
+        },
+        warning: {
+            icon: 'fa-triangle-exclamation',
+            text: 'Warning: This is a warning toast.'
+        },
+        info: {
+            icon: 'fa-circle-info',
+            text: 'Info: This is an information toast.'
+        },
+    }
+    function createToast(id) {
+        // create new toast
+        const toast = document.createElement('li');
+        toast.className = `toast ${id}`;
+        toast.innerHTML = `<div class="column">
                                     <i class="fa-solid ${toastDetails[id].icon}"></i>
                                     <span>${toastDetails[id].text}</span>
                                 </div>
                                 <i class="fa-solid fa-xmark"></i>`;
-            notifications.appendChild(toast); // insert into toast list
-        }
-        const btns = document.querySelectorAll('.buttons .btn');
-        btns.forEach(item => {
-            item.addEventListener('click', () => createToast(item.id));
-        })
-    </script>
+
+        // 拿来关闭 toast 用的
+        toast.setAttribute("idx", idx);
+        idx += 1
+
+        notifications.appendChild(toast); // insert into toast list
+
+        // 5s 后允许手动关闭
+        setTimeout(() => {
+            toast.querySelector("i:last-child").addEventListener("click", () => {
+                // 通过 idx 属性值删除当前元素
+                let ele = document.querySelector(`.notifications [idx='${toast.getAttribute("idx")}']`);
+                if (ele) { ele.remove(); }
+            })
+        }, 5000)
+    }
+    const btns = document.querySelectorAll('.buttons .btn');
+    btns.forEach(item => {
+        item.addEventListener('click', () => createToast(item.id));
+    })
+</script>
+
 </html>
