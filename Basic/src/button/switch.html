@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- 通过 SVG 动画实现描边按钮 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-size: 5vmin;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: #171717;
+        }
+        .btn {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.3rem 1rem;
+            border: 0.05rem solid #f7f7f7;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .btn_text {
+            font-family: impact;
+            font-size: 1.2rem;
+            color: #17f700;
+            letter-spacing: 0.05rem;
+            margin-right: 0.5rem;
+        }
+        .btn_icon {
+            width: 0.9rem;
+            fill: none;
+            stroke: #17f700;
+            stroke-width: 15;
+            transition: transform 0.8s ease;
+            transform: translateY(15%);
+        }
+        .btn_icon_straight,
+        .btn_icon_bias {
+            transition: stroke-dasharray 0.6s ease;
+        }
+        .btn_arrow .btn_icon_straight {
+            stroke-dasharray: 50 50 200; /*估计总长300，实-虚-实 = 50:50:200*/
+        }
+        /* 遮挡下半部分的叉叉 */
+        .btn_arrow .btn_icon_bias {
+            stroke-dasharray: 205 300 205 300;
+        }
+        /* 移动描边 */
+        .btn_arrow:hover .btn_icon_straight {
+            stroke-dasharray: 150 50 200;
+        }
+
+        /* 整体偏移 */
+        .btn_cross .btn_icon {
+            transform: translateY(-15%);
+        }
+        .btn_cross .btn_icon_straight {
+            /* 通过 实:虚 = 0:300 遮盖整条线 */
+            stroke-dasharray: 0 300;
+        }
+        .btn_cross .btn_icon_bias {
+            /* 显露整个叉叉 */
+            stroke-dasharray: 0 0 400 0;
+        }
+        .btn_cross:hover .btn_icon_bias {
+            stroke-dasharray: 20 60 240 60 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btn btn_arrow" >
+        <p class="btn_text">STROKE</p>
+        <svg class="btn_icon" viewBox="0 0 283.9 425.8">
+            <!-- 直线 -->
+            <line class="btn_icon_straight" x1="141.9" y1="-0.1" x2="141.9" y2="283.8" />
+            <!-- 斜线 -->
+            <line class="btn_icon_bias" x1="0" y1="141.9" x2="283.9" y2="425.8" />
+            <line class="btn_icon_bias" x1="283.9" y1="141.9" x2="0" y2="425.8" />
+        </svg>
+    </div>
+</body>
+<script>
+    // 监听点击事件，在 箭头/叉叉 之间切换
+    const btn = document.querySelector('.btn');
+    btn.addEventListener('click', () => {
+        btn.classList.toggle("btn_arrow");
+        btn.classList.toggle("btn_cross");
+    });
+    // 我们可以通过下面的接口得到 SVG 线段长度
+    // console.log(
+    //     document.querySelector('.btn_icon_straight').getTotalLength()
+    // )
+</script>
+
+</html>

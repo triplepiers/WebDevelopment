@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- 眼球随鼠标移动 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        border: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        overflow: hidden;
+        background-color: #4154ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        width: 700px;
+        height: 700px;
+        /* 9*9 网格 */
+        display: grid;
+        grid-template: repeat(9, 1fr) / repeat(9, 1fr);
+    }
+    .eye {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        /* 初始内阴影 —— 模糊 */
+        box-shadow: 0 0 10px #000 inset 0 0 10px rgba(0,0,0,.3);
+    }
+    .pupil {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #000;
+        position: relative;
+        transition: transform .2s ease-out;
+    }
+</style>
+<body>
+    <div class="container">
+
+    </div>
+</body>
+<script>
+    const container = document.querySelector('.container');
+    function insertEye() {
+        var eye = document.createElement('div');
+        eye.className = 'eye';
+        var pupil = document.createElement('div');
+        pupil.className = 'pupil';
+
+        eye.appendChild(pupil);
+        container.appendChild(eye);
+    }
+    // 插入眼睛
+    for (let i = 0 ; i < 81 ; i++ ) { insertEye(); }
+    var eyes = document.querySelectorAll('.eye');
+
+    // 监听鼠标移动，更改瞳孔位置
+    const MAX_OFFSET_RATIO = 0.9; // 最大偏移比例
+    document.body.onpointermove = (e) => {
+        const X = e.clientX;
+        const Y = e.clientY;
+        eyes.forEach((eye) => {
+            const pupil = eye.querySelector('.pupil');
+            // 获取 eye 的中心点坐标
+            const eyeRect = eye.getBoundingClientRect();
+            const eye_center_x = eyeRect.left + eyeRect.width/2;
+            const eye_center_y = eyeRect.top  + eyeRect.height/2;
+            // 计算移动比例
+            const dx = (X - eye_center_x) / eyeRect.width;
+            const dy = (Y - eye_center_y) / eyeRect.height;
+            // 计算 pupil 移动后的中心位置（不超出 eye）
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            const chopped_dist = Math.min(dist, MAX_OFFSET_RATIO);
+            // 计算吸附
+            const angle = Math.atan2(dy, dx);
+            const pupil_x = Math.cos(angle) * chopped_dist * (eyeRect.width/2  - pupil.offsetWidth/2);
+            const pupil_y = Math.sin(angle) * chopped_dist * (eyeRect.height/2 - pupil.offsetHeight/2);
+            // 更新位置
+            pupil.style.transform = `translate(${pupil_x}px, ${pupil_y}px)`;
+            // 更新内阴影，使之与瞳孔相对
+            const shadow_offset_x = pupil_x/4;
+            const shadow_offset_y = pupil_y/4;
+            eye.style.boxShadow = `inset ${shadow_offset_x}px ${shadow_offset_y}px 10px rgba(0,0,0,.3)`;
+        });
+    }
+    // 鼠标离开，瞳孔归位
+    document.body.onpointerleave = () => {
+        eyes.forEach((eye) => {
+            const pupil = eye.querySelector('.pupil');
+            pupil.style.transform = `translate(0,0)`;
+            eye.style.boxShadow = `inset 0 0 10px rgba(0,0,0,.3)`;
+        })
+    }
+</script>
+</html>
