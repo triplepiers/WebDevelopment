@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 基于 Web Audio 的钢琴音频播放 -->
+</head>
+<style>
+    * {
+        margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+        width: 100%; min-height: 100vh;
+        display: flex; justify-content: center; align-items: center;
+        gap: 20px;
+    }
+    .btn {
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        border: 1px solid black;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: black;
+        color: #fff;
+    }
+</style>
+<body>
+    <div class="btn" id="start">Start</div>
+    <div class="btn" id="stop">Stop</div>
+    <script>
+        let audio, gainNode, oscillator;
+        function initAudio() {
+            // 创建音频上下文
+            audio = new (
+                window.AudioContext || 
+                window.webkitAudioContext
+            );
+            
+            // 创建增益节点
+            gainNode = audio.createGain();
+            // 设置增益效果
+            gainNode.gain.value = 0.1;
+            // 将增益节点连接至目标节点（扬声器）
+            gainNode.connect(audio.destination);
+        }
+        function playTone(freq) {
+            oscillator = audio.createOscillator();
+            // 不同波形将产生不同风格的音效
+            oscillator.type = 'sawtooth'; // square, triangle, sine
+            oscillator.connect(gainNode);
+            // 不同频率将产生不同的音高
+            oscillator.frequency.value = freq;
+            // 播放
+            oscillator.start();
+        }
+        function stopTone(oscillator) {
+            oscillator.stop();
+        }
+
+        initAudio();
+
+        let isPlay = false;
+        document.getElementById("start")
+        .addEventListener("click", () => {
+            if (!isPlay) {
+                // 可以在这里改音高
+                playTone(freq=700), isPlay = true;
+            }
+        });
+        document.getElementById("stop")
+        .addEventListener("click", () => {
+            if (isPlay) {
+                stopTone(oscillator), isPlay = false;
+            }
+        });
+    </script>
+</body>
+</html>
