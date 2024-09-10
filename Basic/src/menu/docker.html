@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仿 MacOS Docker 效果</title>
+</head>
+<style>
+    * {
+        margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+        position: relative;
+        width: 100vw; min-height: 100vh;
+        background-color: #333;
+    }
+    .docker {
+        position: absolute;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        width: fit-content;
+        padding: 10px 0px;
+        background-color: rgba(127, 127, 127, .3);
+        display: flex;
+        border-radius: 5px;
+    }
+    .gap {
+        width: 15px;
+        height: 40px;
+        transition: .3s;
+    }
+    .square {
+        width: 40px;
+        height: 40px;
+        transform: scale(1.0) translateY(0px);
+        cursor: pointer;
+        background-color: aquamarine;
+        border-radius: 3px;
+        transition: .2s;
+    }
+</style>
+<body>
+    <div class="docker">
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+        <div class="square"></div>
+        <div class="gap"></div>
+    </div>
+    <script>
+        let [range, maxRatio, offY] = [100, 1.4, -60];
+        let recArr = document.querySelectorAll(".square");
+        let gapArr = document.querySelectorAll(".gap");
+        let recCtr, recCurveArr;
+        let gapCtr, gapCurveArr;
+        let flag_begin = false;
+
+        let docker = document.querySelector(".docker");
+        docker.addEventListener("mouseenter", () => flag_begin = true);
+        docker.addEventListener("mouseleave", () => {
+            flag_begin = false;
+            // clear
+            recArr.forEach((rec, idx) => {
+                rec.style.transform = `translateY(0px) scale(1)`;
+            })
+            gapArr.forEach((gap, idx) => {
+                gap.style.width = `15px`;
+            })
+        });
+
+        // 根据鼠标横向坐标决定缩放比例
+        function createCurve(range, center, maxRatio) {
+            return (x) => {
+                let y;            // 原始取值 [0,1] -> [1.0, maxRatio]
+                let [left, right] = [center-range/2, center+range/2];
+
+                if (x < left || x > right) y = 0;
+                else                       y = Math.sin((x-left)/range*Math.PI);
+
+                return y*(maxRatio-1) + 1
+            }
+        }
+
+        function getCenter() {
+            recCtr = []; recCurveArr = [];
+            recArr.forEach((rec) => {
+                let bound_rec = rec.getBoundingClientRect();
+                let center = bound_rec.left + rec.clientWidth/2;
+                recCtr.push(center);
+                recCurveArr.push(createCurve(range, center, maxRatio));
+            })
+            gapCtr = []; gapCurveArr = [];
+            gapArr.forEach((gap) => {
+                let bound_rec = gap.getBoundingClientRect();
+                let center = bound_rec.left + gap.clientWidth/2;
+                gapCtr.push(center);
+                gapCurveArr.push(createCurve(range, center, maxRatio));
+            })
+        }
+
+        window.onload = () => {
+            getCenter();
+        }
+
+        window.onresize = () => {
+            getCenter();
+        }
+
+        window.onmousemove = (e) => {
+            if (flag_begin) {
+                let x = e.clientX;
+                recArr.forEach((rec, idx) => {
+                    let rate = recCurveArr[idx](x);
+                    rec.style.transform = `translateY(${Math.round(offY * (rate-1))}px) scale(${rate})`;
+                })
+                gapArr.forEach((gap, idx) => {
+                    let rate = gapCurveArr[idx](x);
+                    gap.style.width = `${(rate-1) * 20 + 15}px`;
+                })
+            }
+        }
+    </script>
+</body>
+</html>
