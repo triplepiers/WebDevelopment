@@ -17,7 +17,10 @@
     const socket = new WebSocket('ws://localhost:8000');
     socket.addEventListener('open', (e) => {
         console.log('已连接到服务器')
-        socket.send(`Hello, Server! This is ${myID}`)
+        socket.send(JSON.stringify({
+            type: 'register',
+            id: myID
+        }))
     })
     socket.addEventListener('message', (e) => {
         console.log(`收到消息: ${e.data}`)
