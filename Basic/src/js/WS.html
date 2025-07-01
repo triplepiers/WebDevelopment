@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 WebSocket 与后端主动建立连接</title>
+</head>
+<body>
+    <div>我的 ID 是 <span id="id"></span></div>
+</body>
+<script>
+    function gen8bRand() {
+        return Math.floor(10000000 + Math.random()*90000000)
+    }
+    const myID = gen8bRand().toString();
+    document.getElementById('id').innerText = myID;
+    const socket = new WebSocket('ws://localhost:8000');
+    socket.addEventListener('open', (e) => {
+        console.log('已连接到服务器')
+        socket.send(`Hello, Server! This is ${myID}`)
+    })
+    socket.addEventListener('message', (e) => {
+        console.log(`收到消息: ${e.data}`)
+    })
+    socket.addEventListener('close', (e) => {
+        if (e.code === 1000) console.log('服务器主动断开连接')
+        else if (e.code === 1006) alert('未能连接到服务器')
+        else alert('连接意外关闭', e.code)
+    })
+</script>
+</html>

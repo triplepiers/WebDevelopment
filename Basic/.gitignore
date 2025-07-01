@@ -13,3 +13,5 @@
 /app
 /ref/goat
 data.json
+/src/js/node_modules
+/src/js/*.json
