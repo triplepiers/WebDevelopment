@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>横向滑动</title>
+    <!-- 需要用到的 GSAP 插件: 用 jsDelivr 源 一直超时 ... -->
+    <script src="../../api/GSAP/gsap.min.js"></script>
+    <script src="../../api/GSAP/ScrollTrigger.min.js"></script>
+</head>
+<style>
+    * {
+        margin: 0; padding: 0; box-sizing: border-box;
+    }
+    :root {
+        font-size: 10px;
+    }
+    body {
+        background: #171717;
+    }
+    .empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 80rem;
+        margin: 10rem 0;
+        background: #f7f7f7;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 5rem;
+        color: #171717;
+    } 
+    .h-scroll-wrapper {
+        position: relative;
+        width: 100%;
+        height: 200vh;
+    }
+    .h-scroll-wrapper .container {
+        /* 滚动到顶部后固定 */
+        position: sticky;
+        top: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background-color: #17f700;
+        overflow: hidden;
+    }
+    .h-scroll-wrapper .cardsbox {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .h-scroll-wrapper .card {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70rem;
+        height: 50rem;
+        background: #f7f7f7;
+        margin-right: 50rem;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 5rem;
+        color: #171717;
+        flex-shrink: 0;
+    }
+</style>
+<body>
+    <div class="empty">EMPTY</div>
+    <div class="empty">EMPTY</div>
+    <div class="h-scroll-wrapper">
+        <div class="container">
+            <div class="cardsbox">
+                <div class="card">KEEP SCROLL</div>
+                <div class="card">KEEP SCROLL</div>
+                <div class="card">KEEP SCROLL</div>
+                <div class="card">KEEP SCROLL</div>
+            </div>
+        </div>
+    </div>
+    <div class="empty">EMPTY</div>
+    <div class="empty">EMPTY</div>
+</body>
+<script>
+    const scollBox = {
+        wrapper: document.querySelector('.h-scroll-wrapper'),
+        cardsbox: document.querySelector('.cardsbox'),
+        scollDistance: 0,
+        isLeave: false, // 是否超出滑动范围
+        init() {
+            this.resize();
+            window.addEventListener('resize', this.resize.bind(this));
+            this.create_scrollTrigger();
+        },
+        create_scrollTrigger() {
+            ScrollTrigger.create({
+                trigger: this.wrapper,
+                start: 'top top', // 容器顶部与视窗顶部相交
+                end: 'bottom bottom', // 默认是 bottom top
+                onUpdate: (self) => {
+                    // self.progress 为 [0,1] 的滑动进度
+                    this.cardsbox.style.transform = `translateX(-${this.scollDistance*self.progress}px)`
+                },
+                onLeave: () => {this.isLeave = true},
+                onEnterBack: () => {this.isLeave = false},
+            });
+        },
+        resize() {
+            this.scollDistance = this.cardsbox.offsetWidth - innerWidth; // 盒宽-窗口宽
+            this.wrapper.style.height = `${this.scollDistance}px`;
+            if (this.isLeave) {
+                this.cardsbox.style.transform = `translateX(-${this.scollDistance}px)`
+            }
+        }
+    }
+    scollBox.init();
+</script>
+</html>
