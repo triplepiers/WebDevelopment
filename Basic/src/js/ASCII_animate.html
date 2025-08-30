@@ -1,0 +1,119 @@
+<!-- REF: https://github.com/JIEJOE-WEB-Tutorial/015-ascii-animation/blob/main/ascii.gif -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 GIF 动图的 ASCII 动画实现</title>
+    <!-- 
+        - 基本原理：
+            - 以 固定 interval 更新 text
+            - 基于 canvas 遍历 pixel 进行绘制
+        - 实现：
+            - 基于 img 帧序列：文件体积会比较大、请求频繁
+            - 基于 GIF：文件体积显著压缩
+     -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100dvh;
+            background-color: #333;
+        }
+
+        .asciibox {
+            /* 需要根据不同字体进行微调，用 mono 类的会比较好 */
+            font-size: 1rem;
+            line-height: 1.5rem;
+            letter-spacing: 1rem;
+            color: #12f700;
+            /* 整体放缩 */
+            transform: scale(0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <pre class="asciibox"></pre> <!-- 会保留 \n -->
+</body>
+<!-- 导入用于处理 GIF 的 gifuct.js（只能用模块导入）-->
+<script type="module">
+    import { parseGIF, decompressFrames } from 'https://cdn.jsdelivr.net/npm/gifuct-js@2.1.2/+esm';
+
+    const asciibox = {
+        width: 0, height: 0,
+        texts: [],
+        scale: 10, // 缩放系数，控制对 pixel 的采样间隔
+        container: document.querySelector('.asciibox'),
+        cur_frame_idx: 0,
+        init() {
+            fetch('../../img/test.gif')
+                .then((res) => res.arrayBuffer()) // 转成 buffer 文件流
+                .then((buff) => {
+                    // 储存图片总宽高
+                    const gif = parseGIF(buff);
+                    this.width = gif.lsd.width;
+                    this.height = gif.lsd.height;
+                    // 解析 GIF 的每一帧
+                    decompressFrames(gif, true).forEach(frame => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        // GIF 的压缩算法可能导致每帧的宽高略有不同
+                        canvas.width = frame.dims.width;
+                        canvas.height = frame.dims.height;
+                        // 储存各帧的图像数据
+                        // => 启用「增量帧」压缩会导致 GIF 图片不完全，可能得用 AE 重新导出一下
+                        const img_data = new ImageData(
+                            frame.patch,
+                            frame.dims.width,
+                            frame.dims.height
+                        );
+                        ctx.putImageData(img_data, 0, 0);
+
+                        // img => ascii
+                        this.create_text(ctx.getImageData(0, 0, this.width, this.height).data);
+
+                        // // 将构建好的 canvas 插入页面
+                        // document.body.appendChild(canvas);
+                    });
+                    // 定时更新帧
+                });
+            // 将 ASCII 字符串插入 container
+            setInterval(() => {
+                this.cur_frame_idx = (this.cur_frame_idx + 1) % (this.texts.length - 1);
+                this.container.innerText = this.texts[this.cur_frame_idx];
+            }, 200);
+        },
+        create_text(data) { // data = [(R,G,B,alpha), ... ] for each pixel
+            let text = "";
+            const levels = [["0", "1"], [".", "-"], [" "]]; // 用来表示不同的灰度
+            for (let y = 0; y < this.height; y += this.scale) {
+                let row = "";
+                for (let x = 0; x < this.width; x += this.scale) {
+                    const i = (y * this.width + x) * 4;
+                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;            // 基于平均值计算灰度
+                    const level = levels[Math.floor(avg / 255 * (levels.length - 1))];// 灰度 => ASCII
+                    const char = level[parseInt(Math.random() * level.length)];
+                    row += char;
+                }
+                text += row + "\n";
+            }
+            this.texts.push(text);
+        }
+    };
+
+    asciibox.init();
+</script>
+
+</html>
