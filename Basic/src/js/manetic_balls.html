@@ -1,0 +1,154 @@
+<!-- REF:  https://github.com/JIEJOE-WEB-Tutorial/013-magnetic-yoyo -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>磁力互斥小球</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: 0;
+            font-size: 1vmin;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100dvh;
+            background-color: #171717;
+        }
+
+        .container {
+            position: absolute;
+            width: 50rem;
+            height: 50rem;
+            overflow: visible;
+            /* background-color: #fff; */
+        }
+
+        .container line {
+            fill: none;
+            stroke: #f7f7f7;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <svg class="container"></svg>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.10.4/dist/gsap.min.js"></script>
+<script>
+    // 生成圆点组件
+    const magnetic = {
+        width: 0, height: 0,
+        top: 0, left: 0, // 转换屏幕坐标系 x SVG 容器坐标系
+        lines: 10,
+        container: document.querySelector('.container'),
+        balls: [],
+        mouse_radius: 120, // 鼠标碰撞半径
+        init() {
+            this.resize();
+            this.create_yoyos(15);
+            document.addEventListener('mousemove', (e) => {
+                this.move_balls(e.x, e.y);
+            })
+        },
+        resize() { // 更新容器宽高
+            this.width = this.container.getBoundingClientRect().width;
+            this.height = this.container.getBoundingClientRect().height;
+            this.left = this.container.getBoundingClientRect().left;
+            this.top = this.container.getBoundingClientRect().top
+        },
+        create_yoyos(radius) {
+            for (let r = 0; r <= this.lines; r++) {
+                for (let c = 0; c <= this.lines; c++) {
+                    let x = this.width / this.lines * c;
+                    let y = this.height / this.lines * r;
+                    // 创建带有 NameSpace 的 svg 元素
+                    const ball = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    ball.setAttribute('fill', '#17f700');
+                    ball.setAttribute('cx', x); ball.setAttribute('cy', y);
+                    ball.setAttribute('r', radius);
+
+                    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    point.setAttribute('fill', '#f7f7f7');
+                    point.setAttribute('cx', x); point.setAttribute('cy', y);
+                    point.setAttribute('r', radius / 5);
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    // 颜色得用 CSS 定
+                    line.setAttribute('x1', x); line.setAttribute('y1', y);
+                    line.setAttribute('x2', x); line.setAttribute('y2', y);
+
+                    // seq matters （后来者居上）
+                    this.container.appendChild(line);
+                    this.container.appendChild(point);
+                    this.container.appendChild(ball);
+
+                    // 存储小球信息
+                    ball.ori_x = x; ball.ori_y = y;
+                    ball.line = line;
+                    this.balls.push(ball);
+                }
+            }
+        },
+        move_balls(x, y) {
+            const relative_x = x - this.left;
+            const relative_y = y - this.top;
+            this.balls.forEach(ball => {
+                const dx = ball.ori_x - relative_x;
+                const dy = ball.ori_y - relative_y;
+                const dist = Math.sqrt(dx ** 2 + dy ** 2);
+                if (dist < this.mouse_radius) { // 把球挪到圆周上
+                    ball.move_x = relative_x + dx/dist * this.mouse_radius;
+                    ball.move_y = relative_y + dy/dist * this.mouse_radius;
+                    // 基于 GSAP 实现缓动
+                    if (ball.animater) ball.animater.kill(); // 避免重复创建 timeline
+                    ball.animater = gsap.timeline()
+                        .to(ball, {
+                            attr: {
+                                cx: ball.move_x,
+                                cy: ball.move_y,
+                            },
+                            duration: 0.5,
+                            ease: "power3.ease",
+                        })
+                        .to(ball.line, {
+                            attr: {
+                                x2: ball.move_x,
+                                y2: ball.move_y,
+                            },
+                            duration: 0.5,
+                            ease: "power3.ease",
+                        }, "<") // 线条与小球同步运行
+                        // 复位
+                        .to(ball, {
+                            attr: {
+                                cx: ball.ori_x,
+                                cy: ball.ori_y,
+                            },
+                            duration: 1,
+                            ease: "power3.ease",
+                        }, "<0.1")
+                        .to(ball.line, {
+                            attr: {
+                                x2: ball.ori_x,
+                                y2: ball.ori_y,
+                            },
+                            duration: 1,
+                            ease: "power3.ease",
+                        }, "<");
+                }
+            })
+        }
+    }
+    magnetic.init();
+</script>
+
+</html>
