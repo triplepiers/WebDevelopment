@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图形颜色选择、绘制与拖动</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 1.5rem;
+    }
+
+    .clr-wrap {
+        display: flex;
+        gap: 1rem;
+    }
+
+    canvas {
+        background-color: #ccc;
+        box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+    }
+</style>
+
+<body>
+    <!-- 颜色选择器 -->
+    <div id="tag"></div>
+    <div class="clr-wrap">
+        <div>Fill Color</div>
+        <input type="color" id="clr-picker">
+    </div>
+    <!-- 画布 -->
+    <canvas id="cvs"></canvas>
+</body>
+<script>
+    class Rectangle {
+        constructor(id, startX, startY, fillClr) {
+            this.id = id;
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = startX;
+            this.endY = startY;
+            this.fillClr = fillClr;
+            this.showStroke = false
+        }
+
+        get minX() { return Math.min(this.startX, this.endX) }
+        get minY() { return Math.min(this.startY, this.endY) }
+        get maxX() { return Math.max(this.startX, this.endX) }
+        get maxY() { return Math.max(this.startY, this.endY) }
+
+
+        draw() {
+            cvs_ctx.beginPath();
+            cvs_ctx.moveTo(this.minX * devicePixelRatio, this.minY * devicePixelRatio);
+            cvs_ctx.lineTo(this.maxX * devicePixelRatio, this.minY * devicePixelRatio);
+            cvs_ctx.lineTo(this.maxX * devicePixelRatio, this.maxY * devicePixelRatio);
+            cvs_ctx.lineTo(this.minX * devicePixelRatio, this.maxY * devicePixelRatio);
+            cvs_ctx.lineTo(this.minX * devicePixelRatio, this.minY * devicePixelRatio);
+
+            // fill
+            cvs_ctx.fillStyle = this.fillClr;
+            cvs_ctx.fill();
+
+            // select stroke
+            if (this.showStroke) {
+                cvs_ctx.strokeStyle = 'white';
+                cvs_ctx.lineCap = 'square';
+                cvs_ctx.lineWidth = 3 * devicePixelRatio;
+                cvs_ctx.stroke();
+            }
+
+        }
+
+        containPoint(x, y) {
+            return x >= this.minX && x <= this.maxX && y >= this.minY && y <= this.maxY
+        }
+    }
+
+</script>
+<script>
+    function canvas_init(cvs) {
+        let config = {
+            w: 5, h: 3, // 控制长宽比
+            size: 150   // 控制缩放尺寸
+        };
+        // 使用 dpr 来保证清晰度
+        cvs.width = config.size * config.w * devicePixelRatio;
+        cvs.height = config.size * config.h * devicePixelRatio;
+        cvs.style.width = `${config.size * config.w}px`;
+        cvs.style.height = `${config.size * config.h}px`;
+    }
+</script>
+<script>
+    // init
+    const
+        clrPicker = document.getElementById('clr-picker'),
+        cvs = document.getElementById('cvs'),
+        cvs_ctx = cvs.getContext('2d');
+
+    canvas_init(cvs);
+
+    var id = 0;
+    var shapes = [];
+    function getShape(x, y) {
+        // 考虑图层优先顺序 => 用 shapes.reverse 会改变原数组
+        for (let i = shapes.length - 1; i >= 0; i--) {
+            if (shapes[i].containPoint(x, y)) return shapes[i];
+        }
+        return null;
+    }
+    function deleteShape(id) {
+        shapes = shapes.filter(shape => shape.id !== id);
+    }
+
+    const cvsRect = cvs.getBoundingClientRect();
+    function moveRect(rec, x, y) {
+        const { startX, startY, endX, endY } = rec;
+        rec.showStroke = true;
+
+        function clear_eves() {
+            window.onmousemove = null;
+            document.onkeydown = null;
+            window.onmouseup = null;
+        }
+
+        // 点选后支持 backspace 删除
+        document.onkeydown = (ek) => {
+            if (ek.keyCode === 8) {
+                deleteShape(rec.id);
+                clear_eves()
+            }
+        }
+        window.onmousemove = (e) => {
+            const
+                dx = e.clientX - cvsRect.left - x,
+                dy = e.clientY - cvsRect.top - y;
+
+            rec.startX = startX + dx;
+            rec.startY = startY + dy;
+            rec.endX = endX + dx;
+            rec.endY = endY + dy;
+        }
+        window.onmouseup = () => {
+            rec.showStroke = false;
+            clear_eves();
+        }
+    }
+    function creacteRect(id, x, y) {
+        const rec = new Rectangle(
+            id, x, y, clrPicker.value
+        );
+        shapes.push(rec);
+
+        window.onmousemove = (e) => {
+            const
+                x = e.clientX - cvsRect.left,
+                y = e.clientY - cvsRect.top;
+            rec.endX = x;
+            rec.endY = y;
+        }
+
+        window.onmouseup = () => {
+            window.onmousemove = null;
+            window.onmouseup = null;
+        }
+    }
+
+    cvs.onmousedown = (e) => {
+        const
+            x = e.offsetX,
+            y = e.offsetY;
+
+        // 判断是否点选图形
+        const rec = getShape(x, y);
+        if (rec) {
+            moveRect(rec, x, y);
+        } else {
+            creacteRect(id, x, y);
+            id += 1;
+        }
+    }
+
+    function draw() {
+        requestAnimationFrame(draw);
+        // clear
+        cvs_ctx.clearRect(0, 0, cvs.width, cvs.height);
+        // render all
+        for (const shape of shapes) shape.draw();
+    }
+
+    draw();
+</script>
+
+</html>
