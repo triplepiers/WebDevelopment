@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多种文字渐显动画</title>
+</head>
+<style>
+    :root {
+        --black: #000;
+        --white: #fff;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--white);
+        color: var(--black);
+        letter-spacing: 0;
+        width: 100vw;
+        font-size: 1em;
+        line-height: 1.6;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        min-height: 100vh;
+    }
+
+    /* 所有待显示文字的初始透明度 */
+    [text-split] {
+        opacity: 0;
+    }
+
+    .word {
+        overflow: hidden;
+        padding-bottom: 0.1em;
+        margin-bottom: -0.1em;
+        transform-origin: bottom;
+    }
+
+    .section {
+        border-bottom: 2px solid var(--black);
+    }
+
+    .container {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 页面所有元素的通用 Padding */
+    .page-padding {
+        padding: 5em 6%;
+    }
+
+    .page-padding.main {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .main-layout {
+        grid-column-gap: 1.4em;
+        grid-row-gap: 1.4em;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .main-heading {
+        letter-spacing: 0.3rem;
+        width: 100%;
+        max-width: 10.2em;
+        font-size: 5.8em;
+        line-height: 1;
+    }
+
+    .main-sub-heading {
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    @media screen and (max-width: 991px) {
+        .main-heading {
+            font-size: 5em;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .main-heading {
+            font-size: 3.5em;
+        }
+    }
+
+    @media screen and (max-width: 479px) {
+        .main-heading {
+            font-size: 2.4em;
+        }
+    }
+</style>
+
+<body>
+    <main class="page">
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Words Slide Up</div>
+                        <h1 words-slide-up text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Words Rotate In</div>
+                        <h1 words-rotate-in text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Words Slide from Right</div>
+                        <h1 words-slide-from-right text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Letters Slide Up</div>
+                        <h1 letters-slide-up text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Letters Slide Down</div>
+                        <h1 letters-slide-down text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Letters Fade In</div>
+                        <h1 letters-fade-in text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Letters Fade In Random</div>
+                        <h1 letters-fade-in-random text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="page-padding main">
+                    <div class="main-layout">
+                        <div class="main-sub-heading">Scrub Each Word</div>
+                        <h1 scrub-each-word text-split class="main-heading">
+                            My Long Heading Goes Here For A Staggered Scroll Animation
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+        integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+        integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+            // 防止组件在动画加载前闪烁
+            gsap.set("[text-split]", { opacity: 1 });
+            // 将 text 拆分为 words / letters
+            document.querySelectorAll("[text-split]").forEach((el) => {
+                // 自动将 text 拆为 [[chars], ...]
+                new SplitType(el, {
+                    types: "words, chars",
+                    tagName: "span" // 默认会用 div
+                });
+            });
+            // 创建动画
+            // # words slide up
+            document.querySelectorAll("[words-slide-up]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".word"), {
+                    opacity: 0,
+                    yPercent: 100,           // bottom -> up
+                    duration: 0.5,
+                    ease: "back.out(2)",
+                    stagger: { amount: 0.5 } // 1 by 1, gap = duration
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # words rotate in
+            document.querySelectorAll("[words-rotate-in]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                // set 3D pespective
+                tl.set(el.querySelectorAll(".word"), {
+                    transformPerspective: 1000
+                });
+                tl.from(el.querySelectorAll(".word"), {
+                    rotationX: -90,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    stagger: { amount: 0.6 }
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # word slide from right
+            document.querySelectorAll("[words-slide-from-right]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".word"), {
+                    opacity: 0,
+                    x: "1em",
+                    duration: 0.6,
+                    ease: "power2.out",
+                    stagger: { amount: 0.6 } // 1 by 1, gap = duration
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # letters slide up
+            document.querySelectorAll("[letters-slide-up]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".char"), {
+                    opacity: 0,
+                    yPercent: 100,
+                    duration: 0.2,
+                    ease: "power1.out",
+                    stagger: { amount: 0.6 } // 1 by 1, gap = duration
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # letters slide down
+            document.querySelectorAll("[letters-slide-down]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".char"), {
+                    opacity: 0,
+                    yPercent: -120,
+                    duration: 0.3,
+                    ease: "power1.out",
+                    stagger: { amount: 0.7 }
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # letters fade in
+            document.querySelectorAll("[letters-fade-in]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".char"), {
+                    opacity: 0,
+                    duration: 0.1,
+                    ease: "power1.out",
+                    stagger: { amount: 0.8 }
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # letters fade in RANDOM
+            document.querySelectorAll("[letters-fade-in-random]").forEach((el) => {
+                let tl = gsap.timeline({ paused: true });
+                tl.from(el.querySelectorAll(".char"), {
+                    opacity: 0,
+                    duration: 0.1,
+                    ease: "power1.out",
+                    stagger: { 
+                        amount: 0.4,
+                        from: "random" // 真强啊
+                    }
+                });
+                createScrollTrigger(el, tl);
+            })
+            // # scrub each word
+            document.querySelectorAll("[scrub-each-word]").forEach((el) => {
+                // 单个 section 的滚动逻辑
+                let tl = gsap.timeline({
+                    ScrollTrigger: {
+                        trgger: el,
+                        start: "top 90%",
+                        end: "top center", // 差不多滚一半的时候停止
+                        srub: true
+                    }
+                });
+                tl.from(el.querySelectorAll(".word"), {
+                    opacity: 0.2,
+                    duration: 0.2,
+                    ease: "power1.out",
+                    stagger: { 
+                        amount: 0.5,
+                        // from: "random" // 真强啊
+                    }
+                });
+                createScrollTrigger(el, tl)
+            })
+
+            function createScrollTrigger(triggerEle, timeline) {
+                ScrollTrigger.create({
+                    trigger: triggerEle,
+                    start: "top bottom", // 完全回滚后才能重新播放
+                    onLeaveBack: () => {
+                        timeline.progress(0).pause(); // reset 并停止
+                    }
+                })
+                ScrollTrigger.create({
+                    trigger: triggerEle,
+                    start: "top 55%",  // 这个才是控制播放的
+                    onEnter: () => timeline.play()
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>

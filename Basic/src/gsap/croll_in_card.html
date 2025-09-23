@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 GSAP ScrollTrigger 的滚动触发卡片动画</title>
+</head>
+<style>
+    * {
+        margin: 0; padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        width: 100vw; min-height: 100vh;
+        background-color: #e4e4e4;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    }
+    .section_showcase {
+        height: 300vh;
+        overflow: hidden;
+        justify-content: center;
+    }
+    .showcase_grid {
+        position: relative;
+        width: 90vw;
+        display: grid;
+        grid-column-gap: 1vw;
+        grid-row-gap: 1vw;
+        grid-template-rows: auto auto;
+        grid-template-columns: 25vw 15vw 27vw 20vw;
+        grid-auto-columns: 1fr;
+    }
+    .grid_item {
+        position: relative;
+        background-color: #fff;
+        width: 100%;
+        height: 20rem;
+        padding: 1rem;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .showcase_grid-wrapper {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .showcase_heading {
+        font-size: 8rem;
+        font-weight: 700;
+        /* 兼容性写法：通过 clip 让文字本身渐变 */
+        background-color: #ff6a00;
+        background: -webkit-linear-gradient(
+            to right,
+            #ff6a00, #ee0979
+        );
+        background: linear-gradient(
+            to right,
+            #ff6a00, #ee0979
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: absolute;
+        left: 0; right: 0;
+        text-align: center;
+    }
+    /* 赋予卡片不同的初始位置 */
+    /* Move Up */
+    .grid_item:nth-child(1) {
+        transform: translate(-10vh, -30vh);
+    }
+    .grid_item:nth-child(2) {
+        transform: translate(0vh, -20vh);
+    }
+    .grid_item:nth-child(3) {
+        transform: translate(5vh, -25vh);
+    }
+    .grid_item:nth-child(4) {
+        transform: translate(10vh, -30vh);
+    }
+    /* Move Down */
+    .grid_item:nth-child(5) {
+        transform: translate(-10vh, 30vh);
+    }
+    .grid_item:nth-child(6) {
+        transform: translate(-10vh, 20vh);
+    }
+    .grid_item:nth-child(7) {
+        transform: translate(-5vh, 15vh);
+    }
+    .grid_item:nth-child(8) {
+        transform: translate(4vh, 25vh);
+    }
+</style>
+<body>
+    <main class="main">
+        <section class="section_showcase">
+            <div class="showcase_grid-wrapper">
+                <h1 class="showcase_heading">
+                    Scroll Magic
+                </h1>
+                <div class="showcase_grid">
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                    <div class="grid_item"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const colors = [
+            "#493D9E", "#B2A5FF", "#FFB4A2", "#B5928C", "#D2665A", "#2973B2", "#5B913B", "#212121"
+        ];
+
+        // 创建时间轴动画
+        let timeline = gsap.timeline().play();
+        // 将 card 移回原位的动画
+        const items = document.querySelectorAll(".grid_item");
+        items.forEach((item, idx) => {
+            timeline.to(item,{
+                transform: "translate(0,0)",
+                borderRadius: "1rem"
+            }, 
+            0 // 所有卡片动画都在 t=0 时刻 *同时* 开始播放
+              // 具体可见 CheatSheet: https://www.gsap.com/cheatsheet/gsap-3-cheat-sheet.pdf
+            ).to(item, {
+                backgroundColor: `${colors[idx]}`,
+            }
+            // 没有设置 position => 1 by 1 播放
+        )
+        });
+
+        // 标题动画: 缩小并透明化
+        timeline.to(
+            ".showcase_heading", {
+                opacity: 0,
+                scale: 0.5
+            },
+            0
+        );
+        
+        // 创建 ScrollTrigger，使动画与滚动进度联动
+        ScrollTrigger.create({
+            trigger: ".section_showcase",
+            start: "top top",     // 元素顶部与窗口顶部重合时启动
+            end: "bottom bottom",
+            toggleActions: "restart none reverse", // 回滚时倒放
+            scrub: true,  // 播放进度与滚动进度同步（否则自动播放）
+            pin: ".showcase_grid-wrapper", // 滚动时固定位置
+            // 和上面的时间轴绑定
+            animation: timeline,
+            makers: {
+                fontSize: "2rem"
+            }
+        })
+    </script>
+</body>
+</html>
