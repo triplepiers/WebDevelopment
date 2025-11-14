@@ -1,0 +1,103 @@
+<!-- 
+    文本打乱，对 JS 进行修改、变为类塞壬唱片的版本
+    Ref（二手）: https://gitee.com/silvana/html-css-java-project/tree/master/20251114-实现文本打乱效果
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用 Javascript 实现文本打乱效果</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: monospace;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #222;
+    }
+
+    ul {
+        max-width: 100vw;
+        padding: 0 5rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1.5rem;
+        overflow: hidden;
+    }
+
+    ul li {
+        position: relative;
+        list-style: none;
+        overflow: scroll;
+        text-wrap-mode: nowrap;
+    }
+
+    ul li a {
+        overflow-x: scroll;
+        position: relative;
+        font-size: 3em;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    ul li a:hover {
+        color: #69ff41;
+    }
+</style>
+
+<body>
+    <ul>
+        <li><a href="#" data-text="Home"></a></li>
+        <li><a href="#" data-text="About">About</a></li>
+        <li><a href="#" data-text="Hover To Scramble Me">Reload To Scramble</a></li>
+        <li><a href="#" data-text="Services">Services</a></li>
+        <li><a href="#" data-text="Our Team">Our Team</a></li>
+        <li><a href="#" data-text="Contact Us">Contact Us</a></li>
+    </ul>
+
+    <script>
+        document.querySelectorAll('ul li a').forEach(element => {
+            let randomChars = "!@#$%^&*()_+-<>?";
+            let originalText = element.dataset.text;
+
+            // 初始化：全变成 /
+            let slashText = '/'.repeat(originalText.length);
+            element.innerText = slashText;
+
+            // 逐个替换：先换成乱码，再换成正式文本
+            const GAP = 5; // 正式文本落后乱码的距离
+            let iterations = 0;
+            let interval = setInterval(() => {
+                element.textContent = originalText.split("").map(
+                    (char, index) => {
+                        if (index < iterations-GAP) return char
+                        else if(index < iterations) return randomChars.charAt(Math.floor(Math.random() * randomChars.length))
+                        else return '/'
+                    })
+                    .join("");
+
+                // 替换完成，停止
+                if (iterations >= originalText.length + GAP) {
+                    clearInterval(interval);
+                }
+                iterations += 1 / 3;
+            }, 50)
+        })
+    </script>
+</body>
+
+</html>
