@@ -1,0 +1,133 @@
+<!-- 
+  正六边形 SVG 加载效果 
+  REF: https://github.com/JIEJOE-WEB-Tutorial/012-hexagons-matrix
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+        height: 100vh;
+        background-color: #333;    
+        overflow: hidden;
+    }
+    #background {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        background-image: url("https://web-static.hg-cdn.com/endfield/official-v4/_next/static/media/kv-obt-pc.1d54f26f.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    #loading {
+        position: absolute;
+        width: 100%;
+        height: auto;
+    }
+    .loading_block {
+        stroke: #FAFB15;
+        stroke-width: 0.8;
+        stroke-dasharray: 100;
+        stroke-opacity: 0;
+    }
+</style>
+<body>
+    <div id="background"></div>
+    <svg id="loading" viewBox="0 0 1000 1000">
+        <defs>
+            <polygon id="loading_hexagon" points="0,-50 43.3,-25 43.3,25 0,50 -43.3,25 -43.3,-25" 
+             fill="rgba(23, 23, 23, 0.8)" 
+            />
+        </defs>
+        <!-- 基于 href="#[SVG_ID]" 对 SVG 元素进行复用 -->
+        <!-- <use class="loading_block" href="c" x="500" y="500" /> -->
+    </svg>
+</body>
+<script>
+    // 通过调整 <use> 中的 x / y 属性构建蜂窝矩阵
+    const loading = {
+        row: 15, col: 15,
+        container: null,
+        blocks: [],
+        init() {
+            this.container = document.getElementById("loading");
+            this.create_matrix();
+            // 模拟加载延时
+            setTimeout(() => {
+                this.hidden();
+            }, 1000);
+        },
+        create_matrix() {
+            // 基于双重循环构建矩阵
+            for (let r=0 ; r < this.row ; r++) {
+                // 因为是 SVG 元素，所以 **不能** 简单通过 createElement 进行创建（显示不出来）
+                let group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                for (let c=0; c < this.col ; c++) {
+                    let useEle = document.createElementNS("http://www.w3.org/2000/svg", "use");
+                    useEle.setAttribute("class", "loading_block");
+                    useEle.setAttribute("href", "#loading_hexagon");
+                    useEle.setAttribute("transform-origin", "50 50"); // 其实看不太出来
+                    // 这边的 100 / 86.6 是正六边形的宽高比
+                    useEle.setAttribute("x", `${c%2 ? 86.5 * r : 86.5 * r + 43.3}`);
+                    useEle.setAttribute("y", `${75.3 * c}`); // 大约是 100 * 3/4
+
+                    group.appendChild(useEle);
+                    this.blocks.push(useEle);
+                }
+                this.container.appendChild(group);
+            }
+        },
+        hidden() {
+            gsap.timeline()
+                // 随机化方向：顺时针 / 逆时针
+                .set(this.blocks, {
+                    "stroke-dashoffset": () => { return Math.random() > 0.5 ? -100 : 100 },
+                })
+                .to(this.blocks, {
+                    "stroke-dashoffset": 0,
+                    "stroke-opacity": 1,
+                    duration: 0.5,
+                    ease: "power4.out",
+                    // 随机执行顺序
+                    stagger: {
+                        from: "random",
+                        each: 0.002
+                    }
+                })
+                .add("exit", "+=0.3") // 打个关键帧，方便控制下一步的播放时间
+                // 缩小、淡化、退出
+                .to(this.blocks, {
+                    scale: 0,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.out",
+                    stagger: {
+                        from: "center",
+                        each: 0.004
+                    }
+                }, "exit")
+                .to("#background", {
+                    opacity: 1,
+                    duration: 3,
+                    ease: "power1.out"
+                }, "exit-=0.1") 
+        }
+    }
+
+    window.addEventListener('load', () => {
+        loading.init();
+    })
+</script>
+</html>
