@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仿众生行迹UI</title>
+</head>
+<style>
+    body {
+        --size: 80px;
+        --x: -1000px;
+        --y: -1000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        min-height: 100vh;
+        cursor: none;
+    }
+
+    .container {
+        position: relative;
+        width: 300px;
+        aspect-ratio: 1;
+        line-height: 0;
+    }
+
+    .container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+
+        /* 混合模式 */
+        /* 'multiply' (正片叠底) 会让图片变暗，适合深色调 */
+        /* 'screen' (滤色) 会让图片变亮，适合浅色调 */
+        /* 'color' (颜色) 保留亮度，只改变色相，效果最自然 */
+        /* 'overlay' (叠加) 增加对比度 */
+        mix-blend-mode: color;
+
+        /* 使用原图作为遮罩 */
+        -webkit-mask-image: url('../../img/NIAN_1.png');
+        mask-image: url('../../img/NIAN_1.png');
+        /* 确保遮罩大小和位置与原图完全一致 */
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+
+        /* transition: 1s; */
+    }
+
+    .container img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        /* transition: filter 1s; */
+        filter: grayscale(100%);
+    }
+
+    .container:hover img.bk {
+        filter: grayscale(0%);
+    }
+
+    .container:hover::after {
+        /* background-color: rgba(89, 103, 247, 0.6); */
+        /* background-color: rgba(247, 118, 89, 0.6); */
+    }
+
+    .container img.bk {
+        z-index: 1;
+    }
+
+    .container img.ft {
+        z-index: 3;
+        -webkit-mask-image: radial-gradient(circle var(--size) at var(--x) var(--y),
+                transparent 0%,
+                transparent 50%,
+                black 50.5%);
+
+        mask-image: radial-gradient(circle var(--size) at var(--x) var(--y),
+                transparent 0%,
+                transparent 50%,
+                black 50.5%
+                /* 50.5% 为了消除边缘锯齿 */
+            );
+    }
+
+    /* 四周羽化 */
+    .feather {
+        /* 1. 定义水平方向的渐变（左右透明，中间黑） */
+        --mask-horizontal: linear-gradient(to right, transparent, black 10%, black 80%, transparent);
+
+        /* 2. 定义垂直方向的渐变（上下透明，中间黑） */
+        --mask-vertical: linear-gradient(to bottom, transparent, black 10%, black 80%, transparent);
+
+        /* 3. 应用遮罩 */
+        -webkit-mask-image: var(--mask-horizontal), var(--mask-vertical);
+        mask-image: var(--mask-horizontal), var(--mask-vertical);
+
+        /* 4. 关键：取交集（只有两个方向都为黑的地方才显示） */
+        -webkit-mask-composite: source-in;
+        /* Chrome/Safari/Edge (Webkit内核) */
+        mask-composite: intersect;
+        /* Firefox / 标准规范 */
+    }
+
+    .lens-ring {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--size);
+        height: var(--size);
+        border: 1px solid rgba(247, 70, 46, 0.6);
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(113, 4, 4, 0.5);
+        pointer-events: none;
+        z-index: 4;
+
+        transform: translate(-50%, -50%);
+        transition: transform 0.05s ease-out;
+    }
+
+    /* --- 十字准星 --- */
+    .lens-ring::before,
+    .lens-ring::after {
+        content: "";
+        position: absolute;
+        background-color: rgba(247, 70, 46, 0.8);
+        /* 颜色与边框一致 */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /* 确保在圆环内绝对居中 */
+        pointer-events: none;
+        /* 确保不阻挡点击 */
+    }
+
+    /* --- 横线 --- */
+    .lens-ring::before {
+        width: 20px;
+        /* 准星长度 */
+        height: 1.5px;
+        /* 准星厚度 */
+    }
+
+    /* --- 竖线 --- */
+    .lens-ring::after {
+        width: 1.5px;
+        /* 准星厚度 */
+        height: 20px;
+        /* 准星长度 */
+    }
+</style>
+
+<body>
+    <div class="lens-ring" id="cursorRing"></div>
+    <div class="container feather" id="maskContainer">
+        <img class="bk" src="../../img/NIAN_1.png" alt="">
+        <img class="ft" src="../../img/NIAN_2.png" alt="">
+    </div>
+</body>
+<script>
+    const container = document.getElementById('maskContainer');
+    const ring = document.getElementById('cursorRing');
+
+    // 监听全屏鼠标移动
+    window.addEventListener('mousemove', (e) => {
+        // --- A. 更新圆环位置 (基于屏幕坐标) ---
+        // 直接修改 left/top 或者 transform 都可以，这里用 transform 性能更好
+        // 注意：CSS中已经设置了 translate(-50%, -50%) 来居中，所以这里直接给鼠标坐标即可
+        ring.style.left = `${e.clientX}px`;
+        ring.style.top = `${e.clientY}px`;
+
+        // --- B. 更新容器遮罩位置 (基于相对坐标) ---
+        const rect = container.getBoundingClientRect();
+
+        // 计算鼠标相对于容器左上角的距离
+        const relativeX = e.clientX - rect.left;
+        const relativeY = e.clientY - rect.top;
+
+        // 只有当鼠标在容器附近时才更新(可选)，或者一直更新
+        // 这里我们一直更新，CSS mask 会自动处理超出范围的情况
+        container.style.setProperty('--x', `${relativeX}px`);
+        container.style.setProperty('--y', `${relativeY}px`);
+    });
+
+    // 只有鼠标离开窗口时才隐藏圆环
+    document.body.addEventListener('mouseleave', () => {
+        ring.style.opacity = '0';
+    });
+    document.body.addEventListener('mouseenter', () => {
+        ring.style.opacity = '1';
+    });
+</script>
+
+</html>
