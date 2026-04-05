@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+        min-height: 100vh; width: 100vw;
+        display: flex; justify-content: center; align-items: center;
+        padding: 50px 0;
+    }
+    .list {
+        flex-direction: column;
+        display: flex; justify-content: center; align-items: center;
+        gap: 50px;
+    }
+    .square {
+        width: 300px;
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+    }
+    .square .line {
+        width: 100%;
+        flex-grow: 1;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .square .line:nth-child(1) {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .square .line:nth-child(2) {
+        display: flex; 
+        gap: 10px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    .square .line .block {
+        height: 100%;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .square .text {
+        font-family: monospace;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .square .copy-btn {
+        position: absolute;
+        top: 0;
+        left: calc(100% + 10px);
+        width: 28px;
+        height: 28px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 0;
+        cursor: pointer;
+        background: #e5e7eb;
+        color: #6b7280;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .square .copy-btn:active {
+        transform: scale(0.98);
+    }
+    .square .copy-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+    }
+    .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 28px;
+        transform: translateX(-50%) translateY(8px);
+        background: rgba(17, 24, 39, 0.92);
+        color: #f9fafb;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: monospace;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 1000;
+    }
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+</style>
+<body>
+    <div class="list" id="block_list"></div>
+</body>
+<script>
+    // 此处定义色卡：bgClr, ftClr, hlClr
+    const clrs = [
+        ['#AF989B', '#312520', '#FF606C'],
+        ['#8794BF', '#202F39', '#0095B6'],
+        ['#7E8283', '#503E2A', '#fDD95F'],
+        ['#D5E0E5', '#414B4E', '#0961F6'],
+        ['#75878A', '#161823', '#81D8D0']
+    ];
+
+    const blockList = document.getElementById('block_list');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = 'Copied to clipboard';
+    document.body.appendChild(toast);
+    let toastTimer = null;
+
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1400);
+    }
+
+    clrs.forEach(([bgClr, fontClr, highlightClr]) => {
+        const square = document.createElement('div');
+        square.className = 'square';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.type = 'button';
+        copyBtn.title = 'Copy CSS variables';
+        copyBtn.setAttribute('aria-label', 'Copy CSS variables');
+        copyBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1Zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H10V7h9v14Z"/>
+            </svg>
+        `;
+        copyBtn.addEventListener('click', async () => {
+            const copyText = `--bgClr: ${bgClr};\n--ftClr: ${fontClr};\n--hlClr: ${highlightClr};`;
+            try {
+                await navigator.clipboard.writeText(copyText);
+                copyBtn.style.backgroundColor = '#d1d5db';
+                showToast('Copied to clipboard');
+                setTimeout(() => {
+                    copyBtn.style.backgroundColor = '#e5e7eb';
+                }, 1200);
+            } catch (error) {
+                copyBtn.style.backgroundColor = '#f3f4f6';
+                setTimeout(() => {
+                    copyBtn.style.backgroundColor = '#e5e7eb';
+                }, 1200);
+            }
+        });
+
+        const lineTop = document.createElement('div');
+        lineTop.className = 'line background';
+        lineTop.style.backgroundColor = bgClr;
+        lineTop.style.color = fontClr;
+        const topText = document.createElement('div');
+        topText.className = 'text';
+        topText.textContent = bgClr;
+        lineTop.appendChild(topText);
+
+        const lineBottom = document.createElement('div');
+        lineBottom.className = 'line';
+
+        const fontBlock = document.createElement('div');
+        fontBlock.className = 'block font';
+        fontBlock.style.backgroundColor = fontClr;
+        fontBlock.style.color = highlightClr;
+        const fontText = document.createElement('div');
+        fontText.className = 'text';
+        fontText.textContent = fontClr;
+        fontBlock.appendChild(fontText);
+
+        const highlightBlock = document.createElement('div');
+        highlightBlock.className = 'block highlight';
+        highlightBlock.style.backgroundColor = highlightClr;
+        highlightBlock.style.color = fontClr;
+        const highlightText = document.createElement('div');
+        highlightText.className = 'text';
+        highlightText.textContent = highlightClr;
+        highlightBlock.appendChild(highlightText);
+
+        lineBottom.append(fontBlock, highlightBlock);
+        square.append(lineTop, lineBottom);
+        square.appendChild(copyBtn);
+        blockList.appendChild(square);
+    });
+</script>
+</html>
