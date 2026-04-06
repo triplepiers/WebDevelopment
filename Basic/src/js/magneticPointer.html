@@ -1,0 +1,243 @@
+<!-- 
+ REF:  https://github.com/JIEJOE-WEB-Tutorial/018-magnetic-pointer 磁吸光标效果
+ mod: 
+    1. 添加防抖
+    2. 添加光标变换动画
+    3. 添加 scan 特性
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Pointer</title>
+</head>
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        gap: 2rem;
+        width: 100%; height: 100vh;
+        background-color: #171717;
+        overflow: hidden;
+    }
+    /* 光标：绝对定位 */
+    #pointer {
+        --width: 2rem;
+        --height: 2rem;
+        --stroke-color: #02AFF6;
+        --scan-inset: 0.3rem;
+        --scan-line-h: 0.16rem;
+        --scan-duration: 1.2s;
+        position: fixed;
+        /* 一半宽高，使指针位于中心 */
+        left: calc(var(--width) / -2); 
+        top:  calc(var(--height) / -2);  
+        width: var(--width); 
+        height: var(--height);
+        border: 0.1rem solid var(--stroke-color);
+        border-radius: 50%;
+        overflow: hidden;
+        transition: 
+            transform .2s ease-out,
+            width .2s ease-out,
+            height .2s ease-out,
+            border-radius .16s linear,
+            border-color .12s linear;
+        pointer-events: none;
+    }
+        #pointer::after {
+            content: '';
+            position: absolute;
+            left: var(--scan-inset);
+            top: var(--scan-inset);
+            bottom: var(--scan-inset);
+            width: var(--scan-line-h);
+            opacity: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(2, 175, 246, 0.92) 50%,
+                transparent 100%
+            );
+            box-shadow: 0 0 10px rgba(2, 175, 246, 0.65);
+            will-change: transform, opacity;
+        }
+        #pointer.is-target {
+            border-radius: 0;
+        }
+        #pointer.is-target.corners {
+            border-color: transparent;
+        }
+        #pointer.is-target.corners.scan-active::after {
+            opacity: 1;
+            animation: pointer-scan var(--scan-duration) linear infinite;
+        }
+        /* 四个边角: 通过控制四个 border 实现描边 */
+        #pointer div {
+            position: absolute;
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.3rem;
+            border-color: var(--stroke-color);
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity .12s linear, transform .16s ease-out;
+        }
+        #pointer.is-target.corners div {
+            opacity: 1;
+            transform: scale(1);
+        }
+        #pointer div:nth-child(1) {
+            top: 0; left: 0;
+            border-top-style: solid; border-left-style: solid;
+        }
+        #pointer div:nth-child(2) {
+            top: 0; right: 0;
+            border-top-style: solid; border-right-style: solid;
+        }
+        #pointer div:nth-child(3) {
+            bottom: 0; left: 0;
+            border-bottom-style: solid; border-left-style: solid;
+        }
+        #pointer div:nth-child(4) {
+            bottom: 0; right: 0;
+            border-bottom-style: solid; border-right-style: solid;
+        }
+    @keyframes pointer-scan {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(var(--width) - var(--scan-inset) * 2 - var(--scan-line-h)));
+        }
+    }
+    /* 需要 hover 交互的元素 */
+    p, section {
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 4rem;
+        color: #f7f7f7;
+        cursor: pointer;
+    }
+    section {
+        padding: 5rem;
+        background-color: #f7f7f7;
+        color: #171717;
+    }
+</style>
+<body>
+    <!-- 光标 -->
+    <div id="pointer">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <!-- targets -->
+    <p target scan>SCAN: RHODES ISLAND</p>
+    <p target>HOVER ME WITH MOUSE</p>
+    <section target>HOVER ME</section>
+</body>
+<script>
+    // 光标跟随鼠标移动
+    const pointer = {
+        container: document.getElementById('pointer'),
+        cur_target: null,
+        last_enter_ts: 0,
+        leave_timer: null,
+        enter_anim_timer: null,
+        leave_debounce_ms: 3,
+        enter_square_hold_ms: 100,
+        scan_speed: 200, // px_per_s 
+        init() {
+            window.addEventListener('mousemove', this.move.bind(this));
+            // 处理所有潜在的 target 元素
+            this.bind_targets_events();
+        },
+        move(e) {
+            const f = 0.1; // 磁吸系数
+            let x = e.clientX; let y = e.clientY;
+            // 存在 target 时，限制移动（增加磁吸感）
+            if (this.cur_target) {
+                // 计算 target 中心点
+                const rect = this.cur_target.getBoundingClientRect();
+                const center_x = rect.left + rect.width/2;
+                const center_y = rect.top  + rect.height/2;
+                x = center_x + (x-center_x) * f;
+                y = center_y + (y-center_y) * f;
+            }
+            this.container.style.transform = `translate(${x}px, ${y}px)`;
+        },
+        reset_pointer() {
+            this.cur_target = null;
+            if (this.enter_anim_timer) {
+                clearTimeout(this.enter_anim_timer);
+                this.enter_anim_timer = null;
+            }
+            this.container.classList.remove('is-target', 'corners', 'scan-active');
+            this.container.style.setProperty('--width', '2rem');
+            this.container.style.setProperty('--height', '2rem');
+        },
+        animate_to_target(ele) {
+            const rect = ele.getBoundingClientRect();
+            const target_width = rect.width * 1.05;
+            const target_height = rect.height * 1.05;
+            const square_size = Math.min(target_width, target_height);
+            const enable_scan = ele.hasAttribute('scan');
+
+            // 阶段1：圆形 -> 正方
+            this.container.classList.add('is-target');
+            this.container.classList.remove('corners', 'scan-active');
+            this.container.style.setProperty('--width', `${square_size}px`);
+            this.container.style.setProperty('--height', `${square_size}px`);
+
+            // 阶段2：正方 -> 矩形，然后切换四角描边
+            this.enter_anim_timer = setTimeout(() => {
+                if (this.cur_target !== ele) {
+                    this.enter_anim_timer = null;
+                    return;
+                }
+                this.container.style.setProperty('--width', `${target_width}px`);
+                this.container.style.setProperty('--height', `${target_height}px`);
+                this.container.classList.add('corners');
+                if (enable_scan) {
+                    const travel_distance = Math.max(target_width, 1);
+                    const duration_s = Math.max(travel_distance / this.scan_speed, 0.12);
+                    this.container.style.setProperty('--scan-duration', `${duration_s}s`);
+                    this.container.classList.add('scan-active');
+                }
+                this.enter_anim_timer = null;
+            }, this.enter_square_hold_ms);
+        },
+        bind_targets_events() {
+            [...document.querySelectorAll('[target]')].forEach(ele => {
+                ele.onmouseenter = () => {
+                    if (this.leave_timer) {
+                        clearTimeout(this.leave_timer);
+                        this.leave_timer = null;
+                    }
+                    if (this.enter_anim_timer) {
+                        clearTimeout(this.enter_anim_timer);
+                        this.enter_anim_timer = null;
+                    }
+                    this.last_enter_ts = performance.now();
+                    this.cur_target = ele;
+                    this.animate_to_target(ele);
+                }
+                ele.onmouseleave = () => {
+                    const elapsed = performance.now() - this.last_enter_ts;
+                    if (elapsed <= this.leave_debounce_ms) {
+                        this.leave_timer = setTimeout(() => {
+                            this.reset_pointer();
+                            this.leave_timer = null;
+                        }, this.leave_debounce_ms - elapsed);
+                        return;
+                    }
+                    this.reset_pointer();
+                }
+            })
+        }
+    }
+    pointer.init();
+</script>
+</html>
