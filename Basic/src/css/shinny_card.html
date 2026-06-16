@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- REF: 
+    - SrcCode: https://codepen.io/linxiang-webcraft/pen/JobXpLO
+    - BiliVideo: BV1Ga5L6qELr
+    - HTML 结构：
+        - Card：提供圆角、不会旋转 => Pointer 监听绑在 Card 上、避免超出交互范围
+        - Rotater：真正负责旋转
+    - 指针交互：Clamp 将倾斜输入标准化至 0~100
+    - 动画渲染循环：
+        - 按间隔时间计算 deltaTime，以 60fps 为基准补偿
+        - 前后变化较小时，停止动画、不再调用 requestAnimationFrame
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闪卡</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        /* 控制卡片旋转 */
+        --card-aspect: 0.718;
+        --card-radius: 4.55% / 3.5%;
+    }
+
+    body {
+        min-height: 100vh;
+        width: 100vw;
+        background: #111318;
+    }
+
+    main {
+        min-height: 100vh;
+        /* 水平+垂直居中 */
+        display: grid;
+        place-items: center;
+    }
+
+    .card {
+        width: min(72vw, 340px);
+        aspect-ratio: var(--card-aspect);
+        border-radius: var(--card-radius);
+        perspective: 600px;
+        overflow: hidden;
+    }
+
+    .card_rotater {
+        --tilt-left-right: 0deg;
+        --tilt-up-down: 0deg;
+        --pointer-x: 50%;
+        --pointer-y: 50%;
+        --pointer-from-center: 0;
+        --effect-intensity: 0;
+        --background-x: 50%;
+        --background-y: 50%;
+        --space: 6%;
+        --angle: 133deg;
+        --foil: url("../../img/foil_texture.jpg");
+        --imgsize: 60% 30%;
+
+        width: 100%;
+        height: 100%;
+        display: grid;
+        border-radius: inherit;
+        transform: rotateY(var(--tilt-left-right)) rotateX(var(--tilt-up-down));
+        transform-origin: center;
+        will-change: transform;
+        /* 性能优化提示 */
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.42), 0 4px 12px rgba(0, 0, 0, 0.34);
+    }
+
+    .img.front {
+        user-select: none;
+        pointer-events: none;
+        -webkit-user-drag: none;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url("../../img/carousel_14.png");
+        background-position: 65% center;
+    }
+
+    .card_front,
+    .card_front>* {
+        width: 100%;
+        height: 100%;
+        grid-area: 1/1;
+        border-radius: inherit;
+    }
+
+    .card__shine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: grid;
+        background-image: var(--foil),
+            repeating-linear-gradient(-33deg,
+                hsl(2, 70%, 47%) calc(var(--space) * 1),
+                hsl(228, 60%, 64%) calc(var(--space) * 2),
+                hsl(176, 55%, 39%) calc(var(--space) * 3),
+                hsl(123, 68%, 35%) calc(var(--space) * 4),
+                hsl(283, 75%, 57%) calc(var(--space) * 5),
+                hsl(2, 70%, 47%) calc(var(--space) * 6)),
+            repeating-linear-gradient(var(--angle),
+                hsla(227, 53%, 12%, 0.5) 0%,
+                hsl(180, 10%, 50%) 2.5%,
+                hsl(83, 50%, 35%) 5%,
+                hsl(180, 10%, 50%) 7.5%,
+                hsla(227, 53%, 12%, 0.5) 10%,
+                hsla(227, 53%, 12%, 0.5) 15%),
+            radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),
+                hsla(189, 76%, 77%, 0.6) 0%,
+                hsla(147, 59%, 77%, 0.6) 25%,
+                hsla(271, 55%, 69%, 0.6) 50%,
+                hsla(355, 56%, 72%, 0.6) 75%);
+        background-size: var(--imgsize), 1100% 1100%, 600% 600%, 200% 200%;
+        background-blend-mode: difference, luminosity, soft-light, normal;
+        mix-blend-mode: color-dodge;
+        background-position: center, var(--background-x) var(--background-y),
+            var(--background-x) var(--background-y),
+            var(--background-x) var(--background-y);
+        opacity: var(--effect-intensity);
+        filter: brightness(calc((var(--pointer-from-center) * 0.4) + 0.4)) contrast(2) saturate(1);
+    }
+
+    .card__shine::after {
+        --sunpillar-1: hsl(2, 100%, 73%);
+        --sunpillar-2: hsl(53, 100%, 69%);
+        --sunpillar-3: hsl(93, 100%, 69%);
+        --sunpillar-4: hsl(176, 100%, 76%);
+        --sunpillar-5: hsl(228, 100%, 74%);
+        --sunpillar-6: hsl(283, 100%, 73%);
+
+        content: "";
+        grid-area: 1/1;
+        border-radius: inherit;
+
+        background-image: repeating-linear-gradient(0deg,
+                var(--sunpillar-6) calc(var(--space) * 1),
+                var(--sunpillar-1) calc(var(--space) * 2),
+                var(--sunpillar-2) calc(var(--space) * 3),
+                var(--sunpillar-3) calc(var(--space) * 4),
+                var(--sunpillar-4) calc(var(--space) * 5),
+                var(--sunpillar-5) calc(var(--space) * 6),
+                var(--sunpillar-6) calc(var(--space) * 7)),
+            repeating-linear-gradient(var(--angle),
+                #0e152e 0%,
+                hsl(180, 10%, 60%) 3.8%,
+                hsl(180, 29%, 66%) 4.5%,
+                hsl(180, 10%, 60%) 5.2%,
+                #0e152e 10%,
+                #0e152e 12%);
+        background-blend-mode: hue, normal;
+        background-size: 200% 700%, 300% 100%;
+        background-position: 0% var(--background-y),
+            var(--background-x) var(--background-y);
+        mix-blend-mode: lighten;
+        opacity: calc((0.3 * var(--effect-intensity)) + var(--effect-intensity) * var(--pointer-from-center) * 0.5);
+    }
+
+    .card__glare {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),
+                hsla(0, 0%, 100%, 0.75) 0%,
+                hsl(0, 0%, 0%) 120%);
+        mix-blend-mode: hard-light;
+        opacity: calc((0.2 * var(--effect-intensity)) + var(--effect-intensity) * var(--pointer-from-center) * 0.8);
+    }
+
+    .resources {
+        max-width: 360px;
+    }
+
+    .resources__eyebrow,
+    .resources__title,
+    .resources__copy,
+    .resources__links {
+        margin: 0;
+    }
+
+    .resources__eyebrow {
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .resources__title {
+        margin-top: 12px;
+        max-width: 13ch;
+        font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+        font-weight: 700;
+        line-height: 1.04;
+    }
+
+    .resources__copy {
+        margin-top: 22px;
+        color: var(--text-muted);
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    .resources__source {
+        display: inline-block;
+        margin-top: 14px;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        font-weight: 650;
+        line-height: 1.4;
+        text-decoration: underline;
+        text-decoration-color: rgba(119, 247, 212, 0.55);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+    }
+
+    .resources__links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        margin-top: 30px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(247, 243, 234, 0.14);
+    }
+
+    .resources__link {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 650;
+        line-height: 1.4;
+        text-decoration: underline;
+        text-decoration-color: var(--text-soft);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+        transition: color 180ms ease, text-decoration-color 180ms ease;
+    }
+
+    .resources__source:hover,
+    .resources__source:focus-visible,
+    .resources__link:hover,
+    .resources__link:focus-visible {
+        color: var(--accent);
+        text-decoration-color: currentColor;
+        outline: none;
+    }
+
+    @media (max-width: 880px) {
+        main {
+            grid-template-columns: minmax(0, 360px);
+            justify-items: center;
+            gap: 28px;
+            overflow: visible;
+            padding: 42px 22px;
+        }
+
+        .resources {
+            width: min(100%, 360px);
+        }
+
+        .resources__title {
+            max-width: 13ch;
+            font-size: clamp(1.9rem, 10vw, 2.55rem);
+        }
+
+        .card {
+            width: min(78vw, 340px);
+        }
+    }
+
+    @media (max-height: 640px) and (min-width: 881px) {
+        main {
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+    }
+</style>
+
+<body>
+    <main>
+        <div class="card">
+            <div class="card_rotater">
+                <div class="card_front">
+                    <div class="img front"></div>
+                    <div class="card__shine"></div>
+                    <div class="card__glare"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+
+    const card = document.querySelector(".card");
+    const rotator = document.querySelector(".card_rotater");
+
+    // State
+    const rotationSpring = createSpring({ x: 0, y: 0 });
+    const backgroundSpring = createSpring({ x: 50, y: 50 });
+    const pointerSpring = createSpring({ x: 50, y: 50, effectIntensity: 0 });
+    const springs = [rotationSpring, backgroundSpring, pointerSpring];
+
+    let frameId = null;
+    let lastTimestamp = 0;
+    let resetTimer = null;
+    let springSettings;
+
+    // Configuration
+    const springInteractSettings = {
+        stiffness: 0.066,
+        damping: 0.25
+    };
+
+    const springReturnSettings = {
+        stiffness: 0.01,
+        damping: 0.06
+    };
+
+    // Main flow
+    springSettings = springInteractSettings;
+
+    if (card && rotator) {
+        card.addEventListener("pointermove", handlePointerMove);
+        card.addEventListener("pointerleave", handlePointerLeave);
+        card.addEventListener("pointercancel", handlePointerLeave);
+    }
+
+    // Visual updates
+    function setRotation({ x, y }) {
+        rotator.style.setProperty("--tilt-left-right", `${x}deg`);
+        rotator.style.setProperty("--tilt-up-down", `${y}deg`);
+    }
+
+    function setShineBackground({ x, y }) {
+        rotator.style.setProperty("--background-x", `${x}%`);
+        rotator.style.setProperty("--background-y", `${y}%`);
+    }
+
+    function getPointerDistanceFromCenter(x, y) {
+        const distance = Math.hypot(x - 50, y - 50) / 50;
+
+        return round(clamp(distance, 0, 1));
+    }
+
+    function setPointer({ x, y, effectIntensity }) {
+        rotator.style.setProperty("--pointer-x", `${x}%`);
+        rotator.style.setProperty("--pointer-y", `${y}%`);
+        rotator.style.setProperty(
+            "--pointer-from-center",
+            getPointerDistanceFromCenter(x, y)
+        );
+        rotator.style.setProperty("--effect-intensity", effectIntensity);
+    }
+
+    function applyVisualState() {
+        setRotation({
+            x: round(rotationSpring.current.x),
+            y: round(rotationSpring.current.y)
+        });
+
+        setShineBackground({
+            x: round(backgroundSpring.current.x),
+            y: round(backgroundSpring.current.y)
+        });
+        setPointer({
+            x: round(pointerSpring.current.x),
+            y: round(pointerSpring.current.y),
+            effectIntensity: round(pointerSpring.current.effectIntensity)
+        });
+    }
+
+    // Animation loop
+    function animateCard(timestamp) {
+        if (!lastTimestamp) {
+            lastTimestamp = timestamp;
+        }
+
+        const deltaTime = Math.min((timestamp - lastTimestamp) / 16.666, 4);
+        lastTimestamp = timestamp;
+
+        springs.forEach((spring) => {
+            updateSpring(spring, deltaTime);
+        });
+
+        if (springs.every(isCloseToTarget)) {
+            springs.forEach(finishSpringAtTarget);
+            applyVisualState();
+            frameId = null;
+            lastTimestamp = 0;
+            return;
+        }
+
+        applyVisualState();
+
+        frameId = requestAnimationFrame(animateCard);
+    }
+
+    function startAnimation() {
+        if (frameId === null) {
+            frameId = requestAnimationFrame(animateCard);
+        }
+    }
+
+    // Pointer interaction
+    function handlePointerMove(event) {
+        clearTimeout(resetTimer);
+        resetTimer = null;
+        springSettings = springInteractSettings;
+
+        const rect = card.getBoundingClientRect();
+        const pointerPosition = {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        };
+
+        const pointer = {
+            x: round(clamp((pointerPosition.x / rect.width) * 100)),
+            y: round(clamp((pointerPosition.y / rect.height) * 100))
+        };
+
+        const center = {
+            x: pointer.x - 50,
+            y: pointer.y - 50
+        };
+
+        setSpringTarget(rotationSpring, {
+            // Same tilt strength: 50% center offset becomes about 14deg.
+            x: round(-(center.x / 3.5)),
+            y: round(center.y / 3.5)
+        });
+        setSpringTarget(backgroundSpring, {
+            x: mapRange(pointer.x, 0, 100, 37, 63),
+            y: mapRange(pointer.y, 0, 100, 33, 67)
+        });
+        setSpringTarget(pointerSpring, {
+            x: pointer.x,
+            y: pointer.y,
+            effectIntensity: 1
+        });
+
+        startAnimation();
+    }
+
+    function handlePointerLeave(event, delay = 500) {
+        clearTimeout(resetTimer);
+
+        resetTimer = setTimeout(() => {
+            springSettings = springReturnSettings;
+            setSpringTarget(rotationSpring, { x: 0, y: 0 });
+            setSpringTarget(backgroundSpring, { x: 50, y: 50 });
+            setSpringTarget(pointerSpring, { x: 50, y: 50, effectIntensity: 0 });
+            resetTimer = null;
+            startAnimation();
+        }, delay);
+    }
+
+    // Utility functions
+    function mapRange(value, fromMin, fromMax, toMin, toMax) {
+        const progress = (value - fromMin) / (fromMax - fromMin);
+
+        return round(toMin + progress * (toMax - toMin));
+    }
+
+    function clamp(value, min = 0, max = 100) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    function round(value, precision = 3) {
+        return Number(value.toFixed(precision));
+    }
+
+    // Custom spring implementation
+    function createSpring(initialValue) {
+        const axes = Object.keys(initialValue);
+
+        return {
+            axes,
+            current: { ...initialValue },
+            target: { ...initialValue },
+            velocity: Object.fromEntries(axes.map((axis) => [axis, 0]))
+        };
+    }
+
+    function setSpringTarget(spring, value) {
+        Object.assign(spring.target, value);
+    }
+
+    function resetSpringVelocity(spring) {
+        spring.axes.forEach((axis) => {
+            spring.velocity[axis] = 0;
+        });
+    }
+
+    function updateSpring(spring, deltaTime) {
+        spring.axes.forEach((axis) => {
+            const distance = spring.target[axis] - spring.current[axis];
+
+            spring.velocity[axis] += distance * springSettings.stiffness * deltaTime;
+            spring.velocity[axis] *= Math.pow(1 - springSettings.damping, deltaTime);
+            spring.current[axis] += spring.velocity[axis] * deltaTime;
+        });
+    }
+
+    const STOP_THRESHOLD = 0.001;
+    function isCloseToTarget(spring) {
+        return spring.axes.every((axis) => {
+            const distance = Math.abs(spring.target[axis] - spring.current[axis]);
+            const speed = Math.abs(spring.velocity[axis]);
+
+            return distance < STOP_THRESHOLD && speed < STOP_THRESHOLD;
+        });
+    }
+
+    function finishSpringAtTarget(spring) {
+        spring.current = { ...spring.target };
+        resetSpringVelocity(spring);
+    }
+
+</script>
+
+</html>
